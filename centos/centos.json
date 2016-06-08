@@ -65,7 +65,8 @@
       "type": "shell",
       "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
       "scripts": [
-        "scripts/00-yum-update.sh"
+        "scripts/00-yum-update.sh",
+        "scripts/01-remove-old-kernels.sh"
       ]
     }
   ]
