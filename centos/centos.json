@@ -68,7 +68,8 @@
       "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
       "scripts": [
         "scripts/00-yum-update.sh",
-        "scripts/01-remove-old-kernels.sh"
+        "scripts/01-remove-old-kernels.sh",
+        "scripts/02-blacklist-pcspkr.sh"
       ]
     }
   ]
