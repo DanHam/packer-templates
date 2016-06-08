@@ -52,6 +52,8 @@
       "vmdk_name": "{{user `template_name`}}",
       "disk_type_id": "0",
       "disk_size": 10240,
+      "tools_upload_flavor": "linux",
+      "tools_upload_path": "/tmp/vmware-tools-{{.Flavor}}.iso",
 
       "ssh_username": "coadmin",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
