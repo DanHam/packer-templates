@@ -14,12 +14,12 @@ REBOOT=0
 
 # Check if updates are required and store the list of update packages
 yum check-update > $UPDATE_FILE
-EXIT_CODE=$?
-
 # yum check-update provides the following exit codes:
 #     100 => updates are available
 #     1   => an error occurred
 #     0   => no updates
+EXIT_CODE=$?
+
 if [ $EXIT_CODE == 100 ]; then
     echo "Package updates required. Updating..."
     yum -y update > /dev/null
@@ -37,7 +37,7 @@ else
     echo "No packages on the system require updating."
 fi
 
-# Clean the yum repository
+# Remove cached packages and metadata from the yum repository
 yum clean all > /dev/null
 # Remove temp files
 [[ -e $UPDATE_FILE ]] && rm -f $UPDATE_FILE
