@@ -21,11 +21,11 @@ REBOOT=0
 # Ensure the CentOS RPM GPG key has been imported
 if [ "x$(rpm -qa gpg-pubkey* | grep $RPM_GPG_KEY_ID)" = "x" ]; then
     # Check the finger print of the key matches the known value
-    FINGER="$(gpg -q --with-fingerprint $RPM_GPG_KEY |\
+    FINGER="$(gpg -q --with-fingerprint $RPM_GPG_KEY 2>/dev/null |\
               grep fingerprint | \
               sed -n -e 's/^.*= //p')"
     if [ "$FINGER" == "$RPM_GPG_KEY_FINGER" ]; then
-        rpm --import $RPM_GPG_KEY &> /dev/null
+        rpm --import $RPM_GPG_KEY
     else
         echo "ERROR: CentOS RPM GPG key does not match known fingerprint"
         exit -1
