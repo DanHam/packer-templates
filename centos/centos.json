@@ -65,7 +65,7 @@
       "type": "shell",
       "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
       "scripts": [
-        "scripts/touch-root.sh"
+        "scripts/00-yum-update.sh"
       ]
     }
   ]
