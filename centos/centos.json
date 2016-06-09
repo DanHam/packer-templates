@@ -69,7 +69,8 @@
 					"scripts": [
             "scripts/00-yum-update.sh",
             "scripts/01-remove-old-kernels.sh",
-            "scripts/02-blacklist-pcspkr.sh"
+            "scripts/02-blacklist-pcspkr.sh",
+            "scripts/03-install-open-vm-tools.sh"
           ]
         }
       }
