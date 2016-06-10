@@ -14,7 +14,9 @@
     "cpu_count": "1",
     "vmtools_iso_path": "/tmp/vmware-tools.iso",
 
-    "ssh_private_key": "/Users/dan/.ssh/vagrant.id_rsa"
+    "ssh_private_key": "/Users/dan/.ssh/vagrant.id_rsa",
+
+    "debug": "false"
   },
 
   "builders": [
@@ -66,7 +68,8 @@
     {
       "type": "shell",
       "environment_vars": [
-        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
+        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
+        "DEBUG={{user `debug`}}"
       ],
       "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
 			"override": {

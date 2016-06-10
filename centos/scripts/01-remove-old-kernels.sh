@@ -2,6 +2,9 @@
 #
 # Check for and remove old kernels and corresponding devel packages
 
+# Set verbose/quiet output based on env var configured in Packer template
+[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+
 # Logging for packer
 echo "Checking for and removing old kernel packages as required..."
 
@@ -32,7 +35,7 @@ done
 # Remove all old kernel packages as required
 if [ "x$REMOVE" != "x" ]; then
     echo "Removing old kernel packages: $REMOVE..."
-    yum -y remove $REMOVE > /dev/null
+    yum -y remove $REMOVE > $REDIRECT
 else
     echo "No old kernel packages found"
 fi

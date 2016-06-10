@@ -2,6 +2,9 @@
 #
 # Update installed packages and initiate system restart as required
 
+# Set verbose/quiet output based on env var configured in Packer template
+[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+
 # Path to CentOS 7 RPM GPG signing key
 RPM_GPG_KEY="/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7"
 # CentOS 7 Official Signing Key ID
@@ -21,7 +24,7 @@ REBOOT=0
 # Ensure the CentOS RPM GPG key has been imported
 if [ "x$(rpm -qa gpg-pubkey* | grep $RPM_GPG_KEY_ID)" = "x" ]; then
     # Check the finger print of the key matches the known value
-    FINGER="$(gpg -q --with-fingerprint $RPM_GPG_KEY 2>/dev/null |\
+    FINGER="$(gpg -q --with-fingerprint $RPM_GPG_KEY 2>$REDIRECT |\
               grep fingerprint | \
               sed -n -e 's/^.*= //p')"
     if [ "$FINGER" == "$RPM_GPG_KEY_FINGER" ]; then
@@ -43,7 +46,7 @@ EXIT_CODE=$?
 
 if [ $EXIT_CODE == 100 ]; then
     echo "Package updates required. Updating..."
-    yum -y update > /dev/null
+    yum -y update > $REDIRECT
     # Check the list of updates output by yum check-updates against the
     # list of packages that require a system restart post update
     while read LINE
@@ -60,7 +63,7 @@ fi
 
 
 # Remove cached packages and metadata from the yum repository
-yum clean all > /dev/null
+yum clean all > $REDIRECT
 # Remove temp files
 [[ -e $UPDATE_FILE ]] && rm -f $UPDATE_FILE
 

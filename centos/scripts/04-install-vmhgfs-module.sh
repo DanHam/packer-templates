@@ -36,9 +36,12 @@
 #   * kernel-devel
 #
 
+# Set verbose/quiet output based on env var configured in Packer template
+[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+
 # Install required package
 echo "Installing packages required by the VMware tools installer..."
-yum -y install perl gcc make kernel-headers kernel-devel > /dev/null
+yum -y install perl gcc make kernel-headers kernel-devel > $REDIRECT
 
 # Set the path to the perl executable
 PERL="$(which perl)"
@@ -82,7 +85,7 @@ VMWARE_INSTALLER="$VMWARE_EXTRACT/vmware-tools-distrib/vmware-install.pl"
 
 # Run the VMware Installer Perl script accepting all defaults
 echo "Installing the VMware Tools vmhgfs module..."
-$PERL $VMWARE_INSTALLER --default > /dev/null
+$PERL $VMWARE_INSTALLER --default > $REDIRECT
 
 
 # Clean up
