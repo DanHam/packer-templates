@@ -12,7 +12,8 @@ RPM_GPG_KEY_ID="f4a80eb5"
 # CentOS 7 Official Signing Key Fingerprint
 RPM_GPG_KEY_FINGER="6341 AB27 53D7 8A78 A7C2  7BB1 24C6 A8A7 F4A8 0EB5"
 # Set the location for storing the list of updates from yum check-update
-UPDATE_FILE="/tmp/updates.txt"
+# using mktemp to avoid potential name conflicts under /tmp
+UPDATE_FILE="$(mktemp -t -q --tmpdir=/tmp updates-XXXXXX.txt)"
 # Create a grep friendly list of packages that require a system reboot
 # after being updated on RHEL/CentOS 7
 # https://access.redhat.com/solutions/27943
