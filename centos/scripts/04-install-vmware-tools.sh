@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
 #
-# Installs the vmhgfs module from the VMware tools iso bundled with VMware
-# Workstation or Fusion. Together with the open-vm-tools package, this
-# allows the use of a shared folder accessible from both the host and
-# guest OS.
+# If used without without having first installed open-vm-tools this script
+# will perform a default installation of the VMware Tools package bundled
+# with Workstation or Fusion
+#
+# If used after the open-vm-tools package has been installed, the script
+# installs the vmhgfs module from the VMware tools iso.
+# The installer will not overwrite any of the packages or files installed
+# by open-vm-tools by default and instead only compiles and installs the
+# vmhgfs module.
+#
+# Together with the open-vm-tools package, this allows the use of a shared
+# folder accessible from both the host and guest OS while still using the
+# preferred open-vm-tools package to provide the majority of host-guest
+# optimisations and interactivity.
 #
 # The install of the vmhgfs module in this manner is a workaround for a
 # bug in the packaging of open-vm-tools. Currently the vmhgfs module is
@@ -18,16 +28,11 @@
 # necessary - a simple install of the open-vm-tools package will be all
 # that is required to use shared folders
 #
-# When used to provide just the vmhgfs module the VMware tools installer
-# must be used after the install of open-vm-tools. The installer will not
-# overwrite any of the packages or files installed by open-vm-tools by
-# default and instead only compiles and installs the missing vmhgfs module
-#
 # In order to run the installer the following packages must be installed:
 #
 #   * perl
 #
-# In order to compile the vmhgfs module the following packages must be
+# In order to compile kernel modules the following packages must be
 # installed:
 #
 #   * gcc
