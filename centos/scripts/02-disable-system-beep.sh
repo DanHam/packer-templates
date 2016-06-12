@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 #
-# Disable the system speaker... die annoying beep... DIE!!!
+# Disable system beeps... die annoying beep... DIE!!!
 
-# Permanently blacklist the pcspkr module to disable system beeps
-cat <<EOF >/etc/modprobe.d/blacklist-pcspkr.conf
+# Blacklist the pcspkr and snd_pcsp modules to disable system beeps
+cat <<EOF >/etc/modprobe.d/disable_system_beeps.conf
 # Prevent system beeps
 blacklist pcspkr
+blacklist snd_pcsp
 EOF
