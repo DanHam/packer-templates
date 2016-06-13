@@ -80,9 +80,10 @@
 					"scripts": [
             "scripts/00-yum-update.sh",
             "scripts/01-remove-old-kernels.sh",
-            "scripts/02-blacklist-pcspkr.sh",
+            "scripts/02-disable-system-beep.sh",
             "scripts/03-install-open-vm-tools.sh",
-            "scripts/04-install-vmhgfs-module.sh"
+            "scripts/04-install-vmware-tools.sh",
+            "scripts/05-zero-free-space.sh"
           ]
         }
       }
