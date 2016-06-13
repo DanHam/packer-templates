@@ -54,6 +54,7 @@
         "usb.present": "FALSE",
         "usb.vbluetooth.startConnected": "FALSE"
       },
+      "vm_name": "{{user `template`}}",
       "vmdk_name": "{{user `template`}}",
       "disk_type_id": "0",
       "disk_size": 10240,
