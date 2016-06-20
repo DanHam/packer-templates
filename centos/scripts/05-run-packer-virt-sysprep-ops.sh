@@ -53,3 +53,4 @@
 
 # yum-uuid: Remove the yum UUID
 #     * /var/lib/yum/uuid
+echo 'Doing nothing yet in 05-run-packer-virt-sysprep-ops.sh'

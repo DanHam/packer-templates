@@ -4,7 +4,7 @@
     "template_os": "centos-64",
 
     "debug": "false",
-    "headless": "true",
+    "headless": "false",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7.2x86_64/CentOS-7-x86_64-DVD-1511.iso",
     "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
@@ -71,6 +71,15 @@
   "provisioners": [
     {
       "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
+      "inline": [
+        "mkdir /packer",
+        "chown coadmin:coadmin /packer"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "/packer",
       "environment_vars": [
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
         "DEBUG={{user `debug`}}"
@@ -84,7 +93,8 @@
             "scripts/02-disable-system-beep.sh",
             "scripts/03-install-open-vm-tools.sh",
             "scripts/04-install-vmware-tools.sh",
-            "scripts/05-zero-free-space.sh"
+            "scripts/05-run-packer-virt-sysprep-ops.sh",
+            "scripts/06-zero-free-space.sh"
           ]
         }
       }
