@@ -78,6 +78,11 @@
       ]
     },
     {
+      "type": "file",
+      "source": "scripts/packer-virt-sysprep",
+      "destination": "/packer"
+    },
+    {
       "type": "shell",
       "remote_folder": "/packer",
       "environment_vars": [
