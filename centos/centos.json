@@ -109,6 +109,7 @@
       "environment_vars": [
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
         "DEBUG={{user `debug`}}",
+        "PACKER_DIR={{user `packer_dir`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
         "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
