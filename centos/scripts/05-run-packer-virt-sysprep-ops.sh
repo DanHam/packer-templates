@@ -34,6 +34,7 @@ fi
 #     * /var/lib/dhcp/*
 if [ "$SYSPREP_OP_DHCP_CLIENT_STATE" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-dhcp-client-state.sh"
+    sh ${PREFIX}/sysprep-op-dhcp-client-state.sh
 fi
 
 # firewall-rules: Remove custom firewall rules by removing:
