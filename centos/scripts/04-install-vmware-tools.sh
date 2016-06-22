@@ -50,7 +50,7 @@ echo "Installing packages required by the VMware tools installer..."
 yum -y install $PACKAGES > ${REDIRECT}
 
 # Set the path to the perl executable
-PERL="$(which perl)"
+PERL="$(command -v perl)"
 # Exit if for some reason the installation of perl failed or we fail to
 # find the executable
 if [ "x${PERL}" = "x" ]; then
