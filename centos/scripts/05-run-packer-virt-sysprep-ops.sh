@@ -43,6 +43,7 @@ fi
 #     * /etc/firewalld/zones/*
 if [ "$SYSPREP_OP_FIREWALL_RULES" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-firewall-rules.sh"
+    sh ${PREFIX}/sysprep-op-firewall-rules.sh
 fi
 
 # logfiles: Remove every logfile ever created by removing:
