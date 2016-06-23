@@ -74,6 +74,7 @@ fi
 #     * /var/mail/*
 if [ "$SYSPREP_OP_MAIL_SPOOL" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-mail-spool.sh"
+    ${SH} ${PREFIX}/sysprep-op-mail-spool.sh
 fi
 
 # package-manager-cache: Remove package manager cache by removing files
