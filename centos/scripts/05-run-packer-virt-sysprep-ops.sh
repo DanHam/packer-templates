@@ -67,6 +67,7 @@ fi
 #     * /var/lib/dbus/machine-id
 if [ "$SYSPREP_OP_MACHINE_ID" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-machine-id.sh"
+    ${SH} ${PREFIX}/sysprep-op-machine-id.sh
 fi
 
 # mail-spool: Remove email from the local mail spool directory
