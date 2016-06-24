@@ -93,6 +93,7 @@ fi
 #     # /var/lib/rpm/__db.*
 if [ "$SYSPREP_OP_RPM_DB" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-rpm-db.sh"
+    ${SH} ${PREFIX}/sysprep-op-rpm-db.sh
 fi
 
 # ssh-hostkeys: Remove the SSH host keys in the guest by removing:
