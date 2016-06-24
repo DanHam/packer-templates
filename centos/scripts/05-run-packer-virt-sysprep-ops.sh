@@ -98,6 +98,7 @@ fi
 #     * /etc/ssh/*_host_*
 if [ "$SYSPREP_OP_SSH_HOSTKEYS" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-ssh-hostkeys.sh"
+    ${SH} ${PREFIX}/sysprep-op-ssh-hostkeys.sh
 fi
 
 # tmp-files: Remove all temporary files and directories by removing:
