@@ -112,4 +112,5 @@ fi
 #     * /var/lib/yum/uuid
 if [ "$SYSPREP_OP_YUM_UUID" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-yum-uuid.sh"
+    ${SH} ${PREFIX}/sysprep-op-yum-uuid.sh
 fi
