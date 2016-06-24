@@ -83,9 +83,10 @@ fi
 #     * /var/cache/apt/archives/
 #     * /var/cache/dnf/
 #     * /var/cache/yum/
-#     * /var/cache/zypp (not implemented)
+#     * /var/cache/zypp*
 if [ "$SYSPREP_OP_PACKAGE_MANAGER_CACHE" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-package-manager-cache.sh"
+    ${SH} ${PREFIX}/sysprep-op-package-manager-cache.sh
 fi
 
 # rpm-db: Remove host-specific RPM database files by removing:
