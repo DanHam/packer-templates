@@ -108,6 +108,7 @@ fi
 #     * /var/tmp/*
 if [ "$SYSPREP_OP_TMP_FILES" = true ]; then
     echo -e "\tRunning ${PREFIX}/sysprep-op-tmp-files.sh"
+    ${SH} ${PREFIX}/sysprep-op-tmp-files.sh
 fi
 
 # yum-uuid: Remove the yum UUID
