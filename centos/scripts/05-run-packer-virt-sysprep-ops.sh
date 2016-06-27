@@ -26,7 +26,7 @@ PREFIX="$PACKER_DIR/packer-virt-sysprep"
 #     * /home/*/.bash_history
 #     * /root/.bash_history
 if [ "$SYSPREP_OP_BASH_HISTORY" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprepL-op-bash-history.sh"
+    echo "Running ${PREFIX}/sysprep-op-bash-history.sh"
     ${SH} ${PREFIX}/sysprep-op-bash-history.sh
 fi
 
@@ -34,7 +34,7 @@ fi
 #     * /var/crash/*
 #     * /var/log/dump/*
 if [ "$SYSPREP_OP_CRASH_DATA" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-crash-data.sh"
+    echo "Running ${PREFIX}/sysprep-op-crash-data.sh"
     ${SH} ${PREFIX}/sysprep-op-crash-data.sh
 fi
 
@@ -43,7 +43,7 @@ fi
 #     * /var/lib/dhclient/*
 #     * /var/lib/dhcp/*
 if [ "$SYSPREP_OP_DHCP_CLIENT_STATE" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-dhcp-client-state.sh"
+    echo "Running ${PREFIX}/sysprep-op-dhcp-client-state.sh"
     ${SH} ${PREFIX}/sysprep-op-dhcp-client-state.sh
 fi
 
@@ -52,21 +52,21 @@ fi
 #     * /etc/firewalld/services/*
 #     * /etc/firewalld/zones/*
 if [ "$SYSPREP_OP_FIREWALL_RULES" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-firewall-rules.sh"
+    echo "Running ${PREFIX}/sysprep-op-firewall-rules.sh"
     ${SH} ${PREFIX}/sysprep-op-firewall-rules.sh
 fi
 
 # logfiles: Remove every logfile ever created by removing:
 #     # ...a ton of stuff!
 if [ "$SYSPREP_OP_LOGFILES" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-logfiles.sh"
+    echo "Running ${PREFIX}/sysprep-op-logfiles.sh"
 fi
 
 # machine-id: Remove the local machine ID by removing content from:
 #     * /etc/machine-id
 #     * /var/lib/dbus/machine-id
 if [ "$SYSPREP_OP_MACHINE_ID" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-machine-id.sh"
+    echo "Running ${PREFIX}/sysprep-op-machine-id.sh"
     ${SH} ${PREFIX}/sysprep-op-machine-id.sh
 fi
 
@@ -74,7 +74,7 @@ fi
 #     # /var/spool/mail/*
 #     * /var/mail/*
 if [ "$SYSPREP_OP_MAIL_SPOOL" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-mail-spool.sh"
+    echo "Running ${PREFIX}/sysprep-op-mail-spool.sh"
     ${SH} ${PREFIX}/sysprep-op-mail-spool.sh
 fi
 
@@ -85,21 +85,21 @@ fi
 #     * /var/cache/yum/
 #     * /var/cache/zypp*
 if [ "$SYSPREP_OP_PACKAGE_MANAGER_CACHE" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-package-manager-cache.sh"
+    echo "Running ${PREFIX}/sysprep-op-package-manager-cache.sh"
     ${SH} ${PREFIX}/sysprep-op-package-manager-cache.sh
 fi
 
 # rpm-db: Remove host-specific RPM database files by removing:
 #     # /var/lib/rpm/__db.*
 if [ "$SYSPREP_OP_RPM_DB" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-rpm-db.sh"
+    echo "Running ${PREFIX}/sysprep-op-rpm-db.sh"
     ${SH} ${PREFIX}/sysprep-op-rpm-db.sh
 fi
 
 # ssh-hostkeys: Remove the SSH host keys in the guest by removing:
 #     * /etc/ssh/*_host_*
 if [ "$SYSPREP_OP_SSH_HOSTKEYS" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-ssh-hostkeys.sh"
+    echo "Running ${PREFIX}/sysprep-op-ssh-hostkeys.sh"
     ${SH} ${PREFIX}/sysprep-op-ssh-hostkeys.sh
 fi
 
@@ -107,13 +107,13 @@ fi
 #     * /tmp/*
 #     * /var/tmp/*
 if [ "$SYSPREP_OP_TMP_FILES" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-tmp-files.sh"
+    echo "Running ${PREFIX}/sysprep-op-tmp-files.sh"
     ${SH} ${PREFIX}/sysprep-op-tmp-files.sh
 fi
 
 # yum-uuid: Remove the yum UUID
 #     * /var/lib/yum/uuid
 if [ "$SYSPREP_OP_YUM_UUID" = true ]; then
-    echo -e "\tRunning ${PREFIX}/sysprep-op-yum-uuid.sh"
+    echo "Running ${PREFIX}/sysprep-op-yum-uuid.sh"
     ${SH} ${PREFIX}/sysprep-op-yum-uuid.sh
 fi
