@@ -60,6 +60,7 @@ fi
 #     # ...a ton of stuff!
 if [ "$SYSPREP_OP_LOGFILES" = true ]; then
     echo "Running ${PREFIX}/sysprep-op-logfiles.sh"
+    ${SH} ${PREFIX}/sysprep-op-logfiles.sh
 fi
 
 # machine-id: Remove the local machine ID by removing content from:
