@@ -1,0 +1,160 @@
+{
+  "variables": {
+    "template": "debian-8.5-x86_64",
+    "template_os": "debian8-64",
+
+    "debug": "false",
+    "headless": "false",
+
+    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian8.5x86_64/debian-8.5.0-amd64-CD-1.iso",
+    "iso_checksum": "3e7fc94fc2830ae531e9a7eb6bb6a92d5396e58b3882ecb15b98f924edbb73c7e40540fc1454fed3b79d744c87f372b4ff2c5a2c0887b03046e3aab22a5c754e",
+    "iso_checksum_type": "sha512",
+
+    "installer_boot_time": "5s",
+
+    "vmware_hardware_version": "9",
+    "memory_size": "512",
+    "cpu_count": "1",
+    "vmtools_iso_path": "/tmp/vmware-tools.iso",
+
+    "ssh_username": "debadmin",
+    "ssh_groupname": "debadmin",
+    "ssh_private_key": "/Users/dan/.ssh/vagrant.id_rsa",
+
+    "packer_dir": "/packer",
+    "sysprep_op_bash_history": "false",
+    "sysprep_op_crash_data":   "false",
+    "sysprep_op_dhcp_client_state": "false",
+    "sysprep_op_firewall_rules": "false",
+    "sysprep_op_logfiles": "false",
+    "sysprep_op_machine_id": "false",
+    "sysprep_op_mail_spool": "false",
+    "sysprep_op_package_manager_cache": "false",
+    "sysprep_op_rpm_db": "false",
+    "sysprep_op_ssh_hostkeys": "false",
+    "sysprep_op_tmp_files": "false",
+    "sysprep_op_yum_uuid": "false"
+
+  },
+
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "http_directory": "http",
+      "communicator": "ssh",
+      "output_directory": "output-{{user `template`}}-{{build_type}}",
+      "headless": "{{user `headless`}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "auto <wait>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "debian-installer=en_GB <wait>",
+        "locale=en_GB <wait>",
+        "keymap=uk <wait>",
+        "hostname=localhost <wait>",
+        "domain=localdomain <wait>",
+        "<enter>"
+      ],
+			"boot_wait": "{{user `installer_boot_time`}}",
+
+      "version": "{{user `vmware_hardware_version`}}",
+      "guest_os_type": "{{user `template_os`}}",
+      "vmx_data": {
+        "displayName": "Packer-{{user `template`}}",
+        "memsize": "{{user `memory_size`}}",
+        "numvcpus": "{{user `cpu_count`}}",
+        "cpuid.coresPerSocket": "1",
+        "mks.enable3d": "FALSE",
+        "serial0.present": "FALSE",
+        "sound.present": "FALSE",
+        "floppy0.present": "FALSE",
+        "usb.present": "FALSE",
+        "usb.vbluetooth.startConnected": "FALSE"
+      },
+      "vm_name": "{{user `template`}}",
+      "vmdk_name": "{{user `template`}}",
+      "disk_type_id": "0",
+      "disk_size": 10240,
+      "tools_upload_flavor": "linux",
+      "tools_upload_path": "{{user `vmtools_iso_path`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+      "ssh_wait_timeout": "10000s",
+
+      "shutdown_command": "sudo /sbin/poweroff"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "environment_vars": [
+        "PACKER_DIR={{user `packer_dir`}}",
+        "PACKER_SSH_USER={{user `ssh_username`}}",
+        "PACKER_SSH_GROUP={{user `ssh_groupname`}}"
+      ],
+      "inline": [
+        "mkdir $PACKER_DIR",
+        "chown $PACKER_SSH_USER:$PACKER_SSH_GROUP $PACKER_DIR"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "scripts/packer-virt-sysprep",
+      "destination": "{{user `packer_dir`}}"
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
+        "DEBUG={{user `debug`}}",
+        "PACKER_DIR={{user `packer_dir`}}",
+        "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
+        "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
+        "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
+        "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
+        "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
+        "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
+        "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
+        "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
+        "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
+        "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
+        "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
+        "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+			"override": {
+				"vmware-iso": {
+					"scripts": [
+            "scripts/00-apt-update.sh",
+            "scripts/01-remove-old-kernels.sh",
+            "scripts/02-disable-system-beep.sh",
+            "scripts/03-install-open-vm-tools.sh",
+            "scripts/04-run-packer-virt-sysprep-ops.sh",
+            "scripts/05-zero-free-space.sh"
+          ]
+        }
+      }
+    },
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "environment_vars": [
+        "PACKER_DIR={{user `packer_dir`}}"
+      ],
+      "inline": [
+        "rm -rf $PACKER_DIR"
+      ]
+    }
+  ]
+
+}
