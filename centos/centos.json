@@ -87,7 +87,7 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}",
         "PACKER_SSH_USER={{user `ssh_username`}}",
@@ -123,7 +123,7 @@
         "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
         "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
 			"override": {
 				"vmware-iso": {
 					"scripts": [
@@ -140,7 +140,7 @@
     },
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E sh '{{.Path }}'",
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}"
       ],
