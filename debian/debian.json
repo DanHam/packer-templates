@@ -2,6 +2,7 @@
   "variables": {
     "template": "debian-8.5-x86_64",
     "template_os": "debian8-64",
+    "part_scheme": "std",
 
     "debug": "false",
     "headless": "false",
@@ -42,7 +43,7 @@
       "type": "vmware-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{build_type}}",
+      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_type}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -53,7 +54,7 @@
         "<esc><wait>",
         "install <wait>",
         "auto <wait>",
-        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-{{user `part_scheme`}}.cfg <wait>",
         "debian-installer=en_GB <wait>",
         "locale=en_GB <wait>",
         "keymap=uk <wait>",
@@ -66,7 +67,7 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `template_os`}}",
       "vmx_data": {
-        "displayName": "Packer-{{user `template`}}",
+        "displayName": "Packer-{{user `template`}}-{{user `part_scheme`}}",
         "memsize": "{{user `memory_size`}}",
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
@@ -77,8 +78,8 @@
         "usb.present": "FALSE",
         "usb.vbluetooth.startConnected": "FALSE"
       },
-      "vm_name": "{{user `template`}}",
-      "vmdk_name": "{{user `template`}}",
+      "vm_name": "{{user `template`}}-{{user `part_scheme`}}",
+      "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}",
       "disk_type_id": "0",
       "disk_size": 10240,
       "tools_upload_flavor": "linux",
