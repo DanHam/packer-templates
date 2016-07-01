@@ -136,8 +136,7 @@
 			"override": {
 				"vmware-iso": {
 					"scripts": [
-            "scripts/00-apt-update.sh",
-            "scripts/01-remove-old-kernels.sh",
+            "scripts/00-grub-config.sh",
             "scripts/02-disable-system-beep.sh",
             "scripts/03-install-open-vm-tools.sh",
             "scripts/04-run-packer-virt-sysprep-ops.sh",
