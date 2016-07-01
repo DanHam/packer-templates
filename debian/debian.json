@@ -17,6 +17,7 @@
     "memory_size": "512",
     "cpu_count": "1",
     "vmtools_iso_path": "/tmp/vmware-tools.iso",
+    "vmtools_shared_folders": "true",
 
     "ssh_username": "debadmin",
     "ssh_groupname": "debadmin",
@@ -117,6 +118,7 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
+        "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
         "DEBUG={{user `debug`}}",
         "PACKER_DIR={{user `packer_dir`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
@@ -139,6 +141,7 @@
             "scripts/00-grub-config.sh",
             "scripts/01-disable-system-beep.sh",
             "scripts/02-install-open-vm-tools.sh",
+            "scripts/03-config-shared-folders.sh",
             "scripts/04-run-packer-virt-sysprep-ops.sh",
             "scripts/05-zero-free-space.sh"
           ]
