@@ -26,6 +26,6 @@ sed -i \
 sed -i "/^GRUB_TIMEOUT/ s/=.*/=0/" /etc/default/grub
 
 # Update grub
-update-grub > $REDIRECT
+update-grub &> $REDIRECT
 
 exit 0
