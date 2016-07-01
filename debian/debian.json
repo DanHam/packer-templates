@@ -16,7 +16,6 @@
     "vmware_hardware_version": "9",
     "memory_size": "512",
     "cpu_count": "1",
-    "vmtools_iso_path": "/tmp/vmware-tools.iso",
     "vmtools_shared_folders": "true",
 
     "ssh_username": "debadmin",
@@ -83,8 +82,6 @@
       "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}",
       "disk_type_id": "0",
       "disk_size": 10240,
-      "tools_upload_flavor": "linux",
-      "tools_upload_path": "{{user `vmtools_iso_path`}}",
 
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
@@ -117,7 +114,6 @@
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
-        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
         "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
         "DEBUG={{user `debug`}}",
         "PACKER_DIR={{user `packer_dir`}}",
