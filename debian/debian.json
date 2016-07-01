@@ -32,7 +32,7 @@
     "sysprep_op_mail_spool": "true",
     "sysprep_op_package_manager_cache": "true",
     "sysprep_op_rpm_db": "false",
-    "sysprep_op_ssh_hostkeys": "true",
+    "sysprep_op_ssh_hostkeys": "false",
     "sysprep_op_tmp_files": "true",
     "sysprep_op_yum_uuid": "false"
 
