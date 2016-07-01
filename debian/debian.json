@@ -137,8 +137,8 @@
 				"vmware-iso": {
 					"scripts": [
             "scripts/00-grub-config.sh",
-            "scripts/02-disable-system-beep.sh",
-            "scripts/03-install-open-vm-tools.sh",
+            "scripts/01-disable-system-beep.sh",
+            "scripts/02-install-open-vm-tools.sh",
             "scripts/04-run-packer-virt-sysprep-ops.sh",
             "scripts/05-zero-free-space.sh"
           ]
