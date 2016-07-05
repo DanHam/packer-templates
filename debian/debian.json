@@ -138,8 +138,9 @@
             "scripts/01-disable-system-beep.sh",
             "scripts/02-install-open-vm-tools.sh",
             "scripts/03-config-shared-folders.sh",
-            "scripts/04-run-packer-virt-sysprep-ops.sh",
-            "scripts/05-zero-free-space.sh"
+            "scripts/04-fix-mesg-n-when-not-tty.sh",
+            "scripts/05-run-packer-virt-sysprep-ops.sh",
+            "scripts/06-zero-free-space.sh"
           ]
         }
       }
