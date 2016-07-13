@@ -4,7 +4,7 @@
     "template_os": "centos-64",
 
     "debug": "false",
-    "headless": "false",
+    "headless": "true",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7.2x86_64/CentOS-7-x86_64-DVD-1511.iso",
     "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
