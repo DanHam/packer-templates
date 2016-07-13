@@ -28,16 +28,21 @@ fi
 [[ ! -d /mnt/hgfs ]] && mkdir /mnt/hgfs
 
 
-# Add the required incantation to /etc/fstab. Configured shares will be
-# available to under /mnt/hgfs/<share name> and will be have rw
-# permissions for all users
-if [ "x$(cat /etc/fstab | grep vmhgfs-fuse)" = "x" ]
+# Add the required incantation to /etc/fstab if requested in the packer
+# configuration file. Note that this is not required for Vagrant but only
+# for convenience with user configured shares.
+# Configured shares will be available to under /mnt/hgfs/<share name> and
+# will be have rw permissions for all users
+if [ "${VMTOOLS_SHARED_FOLDERS_FSTAB}" = true ]
 then
-    echo "Adding required line to /etc/fstab..." > ${REDIRECT}
-    printf "%s" "\
-        # Enable use of shared folders for VMware Workstation and Fusion
-        .host:/ /mnt/hgfs fuse.vmhgfs-fuse rw,nosuid,nodev,uid=0,gid=0,allow_other,users,defaults 0 0
-    " | sed 's/^ *//g' >> /etc/fstab
+    if [ "x$(cat /etc/fstab | grep vmhgfs-fuse)" = "x" ]
+    then
+        echo "Adding required line to /etc/fstab..." > ${REDIRECT}
+        printf "%s" "\
+            # Enable use of shared folders for VMware Workstation and Fusion
+            .host:/ /mnt/hgfs fuse.vmhgfs-fuse rw,nosuid,nodev,uid=0,gid=0,allow_other,users,defaults 0 0
+        " | sed 's/^ *//g' >> /etc/fstab
+    fi
 fi
 
 
