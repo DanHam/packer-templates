@@ -7,11 +7,19 @@
 # Workstation or Fusion to enable support for shared folders. This used to
 # be necessary due to a bug in the packaging of open-vm-tools. A fix is
 # now in place and is available from the backports repository.
-# Unfortunately there is still a bug in the backports package - the fuse
-# package is now a dependancy of open-vm-tools (fuse is required to use
-# shared folders/hgfs) but this dependancy is missing from the package
-# configuration. As such, at present the fuse package must be manually
-# installed.
+#
+# The fuse package is required for shared folder support. However, fuse
+# is only listed as a 'recommended' package in the open-vm-tools package.
+# By default APT is configured to install recommended packages as if they
+# are actual dependencies. Unfortunately, this results in a large number
+# of unnecessary packages being installed and much larger machine images.
+# For a minimal install of Debian this equates to 60+ packages and an
+# image size of +250MB.
+# As such, the APT option to 'install recommended packages as if they are
+# dependencies' is often set to false by many system builders.
+# Long and short, if this is the case then the fuse package needs to be
+# installed manually. If this is not the case, the inclusion of a command
+# to install fuse will not hurt anything.
 #
 # Note that additional steps are required to enable access to shared
 # folders within the guest
