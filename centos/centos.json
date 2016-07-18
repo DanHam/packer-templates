@@ -69,7 +69,7 @@
         "floppy0.present": "FALSE",
         "usb.present": "FALSE",
         "usb.vbluetooth.startConnected": "FALSE",
-        "ethernet0.pcislotnumber": "33"
+        "ethernet0.pcislotnumber": "32"
       },
       "vm_name": "{{user `template`}}",
       "vmdk_name": "{{user `template`}}",
