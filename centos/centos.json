@@ -134,8 +134,7 @@
             "scripts/03-install-open-vm-tools.sh",
             "scripts/04-install-vmware-tools.sh",
             "scripts/05-configure-ssh.sh",
-            "scripts/06-run-packer-virt-sysprep-ops.sh",
-            "scripts/07-zero-free-space.sh"
+            "scripts/06-run-packer-virt-sysprep-ops.sh"
           ]
         }
       }
@@ -149,7 +148,19 @@
       "inline": [
         "rm -rf $PACKER_DIR"
       ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+			"override": {
+				"vmware-iso": {
+					"scripts": [
+            "scripts/07-zero-free-space.sh"
+          ]
+        }
+      }
     }
+
   ]
 
 }
