@@ -39,10 +39,11 @@
 
   "builders": [
     {
+      "name": "vmware-fusion",
       "type": "vmware-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{build_type}}",
+      "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -59,7 +60,7 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `template_os`}}",
       "vmx_data": {
-        "displayName": "Packer-{{user `template`}}",
+        "displayName": "Packer-{{user `template`}}-{{build_name}}",
         "memsize": "{{user `memory_size`}}",
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
