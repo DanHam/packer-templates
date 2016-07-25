@@ -19,7 +19,7 @@
 
     "ssh_username": "coadmin",
     "ssh_groupname": "coadmin",
-    "ssh_private_key": "/Users/dan/.ssh/vagrant.id_rsa",
+    "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
 
     "packer_dir": "/packer",
     "sysprep_op_bash_history": "true",
