@@ -1,10 +1,11 @@
 {
   "variables": {
     "template": "centos-7.2-x86_64",
-    "template_os": "centos-64",
+    "guest_os_type_vmware": "centos-64",
+    "guest_os_type_virtualbox": "RedHat_64",
 
     "debug": "false",
-    "headless": "true",
+    "headless": "false",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7.2x86_64/CentOS-7-x86_64-DVD-1511.iso",
     "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
@@ -16,6 +17,7 @@
     "memory_size": "512",
     "cpu_count": "1",
     "vmtools_iso_path": "/tmp/vmware-tools.iso",
+    "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "ssh_username": "coadmin",
     "ssh_groupname": "coadmin",
@@ -57,7 +59,7 @@
       "boot_wait": "{{user `installer_boot_time`}}",
 
       "version": "{{user `vmware_hardware_version`}}",
-      "guest_os_type": "{{user `template_os`}}",
+      "guest_os_type": "{{user `guest_os_type_vmware`}}",
       "vmx_data": {
         "displayName": "Packer-{{user `template`}}-{{build_type}}",
         "memsize": "{{user `memory_size`}}",
@@ -77,6 +79,43 @@
       "disk_size": 10240,
       "tools_upload_flavor": "linux",
       "tools_upload_path": "{{user `vmtools_iso_path`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+
+      "shutdown_command": "sudo /sbin/poweroff"
+    },
+    {
+      "type": "virtualbox-iso",
+      "http_directory": "http",
+      "communicator": "ssh",
+      "output_directory": "output-{{user `template`}}-{{build_type}}",
+      "headless": "{{user `headless`}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "boot_command": [
+        "<tab> <wait>",
+        "text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg <wait>",
+        "<enter> <wait>"
+      ],
+      "boot_wait": "{{user `installer_boot_time`}}",
+
+      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
+        ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--usb", "off"]
+      ],
+      "vm_name": "{{user `template`}}",
+      "hard_drive_interface": "sata",
+      "disk_size": 10240,
+
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "{{user `guest_additions_path`}}",
 
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
