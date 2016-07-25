@@ -39,11 +39,10 @@
 
   "builders": [
     {
-      "name": "vmware-fusion",
       "type": "vmware-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{build_name}}",
+      "output_directory": "output-{{user `template`}}-{{build_type}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -60,7 +59,7 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `template_os`}}",
       "vmx_data": {
-        "displayName": "Packer-{{user `template`}}-{{build_name}}",
+        "displayName": "Packer-{{user `template`}}-{{build_type}}",
         "memsize": "{{user `memory_size`}}",
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
@@ -126,7 +125,7 @@
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
       ],
       "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
-      "only": ["vmware-fusion"],
+      "only": ["vmware-iso"],
       "scripts": [
             "scripts/03-install-open-vm-tools.sh",
             "scripts/04-install-vmware-tools.sh"
