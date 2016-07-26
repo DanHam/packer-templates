@@ -6,7 +6,7 @@
     "part_scheme": "std",
 
     "debug": "false",
-    "headless": "false",
+    "headless": "true",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian8.5x86_64/debian-8.5.0-amd64-CD-1.iso",
     "iso_checksum": "3e7fc94fc2830ae531e9a7eb6bb6a92d5396e58b3882ecb15b98f924edbb73c7e40540fc1454fed3b79d744c87f372b4ff2c5a2c0887b03046e3aab22a5c754e",
@@ -244,6 +244,22 @@
       "scripts": [
         "scripts/08-zero-free-space.sh"
       ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true,
+      "override": {
+        "vmware": {
+          "vagrantfile_template": "files/Vagrantfile.vmware"
+        },
+        "virtualbox": {
+          "vagrantfile_template": "files/Vagrantfile.virtualbox"
+        }
+      },
+      "output": "boxes/{{user `template`}}-{{.Provider}}.box"
     }
   ]
 }
