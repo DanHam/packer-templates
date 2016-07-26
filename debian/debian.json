@@ -1,7 +1,7 @@
 {
   "variables": {
     "template": "debian-8.5-x86_64",
-    "template_os": "debian8-64",
+    "guest_os_type_vmware": "debian8-64",
     "part_scheme": "std",
 
     "debug": "false",
@@ -21,7 +21,7 @@
 
     "ssh_username": "debadmin",
     "ssh_groupname": "debadmin",
-    "ssh_private_key": "/Users/dan/.ssh/vagrant.id_rsa",
+    "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
 
     "packer_dir": "/packer",
     "apt_install_recommends": "true",
@@ -67,7 +67,7 @@
 			"boot_wait": "{{user `installer_boot_time`}}",
 
       "version": "{{user `vmware_hardware_version`}}",
-      "guest_os_type": "{{user `template_os`}}",
+      "guest_os_type": "{{user `guest_os_type_vmware`}}",
       "vmx_data": {
         "displayName": "Packer-{{user `template`}}-{{user `part_scheme`}}",
         "memsize": "{{user `memory_size`}}",
