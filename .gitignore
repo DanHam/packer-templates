@@ -2,3 +2,5 @@
 */packer_cache/
 # Ignore all output files
 */output-*/
+# Ignore boxes and associated files
+*/boxes/*

@@ -226,5 +226,21 @@
         "scripts/07-zero-free-space.sh"
       ]
     }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "keep_input_artifact": true,
+      "override": {
+        "vmware": {
+          "vagrantfile_template": "files/Vagrantfile.vmware"
+        },
+        "virtualbox": {
+          "vagrantfile_template": "files/Vagrantfile.virtualbox"
+        }
+      },
+      "output": "boxes/{{user `template`}}-{{.Provider}}.box"
+    }
   ]
 }

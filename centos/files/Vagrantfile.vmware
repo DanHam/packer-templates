@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://atlas.hashicorp.com/search.
+  config.vm.box = 'centos-7.2-x86_64'
+
+  config.ssh.username = 'coadmin'
+  config.ssh.private_key_path = '/Users/dan/.ssh/neos.id_rsa'
+
+  # VMware provider specific options
+  config.vm.provider 'vmware_fusion' do |vf|
+    # Explicitly set the PCI slot the network card is plugged into on the
+    # virtual motherboard. Although this setting is present within the vmx
+    # file bundled with the box, Vagrant currently ignores it. The result
+    # is that the VM may be put together with the network card in a
+    # different slot to the one with which it was originally configured.
+    # This results in 'biosdevname' changing the network device name.
+    # Since the network configuration scripts the box is bundled with
+    # reference the original device name the 'new' device is never
+    # configured and networking within the VM is not set up properly.
+    # Explicitly setting the PCI slot to the same as the one the machine
+    # was originally configured with avoids this problem
+    vf.vmx['ethernet0.pcislotnumber'] = '32'
+  end
+end
