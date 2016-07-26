@@ -5,7 +5,7 @@
     "part_scheme": "std",
 
     "debug": "false",
-    "headless": "true",
+    "headless": "false",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian8.5x86_64/debian-8.5.0-amd64-CD-1.iso",
     "iso_checksum": "3e7fc94fc2830ae531e9a7eb6bb6a92d5396e58b3882ecb15b98f924edbb73c7e40540fc1454fed3b79d744c87f372b4ff2c5a2c0887b03046e3aab22a5c754e",
@@ -116,8 +116,33 @@
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
+        "DEBUG={{user `debug`}}"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "scripts/00-grub-config.sh",
+        "scripts/01-disable-system-beep.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
         "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
-        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}",
+        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "only": ["vmware-iso"],
+      "scripts": [
+        "scripts/02-install-open-vm-tools.sh",
+        "scripts/03-open-vm-tools-config-shared-folders.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
         "DEBUG={{user `debug`}}",
         "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}",
         "PACKER_DIR={{user `packer_dir`}}",
@@ -135,22 +160,14 @@
         "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
       ],
       "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
-			"override": {
-				"vmware-iso": {
-					"scripts": [
-            "scripts/00-grub-config.sh",
-            "scripts/01-disable-system-beep.sh",
-            "scripts/02-install-open-vm-tools.sh",
-            "scripts/03-config-shared-folders.sh",
-            "scripts/04-fix-mesg-n-when-not-tty.sh",
-            "scripts/05-configure-ssh.sh",
-            "scripts/06-set-apt-install-recommends.sh",
-            "scripts/07-run-packer-virt-sysprep-ops.sh"
-          ]
-        }
-      }
-    },
-    {
+      "scripts": [
+        "scripts/04-fix-mesg-n-when-not-tty.sh",
+        "scripts/05-configure-ssh.sh",
+        "scripts/06-set-apt-install-recommends.sh",
+        "scripts/07-run-packer-virt-sysprep-ops.sh"
+      ]
+   },
+   {
       "type": "shell",
       "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
       "environment_vars": [
@@ -172,5 +189,4 @@
       }
     }
   ]
-
 }
