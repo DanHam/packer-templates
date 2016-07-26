@@ -175,6 +175,19 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "only": ["virtualbox-iso"],
+      "scripts": [
+            "scripts/03-install-vbox-guest-additions.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
         "PACKER_DIR={{user `packer_dir`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
