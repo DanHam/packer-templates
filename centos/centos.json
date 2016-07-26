@@ -107,6 +107,7 @@
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
         ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
+        ["modifyvm", "{{.Name}}", "--vram", "16"],
         ["modifyvm", "{{.Name}}", "--audio", "none"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
