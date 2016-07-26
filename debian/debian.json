@@ -2,6 +2,7 @@
   "variables": {
     "template": "debian-8.5-x86_64",
     "guest_os_type_vmware": "debian8-64",
+    "guest_os_type_virtualbox": "Debian_64",
     "part_scheme": "std",
 
     "debug": "false",
@@ -18,6 +19,7 @@
     "cpu_count": "1",
     "vmtools_shared_folders": "true",
     "vmtools_shared_folders_fstab": "false",
+    "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "ssh_username": "debadmin",
     "ssh_groupname": "debadmin",
@@ -90,6 +92,52 @@
       "ssh_wait_timeout": "10000s",
 
       "shutdown_command": "sudo /sbin/poweroff"
+    },
+    {
+      "type": "virtualbox-iso",
+      "http_directory": "http",
+      "communicator": "ssh",
+      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_type}}",
+      "headless": "{{user `headless`}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "auto <wait>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-{{user `part_scheme`}}.cfg <wait>",
+        "debian-installer=en_GB <wait>",
+        "locale=en_GB <wait>",
+        "keymap=uk <wait>",
+        "hostname=localhost <wait>",
+        "domain=localdomain <wait>",
+        "<enter>"
+      ],
+			"boot_wait": "{{user `installer_boot_time`}}",
+
+      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
+        ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
+        ["modifyvm", "{{.Name}}", "--vram", "16"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--usb", "off"]
+      ],
+      "vm_name": "{{user `template`}}-{{user `part_scheme`}}",
+      "hard_drive_interface": "sata",
+      "disk_size": 10240,
+
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "{{user `guest_additions_path`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+      "ssh_wait_timeout": "10000s",
+
+      "shutdown_command": "sudo /sbin/poweroff"
     }
   ],
 
@@ -144,6 +192,19 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
+      ],
+      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "only": ["virtualbox-iso"],
+      "scripts": [
+            "scripts/02-install-vbox-guest-additions.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
         "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}",
         "PACKER_DIR={{user `packer_dir`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
@@ -180,13 +241,9 @@
     {
       "type": "shell",
       "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
-			"override": {
-				"vmware-iso": {
-					"scripts": [
-            "scripts/08-zero-free-space.sh"
-          ]
-        }
-      }
+      "scripts": [
+        "scripts/08-zero-free-space.sh"
+      ]
     }
   ]
 }
