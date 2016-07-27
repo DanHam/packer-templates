@@ -35,7 +35,11 @@
     "sysprep_op_rpm_db": "true",
     "sysprep_op_ssh_hostkeys": "true",
     "sysprep_op_tmp_files": "true",
-    "sysprep_op_yum_uuid": "true"
+    "sysprep_op_yum_uuid": "true",
+
+    "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
+    "aws_s3_key_name_string": "Centos72_x86-64"
 
   },
 
@@ -122,7 +126,47 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
 
       "shutdown_command": "sudo /sbin/poweroff"
+    },
+    {
+      "name": "amazon-builder",
+      "type": "virtualbox-iso",
+      "http_directory": "http",
+      "communicator": "ssh",
+      "output_directory": "output-{{user `template`}}-{{build_name}}",
+      "headless": "{{user `headless`}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "boot_command": [
+        "<tab> <wait>",
+        "text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg <wait>",
+        "<enter> <wait>"
+      ],
+      "boot_wait": "{{user `installer_boot_time`}}",
+
+      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
+        ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
+        ["modifyvm", "{{.Name}}", "--vram", "16"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--usb", "off"]
+      ],
+      "vm_name": "{{user `template`}}",
+      "format": "ova",
+      "hard_drive_interface": "sata",
+      "disk_size": 10240,
+
+      "guest_additions_mode": "disable",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+
+      "shutdown_command": "sudo /sbin/poweroff"
     }
+
   ],
 
   "provisioners": [
@@ -231,6 +275,7 @@
   "post-processors": [
     {
       "type": "vagrant",
+      "only": ["vmware-iso", "virtualbox-iso"],
       "keep_input_artifact": true,
       "override": {
         "vmware": {
@@ -241,6 +286,20 @@
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
+    },
+    {
+      "type": "amazon-import",
+      "only": ["amazon-builder"],
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "eu-west-1",
+      "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
+      "s3_key_name": "{{user `aws_s3_key_name_string`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
+      "skip_clean": "false",
+      "tags": {
+        "Description": "Packer amazon-import: {{user `template`}} {{isotime \"2006-01-02 15:04:05\"}}",
+        "Name": "{{user `template`}}"
+      }
     }
   ]
 }
