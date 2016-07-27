@@ -70,7 +70,7 @@
         "domain=localdomain <wait>",
         "<enter>"
       ],
-			"boot_wait": "{{user `installer_boot_time`}}",
+      "boot_wait": "{{user `installer_boot_time`}}",
 
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `guest_os_type_vmware`}}",
