@@ -19,9 +19,19 @@
     "vmtools_iso_path": "/tmp/vmware-tools.iso",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
-    "ssh_username": "coadmin",
-    "ssh_groupname": "coadmin",
+    "ssh_username": "root",
+    "ssh_groupname": "root",
     "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
+
+    "vagrant_user": "coadmin",
+    "vagrant_group": "coadmin",
+    "vagrant_uid": "1000",
+    "vagrant_gid": "1000",
+    "vagrant_groups": "wheel",
+    "vagrant_shell": "/bin/bash",
+    "vagrant_gecos": "CentOS Administrator",
+    "vagrant_passwd": "$6$RS.am43E0TvKQqUb$DdCVfJwLGSSr9Pl8V8dgL6VqP0OU7tsW13xcD3h7a4XDlWEaqzOdQPER9VVmSFuFVP/XJCUQRfs6xJq/a4szn0",
+    "vagrant_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHL7YEa3CXVSjYE2Msx5JTCe7z8e3WtER59aeYl9co1mUljR4xb427qCxbwW2D95mwds2/rQ2HdvV5gH1Y3SN6NQsu85X8LPgO2tnszkNkNjqi0JI4o/71wJ15gSOS3aA7iScj9Kvq6LdgDyEXTW+nyxNv5KWJr8jaRune3g/85rzHCihzIoiTH/dK3LyQdKd2FyujAQeGawexhgMkEKPfg85WE8GdpnolfWBtb94tyXjo21CKLbaGgTIXxqWLUpxnWgpMQlnCpp59UuShOxWbN+Usv7m0/cvAa22RJbidIzRIls3XQBIP8S8oayhW/TXfBLZ1rzK52JkFpyxM0qvlZuqLjwYJZQBp8+o9qot1UXnIFm0c62O8NoQGGcnE/hE71pUSmGxscy5uBlAIDP+Km1G7BIXCoL3KCXb06op4XJNPoqRYzVjREgNlFejKzLp+5TgPC6O4uKelAP5CdJCTPdvhwZtQ7vtS4UfbxTbHc4392y5+Zt8dNmRaKtgpqVkaqqzBf7yBlvbgROK3RJMG7oAszNOKIKH07bol9o+/t3JrdSgBaiYE6vNLJUzx3tSmnD1fLL1ZzyVnElFkrsoHwYBtlnnGqC6K3IlvtnkmPHL4bM68a0FhpRTsg+NMtUvZhYjoDZRBx5bgRHptIHT7QeICc7TcaRx1aKRqoPF9tw== neos@neos-infrastructure.com",
 
     "packer_dir": "/packer",
     "sysprep_op_bash_history": "true",
@@ -48,7 +58,7 @@
       "type": "vmware-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{build_type}}",
+      "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -65,7 +75,7 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `guest_os_type_vmware`}}",
       "vmx_data": {
-        "displayName": "Packer-{{user `template`}}-{{build_type}}",
+        "displayName": "Packer-{{user `template`}}-{{build_name}}",
         "memsize": "{{user `memory_size`}}",
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
@@ -77,8 +87,8 @@
         "usb.vbluetooth.startConnected": "FALSE",
         "ethernet0.pcislotnumber": "32"
       },
-      "vm_name": "{{user `template`}}",
-      "vmdk_name": "{{user `template`}}",
+      "vm_name": "{{user `template`}}-{{build_name}}",
+      "vmdk_name": "{{user `template`}}-{{build_name}}",
       "disk_type_id": "0",
       "disk_size": 10240,
       "tools_upload_flavor": "linux",
@@ -87,13 +97,13 @@
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
 
-      "shutdown_command": "sudo /sbin/poweroff"
+      "shutdown_command": "/sbin/poweroff"
     },
     {
       "type": "virtualbox-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{build_type}}",
+      "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -115,7 +125,7 @@
         ["modifyvm", "{{.Name}}", "--audio", "none"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
-      "vm_name": "{{user `template`}}",
+      "vm_name": "{{user `template`}}-{{build_name}}",
       "hard_drive_interface": "sata",
       "disk_size": 10240,
 
@@ -125,7 +135,7 @@
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
 
-      "shutdown_command": "sudo /sbin/poweroff"
+      "shutdown_command": "/sbin/poweroff"
     },
     {
       "name": "amazon-builder",
@@ -154,7 +164,7 @@
         ["modifyvm", "{{.Name}}", "--audio", "none"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
-      "vm_name": "{{user `template`}}",
+      "vm_name": "{{user `template`}}-{{build_name}}",
       "format": "ova",
       "hard_drive_interface": "sata",
       "disk_size": 10240,
@@ -164,7 +174,7 @@
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
 
-      "shutdown_command": "sudo /sbin/poweroff"
+      "shutdown_command": "/sbin/poweroff"
     }
 
   ],
@@ -172,7 +182,7 @@
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}",
         "PACKER_SSH_USER={{user `ssh_username`}}",
@@ -194,7 +204,7 @@
       "environment_vars": [
         "DEBUG={{user `debug`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/00-yum-update.sh",
         "scripts/01-remove-old-kernels.sh",
@@ -208,7 +218,7 @@
         "DEBUG={{user `debug`}}",
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "only": ["vmware-iso"],
       "scripts": [
             "scripts/03-install-open-vm-tools.sh",
@@ -222,7 +232,7 @@
         "DEBUG={{user `debug`}}",
         "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "only": ["virtualbox-iso"],
       "scripts": [
             "scripts/03-install-vbox-guest-additions.sh"
@@ -234,6 +244,15 @@
       "environment_vars": [
         "DEBUG={{user `debug`}}",
         "PACKER_DIR={{user `packer_dir`}}",
+        "VAGRANT_USER={{user `vagrant_user`}}",
+        "VAGRANT_GROUP={{user `vagrant_group`}}",
+        "VAGRANT_UID={{user `vagrant_uid`}}",
+        "VAGRANT_GID={{user `vagrant_gid`}}",
+        "VAGRANT_GROUPS={{user `vagrant_groups`}}",
+        "VAGRANT_SHELL={{user `vagrant_shell`}}",
+        "VAGRANT_GECOS={{user `vagrant_gecos`}}",
+        "VAGRANT_PASSWD={{user `vagrant_passwd`}}",
+        "VAGRANT_SSH_AUTHORISED_KEY={{user `vagrant_ssh_authorised_key`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
         "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
@@ -247,15 +266,16 @@
         "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
         "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/05-configure-ssh.sh",
-        "scripts/06-run-packer-virt-sysprep-ops.sh"
+        "scripts/06-create-vagrant-user.sh",
+        "scripts/07-run-packer-virt-sysprep-ops.sh"
       ]
     },
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}"
       ],
@@ -265,9 +285,10 @@
     },
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/07-zero-free-space.sh"
+        "scripts/08-packer-cleanup.sh",
+        "scripts/09-zero-free-space.sh"
       ]
     }
   ],
