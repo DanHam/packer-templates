@@ -21,9 +21,18 @@
     "vmtools_shared_folders_fstab": "false",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
-    "ssh_username": "debadmin",
-    "ssh_groupname": "debadmin",
+    "ssh_username": "root",
     "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
+
+    "vagrant_user": "debadmin",
+    "vagrant_group": "debadmin",
+    "vagrant_uid": "1000",
+    "vagrant_gid": "1000",
+    "vagrant_groups": "cdrom,floppy,sudo,audio,dip,video,plugdev,netdev",
+    "vagrant_shell": "/bin/bash",
+    "vagrant_gecos": "Debian Administrator",
+    "vagrant_passwd": "$6$RS.am43E0TvKQqUb$DdCVfJwLGSSr9Pl8V8dgL6VqP0OU7tsW13xcD3h7a4XDlWEaqzOdQPER9VVmSFuFVP/XJCUQRfs6xJq/a4szn0",
+    "vagrant_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHL7YEa3CXVSjYE2Msx5JTCe7z8e3WtER59aeYl9co1mUljR4xb427qCxbwW2D95mwds2/rQ2HdvV5gH1Y3SN6NQsu85X8LPgO2tnszkNkNjqi0JI4o/71wJ15gSOS3aA7iScj9Kvq6LdgDyEXTW+nyxNv5KWJr8jaRune3g/85rzHCihzIoiTH/dK3LyQdKd2FyujAQeGawexhgMkEKPfg85WE8GdpnolfWBtb94tyXjo21CKLbaGgTIXxqWLUpxnWgpMQlnCpp59UuShOxWbN+Usv7m0/cvAa22RJbidIzRIls3XQBIP8S8oayhW/TXfBLZ1rzK52JkFpyxM0qvlZuqLjwYJZQBp8+o9qot1UXnIFm0c62O8NoQGGcnE/hE71pUSmGxscy5uBlAIDP+Km1G7BIXCoL3KCXb06op4XJNPoqRYzVjREgNlFejKzLp+5TgPC6O4uKelAP5CdJCTPdvhwZtQ7vtS4UfbxTbHc4392y5+Zt8dNmRaKtgpqVkaqqzBf7yBlvbgROK3RJMG7oAszNOKIKH07bol9o+/t3JrdSgBaiYE6vNLJUzx3tSmnD1fLL1ZzyVnElFkrsoHwYBtlnnGqC6K3IlvtnkmPHL4bM68a0FhpRTsg+NMtUvZhYjoDZRBx5bgRHptIHT7QeICc7TcaRx1aKRqoPF9tw== neos@neos-infrastructure.com",
 
     "packer_dir": "/packer",
     "apt_install_recommends": "true",
@@ -43,7 +52,6 @@
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
     "aws_s3_key_name_string": "Debian85_x86-64"
-
   },
 
   "builders": [
@@ -51,7 +59,7 @@
       "type": "vmware-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_type}}",
+      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -75,7 +83,7 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `guest_os_type_vmware`}}",
       "vmx_data": {
-        "displayName": "Packer-{{user `template`}}-{{user `part_scheme`}}",
+        "displayName": "Packer-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
         "memsize": "{{user `memory_size`}}",
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
@@ -86,8 +94,8 @@
         "usb.present": "FALSE",
         "usb.vbluetooth.startConnected": "FALSE"
       },
-      "vm_name": "{{user `template`}}-{{user `part_scheme`}}",
-      "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}",
+      "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "disk_type_id": "0",
       "disk_size": 10240,
 
@@ -95,13 +103,13 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "10000s",
 
-      "shutdown_command": "sudo /sbin/poweroff"
+      "shutdown_command": "/sbin/poweroff"
     },
     {
       "type": "virtualbox-iso",
       "http_directory": "http",
       "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_type}}",
+      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
       "iso_url": "{{user `iso_url`}}",
@@ -130,7 +138,7 @@
         ["modifyvm", "{{.Name}}", "--audio", "none"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
-      "vm_name": "{{user `template`}}-{{user `part_scheme`}}",
+      "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "hard_drive_interface": "sata",
       "disk_size": 10240,
 
@@ -141,7 +149,7 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "10000s",
 
-      "shutdown_command": "sudo /sbin/poweroff"
+      "shutdown_command": "/sbin/poweroff"
     },
     {
       "name": "amazon-builder",
@@ -177,7 +185,7 @@
         ["modifyvm", "{{.Name}}", "--audio", "none"],
         ["modifyvm", "{{.Name}}", "--usb", "off"]
       ],
-      "vm_name": "{{user `template`}}-{{user `part_scheme`}}",
+      "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "format": "ova",
       "hard_drive_interface": "sata",
       "disk_size": 10240,
@@ -188,22 +196,19 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "10000s",
 
-      "shutdown_command": "sudo /sbin/poweroff"
+      "shutdown_command": "/sbin/poweroff"
     }
   ],
 
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
-        "PACKER_DIR={{user `packer_dir`}}",
-        "PACKER_SSH_USER={{user `ssh_username`}}",
-        "PACKER_SSH_GROUP={{user `ssh_groupname`}}"
+        "PACKER_DIR={{user `packer_dir`}}"
       ],
       "inline": [
-        "mkdir $PACKER_DIR",
-        "chown $PACKER_SSH_USER:$PACKER_SSH_GROUP $PACKER_DIR"
+        "mkdir $PACKER_DIR"
       ]
     },
     {
@@ -217,7 +222,7 @@
       "environment_vars": [
         "DEBUG={{user `debug`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/00-grub-config.sh",
         "scripts/01-disable-system-beep.sh"
@@ -231,7 +236,7 @@
         "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
         "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "only": ["vmware-iso"],
       "scripts": [
         "scripts/02-install-open-vm-tools.sh",
@@ -245,7 +250,7 @@
         "DEBUG={{user `debug`}}",
         "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "only": ["virtualbox-iso"],
       "scripts": [
             "scripts/02-install-vbox-guest-additions.sh"
@@ -258,6 +263,15 @@
         "DEBUG={{user `debug`}}",
         "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}",
         "PACKER_DIR={{user `packer_dir`}}",
+        "VAGRANT_USER={{user `vagrant_user`}}",
+        "VAGRANT_GROUP={{user `vagrant_group`}}",
+        "VAGRANT_UID={{user `vagrant_uid`}}",
+        "VAGRANT_GID={{user `vagrant_gid`}}",
+        "VAGRANT_GROUPS={{user `vagrant_groups`}}",
+        "VAGRANT_SHELL={{user `vagrant_shell`}}",
+        "VAGRANT_GECOS={{user `vagrant_gecos`}}",
+        "VAGRANT_PASSWD={{user `vagrant_passwd`}}",
+        "VAGRANT_SSH_AUTHORISED_KEY={{user `vagrant_ssh_authorised_key`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
         "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
@@ -271,17 +285,18 @@
         "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
         "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
       ],
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/04-fix-mesg-n-when-not-tty.sh",
         "scripts/05-configure-ssh.sh",
         "scripts/06-set-apt-install-recommends.sh",
-        "scripts/07-run-packer-virt-sysprep-ops.sh"
+        "scripts/07-create-vagrant-user.sh",
+        "scripts/08-run-packer-virt-sysprep-ops.sh"
       ]
    },
    {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}"
       ],
@@ -291,9 +306,10 @@
     },
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} sudo -E $(command -v bash) '{{.Path }}'",
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/08-zero-free-space.sh"
+        "scripts/09-packer-cleanup.sh",
+        "scripts/10-zero-free-space.sh"
       ]
     }
   ],
@@ -312,20 +328,6 @@
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
-    },
-    {
-      "type": "amazon-import",
-      "only": ["amazon-builder"],
-      "access_key": "{{user `aws_access_key`}}",
-      "secret_key": "{{user `aws_secret_key`}}",
-      "region": "eu-west-1",
-      "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
-      "s3_key_name": "{{user `aws_s3_key_name_string`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
-      "skip_clean": "false",
-      "tags": {
-        "Description": "Packer amazon-import: {{user `template`}}-{{user `part_scheme`}} {{isotime \"2006-01-02 15:04:05\"}}",
-        "Name": "{{user `template`}}"
-      }
     }
   ]
 }
