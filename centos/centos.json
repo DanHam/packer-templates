@@ -20,7 +20,6 @@
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "ssh_username": "root",
-    "ssh_groupname": "root",
     "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
 
     "vagrant_user": "coadmin",
@@ -50,7 +49,6 @@
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
     "aws_s3_key_name_string": "Centos72_x86-64"
-
   },
 
   "builders": [
@@ -176,7 +174,6 @@
 
       "shutdown_command": "/sbin/poweroff"
     }
-
   ],
 
   "provisioners": [
@@ -184,13 +181,10 @@
       "type": "shell",
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
-        "PACKER_DIR={{user `packer_dir`}}",
-        "PACKER_SSH_USER={{user `ssh_username`}}",
-        "PACKER_SSH_GROUP={{user `ssh_groupname`}}"
+        "PACKER_DIR={{user `packer_dir`}}"
       ],
       "inline": [
-        "mkdir $PACKER_DIR",
-        "chown $PACKER_SSH_USER:$PACKER_SSH_GROUP $PACKER_DIR"
+        "mkdir $PACKER_DIR"
       ]
     },
     {

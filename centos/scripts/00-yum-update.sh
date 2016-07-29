@@ -72,11 +72,11 @@ yum clean all > $REDIRECT
 # Reboot if required
 if [ $REBOOT == 1 ]; then
     echo "System restart required post install of updates. Rebooting..."
+    # Give time for the output to be logged/sent back to Packer
     sleep 5
-    reboot
-    # Sleep to ensure Packer doesn't start executing the next script before
-    # the ssh connection is killed by the reboot
-    sleep 60
+    # nohup prevents freezes in Packer due to execution moving to the next
+    # script while a reboot is in progress
+    nohup shutdown --reboot now </dev/null >/dev/null 2>&1 &
 fi
 
 exit 0
