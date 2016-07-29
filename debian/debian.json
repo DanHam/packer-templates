@@ -328,6 +328,20 @@
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
+    },
+    {
+      "type": "amazon-import",
+      "only": ["amazon-builder"],
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "eu-west-1",
+      "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
+      "s3_key_name": "{{user `aws_s3_key_name_string`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
+      "skip_clean": "false",
+      "tags": {
+        "Description": "Packer amazon-import: {{user `template`}}-{{user `part_scheme`}} {{isotime \"2006-01-02 15:04:05\"}}",
+        "Name": "{{user `template`}}"
+      }
     }
   ]
 }
