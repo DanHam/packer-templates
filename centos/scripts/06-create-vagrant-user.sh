@@ -2,7 +2,9 @@
 #
 # Create a user for Vagrant and configure. Required values are set in the
 # packer configuration file and injected into the build environment as
-# environment variables.
+# environment variables. Note that we do not set a password and as such
+# password based authentication is disabled. Additionally note ssh has
+# been configured to only allow authentication via ssh keys.
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
@@ -17,7 +19,6 @@ echo "GID:       ${VAGRANT_GID}"                > ${REDIRECT}
 echo "Groups:    ${VAGRANT_GROUPS}"             > ${REDIRECT}
 echo "Shell:     ${VAGRANT_SHELL}"              > ${REDIRECT}
 echo "GECOS:     ${VAGRANT_GECOS}"              > ${REDIRECT}
-echo "Password:  ${VAGRANT_PASSWD}"             > ${REDIRECT}
 echo "SSH key:   ${VAGRANT_SSH_AUTHORISED_KEY}" > ${REDIRECT}
 
 # Create the required group
@@ -26,8 +27,7 @@ groupadd --gid ${VAGRANT_GID} ${VAGRANT_GROUP}
 # Create the user
 useradd --create-home --uid ${VAGRANT_UID} --gid ${VAGRANT_GID} \
         --groups ${VAGRANT_GROUPS} --shell ${VAGRANT_SHELL} \
-        --comment "${VAGRANT_GECOS}" --password ${VAGRANT_PASSWD} \
-        ${VAGRANT_USER}
+        --comment "${VAGRANT_GECOS}" ${VAGRANT_USER}
 
 # Configure authorised ssh keys for Vagrant
 SSH_DIR="/home/${VAGRANT_USER}/.ssh"

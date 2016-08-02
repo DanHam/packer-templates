@@ -29,7 +29,6 @@
     "vagrant_groups": "wheel",
     "vagrant_shell": "/bin/bash",
     "vagrant_gecos": "CentOS Administrator",
-    "vagrant_passwd": "$6$RS.am43E0TvKQqUb$DdCVfJwLGSSr9Pl8V8dgL6VqP0OU7tsW13xcD3h7a4XDlWEaqzOdQPER9VVmSFuFVP/XJCUQRfs6xJq/a4szn0",
     "vagrant_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHL7YEa3CXVSjYE2Msx5JTCe7z8e3WtER59aeYl9co1mUljR4xb427qCxbwW2D95mwds2/rQ2HdvV5gH1Y3SN6NQsu85X8LPgO2tnszkNkNjqi0JI4o/71wJ15gSOS3aA7iScj9Kvq6LdgDyEXTW+nyxNv5KWJr8jaRune3g/85rzHCihzIoiTH/dK3LyQdKd2FyujAQeGawexhgMkEKPfg85WE8GdpnolfWBtb94tyXjo21CKLbaGgTIXxqWLUpxnWgpMQlnCpp59UuShOxWbN+Usv7m0/cvAa22RJbidIzRIls3XQBIP8S8oayhW/TXfBLZ1rzK52JkFpyxM0qvlZuqLjwYJZQBp8+o9qot1UXnIFm0c62O8NoQGGcnE/hE71pUSmGxscy5uBlAIDP+Km1G7BIXCoL3KCXb06op4XJNPoqRYzVjREgNlFejKzLp+5TgPC6O4uKelAP5CdJCTPdvhwZtQ7vtS4UfbxTbHc4392y5+Zt8dNmRaKtgpqVkaqqzBf7yBlvbgROK3RJMG7oAszNOKIKH07bol9o+/t3JrdSgBaiYE6vNLJUzx3tSmnD1fLL1ZzyVnElFkrsoHwYBtlnnGqC6K3IlvtnkmPHL4bM68a0FhpRTsg+NMtUvZhYjoDZRBx5bgRHptIHT7QeICc7TcaRx1aKRqoPF9tw== neos@neos-infrastructure.com",
 
     "packer_dir": "/packer",
@@ -245,7 +244,6 @@
         "VAGRANT_GROUPS={{user `vagrant_groups`}}",
         "VAGRANT_SHELL={{user `vagrant_shell`}}",
         "VAGRANT_GECOS={{user `vagrant_gecos`}}",
-        "VAGRANT_PASSWD={{user `vagrant_passwd`}}",
         "VAGRANT_SSH_AUTHORISED_KEY={{user `vagrant_ssh_authorised_key`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
