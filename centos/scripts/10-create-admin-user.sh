@@ -9,8 +9,13 @@
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
 
-# Packer logging
-echo "Creating an admin user and setting up required options..."
+# Exit unless user creation was requested in the packer template
+if [ "${ADMIN_CREATE}" = true ]; then
+    echo "Creating an admin user and setting up required options..."
+else
+    echo "Skipping creation of an admin user as requested..."
+    exit 0
+fi
 
 echo "User:      ${ADMIN_USER}"               > ${REDIRECT}
 echo "Group:     ${ADMIN_GROUP}"              > ${REDIRECT}

@@ -25,6 +25,9 @@
     "ssh_username": "root",
     "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
 
+    "admin_create_vmware": "true",
+    "admin_create_virtualbox": "true",
+    "admin_create_amazon": "false",
     "admin_user": "coadmin",
     "admin_group": "coadmin",
     "admin_uid": "1000",
@@ -214,6 +217,7 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create_vmware`}}",
         "ADMIN_USER={{user `admin_user`}}",
         "ADMIN_GROUP={{user `admin_group`}}",
         "ADMIN_UID={{user `admin_uid`}}",
@@ -237,6 +241,7 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create_virtualbox`}}",
         "ADMIN_USER={{user `admin_user`}}",
         "ADMIN_GROUP={{user `admin_group`}}",
         "ADMIN_UID={{user `admin_uid`}}",
@@ -259,6 +264,7 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create_amazon`}}",
         "ADMIN_USER={{user `admin_user`}}",
         "ADMIN_GROUP={{user `admin_group`}}",
         "ADMIN_UID={{user `admin_uid`}}",
