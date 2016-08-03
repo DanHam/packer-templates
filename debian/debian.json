@@ -288,7 +288,7 @@
         "scripts/04-fix-mesg-n-when-not-tty.sh",
         "scripts/05-configure-ssh.sh",
         "scripts/06-set-apt-install-recommends.sh",
-        "scripts/07-create-vagrant-user.sh",
+        "scripts/07-create-admin-user.sh",
         "scripts/08-run-packer-virt-sysprep-ops.sh"
       ]
    },

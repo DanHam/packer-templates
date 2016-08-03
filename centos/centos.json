@@ -261,7 +261,7 @@
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/05-configure-ssh.sh",
-        "scripts/06-create-vagrant-user.sh",
+        "scripts/06-create-admin-user.sh",
         "scripts/07-run-packer-virt-sysprep-ops.sh"
       ]
     },
