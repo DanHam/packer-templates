@@ -14,8 +14,11 @@
     "installer_boot_time": "5s",
 
     "vmware_hardware_version": "9",
-    "memory_size": "512",
+    "memory_size": "1024",
     "cpu_count": "1",
+    "disk_size_vmware": "10240",
+    "disk_size_virtualbox": "10240",
+    "disk_size_amazon": "2048",
     "vmtools_iso_path": "/tmp/vmware-tools.iso",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
@@ -87,7 +90,7 @@
       "vm_name": "{{user `template`}}-{{build_name}}",
       "vmdk_name": "{{user `template`}}-{{build_name}}",
       "disk_type_id": "0",
-      "disk_size": 10240,
+      "disk_size": "{{user `disk_size_vmware`}}",
       "tools_upload_flavor": "linux",
       "tools_upload_path": "{{user `vmtools_iso_path`}}",
 
@@ -124,7 +127,7 @@
       ],
       "vm_name": "{{user `template`}}-{{build_name}}",
       "hard_drive_interface": "sata",
-      "disk_size": 10240,
+      "disk_size": "{{user `disk_size_virtualbox`}}",
 
       "guest_additions_mode": "upload",
       "guest_additions_path": "{{user `guest_additions_path`}}",
@@ -164,7 +167,7 @@
       "vm_name": "{{user `template`}}-{{build_name}}",
       "format": "ova",
       "hard_drive_interface": "sata",
-      "disk_size": 10240,
+      "disk_size": "{{user `disk_size_amazon`}}",
 
       "guest_additions_mode": "disable",
 

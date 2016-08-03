@@ -4,3 +4,5 @@
 */output-*/
 # Ignore boxes and associated files
 */boxes/*
+# Ignore scripts to remove/clean build artifacts
+*/clean
