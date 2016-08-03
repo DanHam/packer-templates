@@ -204,42 +204,16 @@
       "scripts": [
         "scripts/00-yum-update.sh",
         "scripts/01-remove-old-kernels.sh",
-        "scripts/02-disable-system-beep.sh"
+        "scripts/02-disable-system-beep.sh",
+        "scripts/03-configure-ssh.sh"
       ]
     },
     {
       "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
-      ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "only": ["vmware-iso"],
-      "scripts": [
-            "scripts/03-install-open-vm-tools.sh",
-            "scripts/04-install-vmware-tools.sh"
-      ]
-    },
-    {
-      "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
-      ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "only": ["virtualbox-iso"],
-      "scripts": [
-            "scripts/03-install-vbox-guest-additions.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "PACKER_DIR={{user `packer_dir`}}",
         "ADMIN_USER={{user `admin_user`}}",
         "ADMIN_GROUP={{user `admin_group`}}",
         "ADMIN_UID={{user `admin_uid`}}",
@@ -248,6 +222,65 @@
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+            "scripts/10-create-admin-user.sh",
+            "scripts/11-install-open-vm-tools.sh",
+            "scripts/12-install-vmware-tools.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["virtualbox-iso"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+            "scripts/10-create-admin-user.sh",
+            "scripts/11-install-vbox-guest-additions.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["amazon-builder"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+            "scripts/10-create-admin-user.sh",
+            "scripts/11-install-cloud-packages.sh",
+            "scripts/12-configure-cloud-packages.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "PACKER_DIR={{user `packer_dir`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
         "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
@@ -263,9 +296,7 @@
       ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/05-configure-ssh.sh",
-        "scripts/06-create-admin-user.sh",
-        "scripts/07-run-packer-virt-sysprep-ops.sh"
+        "scripts/80-run-packer-virt-sysprep-ops.sh"
       ]
     },
     {
@@ -282,8 +313,8 @@
       "type": "shell",
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/08-packer-cleanup.sh",
-        "scripts/09-zero-free-space.sh"
+        "scripts/90-packer-cleanup.sh",
+        "scripts/91-zero-free-space.sh"
       ]
     }
   ],
