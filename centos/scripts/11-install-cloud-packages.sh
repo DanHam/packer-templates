@@ -6,7 +6,8 @@
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
 
 # Packer logging
-echo "Cloud tools install..."
-echo "This script does nothing yet"
+echo "Installing packages beneficial when running as a cloud instance..."
+
+yum install -y cloud-init cloud-utils-growpart > ${REDIRECT}
 
 exit 0
