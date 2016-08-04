@@ -37,6 +37,10 @@
     "admin_gecos": "CentOS Administrator",
     "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHL7YEa3CXVSjYE2Msx5JTCe7z8e3WtER59aeYl9co1mUljR4xb427qCxbwW2D95mwds2/rQ2HdvV5gH1Y3SN6NQsu85X8LPgO2tnszkNkNjqi0JI4o/71wJ15gSOS3aA7iScj9Kvq6LdgDyEXTW+nyxNv5KWJr8jaRune3g/85rzHCihzIoiTH/dK3LyQdKd2FyujAQeGawexhgMkEKPfg85WE8GdpnolfWBtb94tyXjo21CKLbaGgTIXxqWLUpxnWgpMQlnCpp59UuShOxWbN+Usv7m0/cvAa22RJbidIzRIls3XQBIP8S8oayhW/TXfBLZ1rzK52JkFpyxM0qvlZuqLjwYJZQBp8+o9qot1UXnIFm0c62O8NoQGGcnE/hE71pUSmGxscy5uBlAIDP+Km1G7BIXCoL3KCXb06op4XJNPoqRYzVjREgNlFejKzLp+5TgPC6O4uKelAP5CdJCTPdvhwZtQ7vtS4UfbxTbHc4392y5+Zt8dNmRaKtgpqVkaqqzBf7yBlvbgROK3RJMG7oAszNOKIKH07bol9o+/t3JrdSgBaiYE6vNLJUzx3tSmnD1fLL1ZzyVnElFkrsoHwYBtlnnGqC6K3IlvtnkmPHL4bM68a0FhpRTsg+NMtUvZhYjoDZRBx5bgRHptIHT7QeICc7TcaRx1aKRqoPF9tw== neos@neos-infrastructure.com",
 
+    "selinux_relabel_vmware": "false",
+    "selinux_relabel_virtualbox": "false",
+    "selinux_relabel_amazon": "true",
+
     "packer_dir": "/packer",
     "sysprep_op_bash_history": "true",
     "sysprep_op_crash_data":   "true",
@@ -208,8 +212,7 @@
         "scripts/00-yum-update.sh",
         "scripts/01-remove-old-kernels.sh",
         "scripts/02-disable-system-beep.sh",
-        "scripts/03-configure-ssh.sh",
-        "scripts/04-selinux.sh"
+        "scripts/03-configure-ssh.sh"
       ]
     },
     {
@@ -227,13 +230,15 @@
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "SELINUX_RELABEL={{user `selinux_relabel_vmware`}}",
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
       ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-install-open-vm-tools.sh",
-            "scripts/12-install-vmware-tools.sh"
+            "scripts/11-selinux.sh",
+            "scripts/20-install-open-vm-tools.sh",
+            "scripts/21-install-vmware-tools.sh"
       ]
     },
     {
@@ -251,12 +256,14 @@
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "SELINUX_RELABEL={{user `selinux_relabel_virtualbox`}}",
         "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
       ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-install-vbox-guest-additions.sh"
+            "scripts/11-selinux.sh",
+            "scripts/20-install-vbox-guest-additions.sh"
       ]
     },
     {
@@ -273,13 +280,15 @@
         "ADMIN_GROUPS={{user `admin_groups`}}",
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}"
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "SELINUX_RELABEL={{user `selinux_relabel_amazon`}}"
       ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-install-cloud-packages.sh",
-            "scripts/12-configure-cloud-packages.sh"
+            "scripts/11-selinux.sh",
+            "scripts/20-install-cloud-packages.sh",
+            "scripts/21-configure-cloud-packages.sh"
       ]
     },
     {
