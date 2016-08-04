@@ -19,5 +19,11 @@ yum install -y policycoreutils-restorecond \
 # Ensure the restorecond daemon is set to start at boot
 systemctl enable restorecond.service
 
+# Set to trigger a full relabel of the filesystem at next boot if
+# requested in the packer template
+if [ "${SELINUX_RELABEL}" = true ]; then
+    echo "Setting SELinux to relabel filesystem on next boot as requested"
+    touch /.autorelabel
+fi
 
 exit 0
