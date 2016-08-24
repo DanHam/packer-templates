@@ -288,7 +288,7 @@
             "scripts/10-create-admin-user.sh",
             "scripts/11-selinux.sh",
             "scripts/20-install-cloud-packages.sh",
-            "scripts/21-configure-cloud-packages.sh"
+            "scripts/21-configure-cloud-packages-aws.sh"
       ]
     },
     {
