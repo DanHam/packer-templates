@@ -218,7 +218,8 @@
         "scripts/00-yum-update.sh",
         "scripts/01-remove-old-kernels.sh",
         "scripts/02-disable-system-beep.sh",
-        "scripts/03-configure-ssh.sh"
+        "scripts/03-configure-ssh.sh",
+        "scripts/04-centos-systemd-fixes.sh"
       ]
     },
     {
