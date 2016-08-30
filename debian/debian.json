@@ -227,44 +227,17 @@
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/00-grub-config.sh",
-        "scripts/01-disable-system-beep.sh"
+        "scripts/01-disable-system-beep.sh",
+        "scripts/02-configure-ssh.sh",
+        "scripts/03-debian-fix-mesg-n-when-not-tty.sh"
       ]
     },
     {
       "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
-        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
-      ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "only": ["vmware-iso"],
-      "scripts": [
-        "scripts/02-install-open-vm-tools.sh",
-        "scripts/03-open-vm-tools-config-shared-folders.sh"
-      ]
-    },
-    {
-      "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
-      ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "only": ["virtualbox-iso"],
-      "scripts": [
-            "scripts/02-install-vbox-guest-additions.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}",
-        "PACKER_DIR={{user `packer_dir`}}",
         "ADMIN_USER={{user `admin_user`}}",
         "ADMIN_GROUP={{user `admin_group`}}",
         "ADMIN_UID={{user `admin_uid`}}",
@@ -273,6 +246,67 @@
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
+        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "scripts/10-create-admin-user.sh",
+        "scripts/20-install-open-vm-tools.sh",
+        "scripts/21-open-vm-tools-config-shared-folders.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["virtualbox-iso"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+            "scripts/10-create-admin-user.sh",
+            "scripts/20-install-vbox-guest-additions.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["amazon-builder"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+            "scripts/10-create-admin-user.sh",
+            "scripts/20-install-cloud-packages.sh",
+            "scripts/21-configure-cloud-packages-aws.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "PACKER_DIR={{user `packer_dir`}}",
         "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
         "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
         "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
@@ -288,29 +322,30 @@
       ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/04-fix-mesg-n-when-not-tty.sh",
-        "scripts/05-configure-ssh.sh",
-        "scripts/06-set-apt-install-recommends.sh",
-        "scripts/07-create-admin-user.sh",
-        "scripts/08-run-packer-virt-sysprep-ops.sh"
+        "scripts/80-run-packer-virt-sysprep-ops.sh"
       ]
    },
    {
       "type": "shell",
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}"
       ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "inline": [
         "rm -rf $PACKER_DIR"
       ]
     },
     {
       "type": "shell",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}"
+      ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/09-packer-cleanup.sh",
-        "scripts/10-zero-free-space.sh"
+        "scripts/90-set-apt-install-recommends.sh",
+        "scripts/91-packer-cleanup.sh",
+        "scripts/92-zero-free-space.sh"
       ]
     }
   ],
