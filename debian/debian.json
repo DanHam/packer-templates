@@ -6,7 +6,7 @@
     "part_scheme": "std",
 
     "debug": "false",
-    "headless": "false",
+    "headless": "true",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian8.5x86_64/debian-8.5.0-amd64-CD-1.iso",
     "iso_checksum": "3e7fc94fc2830ae531e9a7eb6bb6a92d5396e58b3882ecb15b98f924edbb73c7e40540fc1454fed3b79d744c87f372b4ff2c5a2c0887b03046e3aab22a5c754e",
@@ -370,20 +370,6 @@
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
-    },
-    {
-      "type": "amazon-import",
-      "only": ["amazon-builder"],
-      "access_key": "{{user `aws_access_key`}}",
-      "secret_key": "{{user `aws_secret_key`}}",
-      "region": "eu-west-1",
-      "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
-      "s3_key_name": "{{user `aws_s3_key_name_string`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
-      "skip_clean": "false",
-      "tags": {
-        "Description": "Packer amazon-import: {{user `template`}}-{{user `part_scheme`}} {{isotime \"2006-01-02 15:04:05\"}}",
-        "Name": "{{user `template`}}"
-      }
     }
   ]
 }
