@@ -292,7 +292,12 @@
         "DEFER_CLOUD_INIT_SVC_UNIT=defer-cloud-init.service",
         "DEFER_CLOUD_INIT_SVC_DIR=/defer-cloud-init",
         "DEFER_CLOUD_INIT_SVC_ENABLE=defer-cloud-init-enable.sh",
-        "DEFER_CLOUD_INIT_SVC_CLEAN=defer-cloud-init-clean.sh"      ],
+        "DEFER_CLOUD_INIT_SVC_CLEAN=defer-cloud-init-clean.sh",
+        "AWS_IMPORT_FIX_UNIT=aws-import-fix.service",
+        "AWS_IMPORT_FIX_DIR=/aws-import-fix",
+        "AWS_IMPORT_FIX_FIXES_SCRIPT=aws-import-fixes-and-cleanup.sh",
+        "AWS_IMPORT_FIX_CLEAN_SCRIPT=aws-import-fix-clean.sh"
+      ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
@@ -302,7 +307,10 @@
             "scripts/22-aws-disable-cloud-init-services.sh",
             "scripts/23-aws-create-and-enable-defer-cloud-init-unit.sh",
             "scripts/24-aws-create-defer-cloud-init-enable-script.sh",
-            "scripts/25-aws-create-defer-cloud-init-clean-script.sh"
+            "scripts/25-aws-create-defer-cloud-init-clean-script.sh",
+            "scripts/26-aws-create-and-enable-import-fixes-unit.sh",
+            "scripts/27-aws-create-import-fixes-script.sh",
+            "scripts/28-aws-create-import-fixes-clean-script.sh"
       ]
     },
     {
