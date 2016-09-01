@@ -40,7 +40,10 @@
     "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHL7YEa3CXVSjYE2Msx5JTCe7z8e3WtER59aeYl9co1mUljR4xb427qCxbwW2D95mwds2/rQ2HdvV5gH1Y3SN6NQsu85X8LPgO2tnszkNkNjqi0JI4o/71wJ15gSOS3aA7iScj9Kvq6LdgDyEXTW+nyxNv5KWJr8jaRune3g/85rzHCihzIoiTH/dK3LyQdKd2FyujAQeGawexhgMkEKPfg85WE8GdpnolfWBtb94tyXjo21CKLbaGgTIXxqWLUpxnWgpMQlnCpp59UuShOxWbN+Usv7m0/cvAa22RJbidIzRIls3XQBIP8S8oayhW/TXfBLZ1rzK52JkFpyxM0qvlZuqLjwYJZQBp8+o9qot1UXnIFm0c62O8NoQGGcnE/hE71pUSmGxscy5uBlAIDP+Km1G7BIXCoL3KCXb06op4XJNPoqRYzVjREgNlFejKzLp+5TgPC6O4uKelAP5CdJCTPdvhwZtQ7vtS4UfbxTbHc4392y5+Zt8dNmRaKtgpqVkaqqzBf7yBlvbgROK3RJMG7oAszNOKIKH07bol9o+/t3JrdSgBaiYE6vNLJUzx3tSmnD1fLL1ZzyVnElFkrsoHwYBtlnnGqC6K3IlvtnkmPHL4bM68a0FhpRTsg+NMtUvZhYjoDZRBx5bgRHptIHT7QeICc7TcaRx1aKRqoPF9tw== neos@neos-infrastructure.com",
 
     "packer_dir": "/packer",
-    "apt_install_recommends": "true",
+    "packer_virt_sysprep_dir": "/packer-virt-sysprep",
+    "packer_virt_sysprep_defer_run_vmware": "false",
+    "packer_virt_sysprep_defer_run_virtualbox": "false",
+    "packer_virt_sysprep_defer_run_amazon": "true",
     "sysprep_op_bash_history": "true",
     "sysprep_op_crash_data":   "true",
     "sysprep_op_dhcp_client_state": "true",
@@ -53,6 +56,7 @@
     "sysprep_op_ssh_hostkeys": "true",
     "sysprep_op_tmp_files": "true",
     "sysprep_op_yum_uuid": "false",
+    "apt_install_recommends": "true",
 
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
@@ -210,16 +214,18 @@
       "type": "shell",
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
-        "PACKER_DIR={{user `packer_dir`}}"
+        "PACKER_DIR={{user `packer_dir`}}",
+        "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}"
       ],
       "inline": [
-        "mkdir $PACKER_DIR"
+        "mkdir $PACKER_DIR",
+        "mkdir $PACKER_VIRT_SYSPREP_DIR"
       ]
     },
     {
       "type": "file",
-      "source": "scripts/packer-virt-sysprep",
-      "destination": "{{user `packer_dir`}}"
+      "source": "scripts/packer-virt-sysprep/",
+      "destination": "{{user `packer_virt_sysprep_dir`}}"
     },
     {
       "type": "shell",
@@ -310,25 +316,71 @@
     {
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "PACKER_DIR={{user `packer_dir`}}",
-        "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
-        "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
-        "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
-        "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
-        "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
-        "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
-        "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
-        "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
-        "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
-        "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
-        "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
-        "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
-      ],
+      "override": {
+        "vmware-iso": {
+          "environment_vars": [
+            "DEBUG={{user `debug`}}",
+            "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_vmware`}}",
+            "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
+            "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
+            "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
+            "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
+            "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
+            "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
+            "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
+            "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
+            "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
+            "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
+            "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
+            "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
+            "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
+          ]
+        },
+        "virtualbox-iso": {
+          "environment_vars": [
+            "DEBUG={{user `debug`}}",
+            "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_virtualbox`}}",
+            "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
+            "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
+            "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
+            "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
+            "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
+            "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
+            "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
+            "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
+            "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
+            "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
+            "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
+            "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
+            "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
+          ]
+        },
+        "amazon-builder": {
+          "environment_vars": [
+            "DEBUG={{user `debug`}}",
+            "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_amazon`}}",
+            "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
+            "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
+            "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
+            "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
+            "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
+            "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
+            "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
+            "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
+            "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
+            "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
+            "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
+            "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
+            "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
+          ]
+        }
+      },
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/80-run-packer-virt-sysprep-ops.sh"
+        "scripts/80-create-packer-virt-sysprep-unit-file.sh",
+        "scripts/81-create-packer-virt-sysprep-run-control-script.sh",
+        "scripts/82-create-packer-virt-sysprep-cleanup-script.sh",
+        "scripts/83-set-up-packer-virt-sysprep-service.sh"
       ]
    },
    {
@@ -370,6 +422,20 @@
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
+    },
+    {
+      "type": "amazon-import",
+      "only": ["amazon-builder"],
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "eu-west-1",
+      "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
+      "s3_key_name": "{{user `aws_s3_key_name_string`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
+      "skip_clean": "false",
+      "tags": {
+        "Description": "Packer amazon-import: {{user `template`}}-{{user `part_scheme`}} {{isotime \"2006-01-02 15:04:05\"}}",
+        "Name": "{{user `template`}}"
+      }
     }
   ]
 }
