@@ -304,7 +304,6 @@
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
-        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}",
         "DEFER_CLOUD_INIT_SVC_UNIT=defer-cloud-init.service",
         "DEFER_CLOUD_INIT_SVC_DIR=/defer-cloud-init",
         "DEFER_CLOUD_INIT_SVC_ENABLE=defer-cloud-init-enable.sh",
