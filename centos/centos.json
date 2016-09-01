@@ -288,14 +288,21 @@
         "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
-        "SELINUX_RELABEL={{user `selinux_relabel_amazon`}}"
-      ],
+        "SELINUX_RELABEL={{user `selinux_relabel_amazon`}}",
+        "DEFER_CLOUD_INIT_SVC_UNIT=defer-cloud-init.service",
+        "DEFER_CLOUD_INIT_SVC_DIR=/defer-cloud-init",
+        "DEFER_CLOUD_INIT_SVC_ENABLE=defer-cloud-init-enable.sh",
+        "DEFER_CLOUD_INIT_SVC_CLEAN=defer-cloud-init-clean.sh"      ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
             "scripts/11-selinux.sh",
             "scripts/20-install-cloud-packages.sh",
-            "scripts/21-configure-cloud-packages-aws.sh"
+            "scripts/21-aws-configure-cloud-init.sh",
+            "scripts/22-aws-disable-cloud-init-services.sh",
+            "scripts/23-aws-create-and-enable-defer-cloud-init-unit.sh",
+            "scripts/24-aws-create-defer-cloud-init-enable-script.sh",
+            "scripts/25-aws-create-defer-cloud-init-clean-script.sh"
       ]
     },
     {
