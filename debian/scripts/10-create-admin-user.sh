@@ -42,19 +42,11 @@ echo ${ADMIN_SSH_AUTHORISED_KEY} > ${SSH_DIR}/authorized_keys
 chmod 600 ${SSH_DIR}/authorized_keys
 chown -R ${ADMIN_USER}:${ADMIN_GROUP} ${SSH_DIR}
 
-# If set disable the requirement for a TTY with sudo see:
-# https://bugzilla.redhat.com/show_bug.cgi?id=1020147
-# This is a requirement when configuring for use with Vagrant
-sed -i '/^Defaults .*requiretty/ s/^/# /g' /etc/sudoers
-
 # Configure password-less sudo for the admin user
 SUDOERS_USER="/etc/sudoers.d/admin-user"
 cat <<EOF > ${SUDOERS_USER}
 # Allow admin user to run commands as root without providing a password
 ${ADMIN_USER}  ALL=(ALL)  NOPASSWD: ALL
-# Disable the requirement for a TTY with sudo see:
-# https://bugzilla.redhat.com/show_bug.cgi?id=1020147
-Defaults:${ADMIN_USER} !requiretty
 EOF
 chmod 0440 ${SUDOERS_USER}
 

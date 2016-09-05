@@ -5,7 +5,7 @@
     "guest_os_type_virtualbox": "RedHat_64",
 
     "debug": "false",
-    "headless": "true",
+    "headless": "false",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7.2x86_64/CentOS-7-x86_64-DVD-1511.iso",
     "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
@@ -243,7 +243,8 @@
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-selinux.sh",
+            "scripts/11-configure-sudoers.sh",
+            "scripts/12-selinux.sh",
             "scripts/20-install-open-vm-tools.sh",
             "scripts/21-install-vmware-tools.sh"
       ]
@@ -269,7 +270,8 @@
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-selinux.sh",
+            "scripts/11-configure-sudoers.sh",
+            "scripts/12-selinux.sh",
             "scripts/20-install-vbox-guest-additions.sh"
       ]
     },
@@ -301,7 +303,8 @@
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-selinux.sh",
+            "scripts/11-configure-sudoers.sh",
+            "scripts/12-selinux.sh",
             "scripts/20-install-cloud-packages.sh",
             "scripts/21-aws-configure-cloud-init.sh",
             "scripts/22-aws-disable-cloud-init-services.sh",
