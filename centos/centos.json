@@ -5,7 +5,7 @@
     "guest_os_type_virtualbox": "RedHat_64",
 
     "debug": "false",
-    "headless": "false",
+    "headless": "true",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7.2x86_64/CentOS-7-x86_64-DVD-1511.iso",
     "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
@@ -214,12 +214,31 @@
         "DEBUG={{user `debug`}}"
       ],
       "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "script": "scripts/00-yum-update.sh"
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "pause_before": "5s",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "script": "scripts/01-remove-old-kernels.sh"
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}"
+      ],
+      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/00-yum-update.sh",
-        "scripts/01-remove-old-kernels.sh",
         "scripts/02-disable-system-beep.sh",
         "scripts/03-configure-ssh.sh",
-        "scripts/04-centos-systemd-fixes.sh"
+        "scripts/04-centos-systemd-fixes.sh",
+        "scripts/05-configure-chrony.sh",
+        "scripts/06-disable-rtc-read-mode.sh"
       ]
     },
     {
