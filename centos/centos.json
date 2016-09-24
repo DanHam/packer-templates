@@ -1,6 +1,6 @@
 {
   "variables": {
-    "template": "centos-7.2-x86_64",
+    "template": "centos-72-x86_64",
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
@@ -60,8 +60,7 @@
     "sysprep_op_yum_uuid": "true",
 
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
-    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
-    "aws_s3_key_name_string": "Centos72_x86-64"
+    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}"
   },
 
   "builders": [
@@ -447,7 +446,7 @@
       "secret_key": "{{user `aws_secret_key`}}",
       "region": "eu-west-1",
       "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
-      "s3_key_name": "{{user `aws_s3_key_name_string`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
+      "s3_key_name": "{{user `template`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
       "skip_clean": "false",
       "tags": {
         "Description": "Packer amazon-import: {{user `template`}} {{isotime \"2006-01-02 15:04:05\"}}",

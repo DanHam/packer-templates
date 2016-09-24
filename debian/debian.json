@@ -1,6 +1,6 @@
 {
   "variables": {
-    "template": "debian-8.5-x86_64",
+    "template": "debian-86-x86_64",
     "guest_os_type_vmware": "debian8-64",
     "guest_os_type_virtualbox": "Debian_64",
     "part_scheme": "std",
@@ -8,8 +8,8 @@
     "debug": "false",
     "headless": "true",
 
-    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian8.5x86_64/debian-8.5.0-amd64-CD-1.iso",
-    "iso_checksum": "3e7fc94fc2830ae531e9a7eb6bb6a92d5396e58b3882ecb15b98f924edbb73c7e40540fc1454fed3b79d744c87f372b4ff2c5a2c0887b03046e3aab22a5c754e",
+    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian8.6x86_64/debian-8.6.0-amd64-CD-1.iso",
+    "iso_checksum": "2e5446789c6900617278a15319a34243d55471eba79e30bdd26685eae16aa80d09d46a867c397c37753404e087a2ee654fe22cac2ca7d5b2d22c5b36224605ce",
     "iso_checksum_type": "sha512",
 
     "installer_boot_time": "5s",
@@ -59,8 +59,7 @@
     "apt_install_recommends": "true",
 
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
-    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}",
-    "aws_s3_key_name_string": "Debian85_x86-64"
+    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}"
   },
 
   "builders": [
@@ -449,7 +448,7 @@
       "secret_key": "{{user `aws_secret_key`}}",
       "region": "eu-west-1",
       "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
-      "s3_key_name": "{{user `aws_s3_key_name_string`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
+      "s3_key_name": "{{user `template`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
       "skip_clean": "false",
       "tags": {
         "Description": "Packer amazon-import: {{user `template`}}-{{user `part_scheme`}} {{isotime \"2006-01-02 15:04:05\"}}",
