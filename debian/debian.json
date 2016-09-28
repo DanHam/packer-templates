@@ -239,7 +239,7 @@
         "scripts/02-configure-ssh.sh",
         "scripts/03-debian-fix-mesg-n-when-not-tty.sh",
         "scripts/04-configure-chrony.sh",
-        "scripts/05-disable-rtc-read-mode.sh"
+        "scripts/05-configure-timedate-settings.sh"
       ]
     },
     {

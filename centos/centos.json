@@ -237,7 +237,7 @@
         "scripts/03-configure-ssh.sh",
         "scripts/04-centos-systemd-fixes.sh",
         "scripts/05-configure-chrony.sh",
-        "scripts/06-disable-rtc-read-mode.sh"
+        "scripts/06-configure-timedate-settings.sh"
       ]
     },
     {
