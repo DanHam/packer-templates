@@ -6,9 +6,6 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = 'debian-8.6-x86_64'
 
-  config.ssh.username = 'debadmin'
-  config.ssh.private_key_path = '/Users/dan/.ssh/neos.id_rsa'
-
   # Virtualbox provider specific options
   config.vm.provider 'virtualbox' do |vb|
     # Disable audio due to Virtualbox issue #15659
