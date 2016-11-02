@@ -447,7 +447,6 @@
       "region": "eu-west-1",
       "s3_bucket_name": "neos-infrastructure.com-vmimport-bucket",
       "s3_key_name": "{{user `template`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
-      "ami_name": "{{user `template`}}-{{isotime \"2006-01-02-150405\"}}",
       "skip_clean": "false",
       "tags": {
         "Description": "Packer amazon-import: {{user `template`}} {{isotime \"2006-01-02 15:04:05\"}}",
