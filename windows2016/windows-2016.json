@@ -1,0 +1,142 @@
+{
+  "variables": {
+    "template": "windows2016",
+    "guest_os_type_vmware": "windows9srv-64",
+    "guest_os_type_virtualbox": "Windows2012_64",
+
+    "iso_url": "/Users/dan/stuff/iso/os/Windows2016/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
+    "iso_checksum": "3bb1c60417e9aeb3f4ce0eb02189c0c84a1c6691",
+    "iso_checksum_type": "sha1",
+
+    "communicator": "winrm",
+    "winrm_use_ssl": "false",
+    "winrm_insecure": "true",
+    "winrm_username": "vagrant",
+    "winrm_password": "vagrant",
+    "winrm_timeout": "5h",
+
+    "headless": "false",
+
+    "disk_size": "51200",
+    "memory_size": "4096",
+    "cpu_count": "2",
+
+    "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
+    "vboxga_iso_path": "C:/Windows/Temp/VBoxGuestAdditions.iso",
+
+    "shutdown_command": "shutdown /s /t 10 /f /d p:4:1",
+    "shutdown_timeout": "30m"
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "output_directory": "output-{{user `template`}}-{{build_name}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "communicator": "{{user `communicator`}}",
+      "winrm_use_ssl": "{{user `winrm_use_ssl`}}",
+      "winrm_insecure": "{{user `winrm_insecure`}}",
+      "winrm_username": "{{user `winrm_username`}}",
+      "winrm_password": "{{user `winrm_password`}}",
+      "winrm_timeout": "{{user `winrm_timeout`}}",
+
+      "vm_name": "{{user `template`}}-{{build_name}}",
+      "version": "9",
+      "headless": "{{user `headless`}}",
+      "guest_os_type": "{{user `guest_os_type_vmware`}}",
+      "tools_upload_flavor": "windows",
+      "tools_upload_path": "{{user `vmtools_iso_path`}}",
+
+      "disk_type_id": "0",
+      "disk_size": "{{user `disk_size`}}",
+      "vmdk_name": "{{user `template`}}-{{build_name}}",
+      "vmx_data": {
+        "memsize": "{{user `memory_size`}}",
+        "numvcpus": "{{user `cpu_count`}}",
+        "scsi0.virtualDev": "lsisas1068",
+        "RemoteDisplay.vnc.enabled": "false",
+        "usb.present": "false",
+        "sound.present": "false"
+      },
+
+      "floppy_files": [
+        "files/Autounattend.xml",
+        "files/DisableDefenderRTScanning.ps1",
+        "files/SetupWinRM.ps1"
+      ],
+
+      "shutdown_command": "{{user `shutdown_command`}}",
+      "shutdown_timeout": "{{user `shutdown_timeout`}}"
+    },
+    {
+      "type": "virtualbox-iso",
+      "output_directory": "output-{{user `template`}}-{{build_name}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "communicator": "{{user `communicator`}}",
+      "winrm_use_ssl": "{{user `winrm_use_ssl`}}",
+      "winrm_insecure": "{{user `winrm_insecure`}}",
+      "winrm_username": "{{user `winrm_username`}}",
+      "winrm_password": "{{user `winrm_password`}}",
+      "winrm_timeout": "{{user `winrm_timeout`}}",
+
+      "vm_name": "{{user `template`}}-{{build_name}}",
+      "headless": "{{user `headless`}}",
+      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "{{user `vboxga_iso_path`}}",
+
+      "hard_drive_interface": "sata",
+      "disk_size": "{{user `disk_size`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
+        ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
+        ["modifyvm", "{{.Name}}", "--vram", "128"],
+        ["modifyvm", "{{.Name}}", "--audio", "none"],
+        ["modifyvm", "{{.Name}}", "--usb", "off"],
+        ["setextradata", "global", "GUI/SuppressMessages", "all"]
+      ],
+
+      "floppy_files": [
+        "files/Autounattend.xml",
+        "files/DisableDefenderRTScanning.ps1",
+        "files/SetupWinRM.ps1",
+        "files/oracle.cer"
+      ],
+
+      "shutdown_command": "{{user `shutdown_command`}}",
+      "shutdown_timeout": "{{user `shutdown_timeout`}}"
+    }
+
+  ],
+
+  "provisioners": [
+    {
+      "type": "powershell",
+      "environment_vars": [
+        "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
+        "VBOXGA_ISO_PATH={{user `vboxga_iso_path`}}"
+      ],
+      "scripts": [
+        "files/DontExpireVagrantPassword.ps1",
+        "files/InstallGuestTools.ps1",
+        "files/EnableDefenderRTScanning.ps1"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "boxes/{{user `template`}}-{{.Provider}}.box",
+      "keep_input_artifact": true,
+      "vagrantfile_template": "templates/vagrantfile_{{user `template`}}.template"
+    }
+  ]
+}
