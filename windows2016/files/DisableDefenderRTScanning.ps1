@@ -14,3 +14,6 @@
 Write-Host 'Disabling Defenders real-time monitoring during the build process'
 Set-MpPreference -DisableRealtimeMonitoring $true
 Write-Host 'Complete'
+
+# Allow time to view output before window is closed
+Start-Sleep -Seconds 2

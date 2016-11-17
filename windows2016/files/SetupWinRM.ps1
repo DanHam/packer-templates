@@ -58,3 +58,6 @@ $Key      = 'LocalAccountTokenFilterPolicy'
 Set-ItemProperty -Path $KeyStore -Name $Key -Value 1
 
 Write-Host 'WinRM set-up complete'
+
+# Allow time to view output before window is closed
+Start-Sleep -Seconds 2

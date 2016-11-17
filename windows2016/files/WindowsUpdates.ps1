@@ -7,6 +7,8 @@ $Logfile = 'C:\Windows\Temp\win-updates.log'
 
 function ExitAndRunNextBuildScript {
     Write-Host "Windows Update process complete. Running next Packer build script `n"
+    # Allow time to view output before window is closed
+    Start-Sleep -Seconds 2
     $NextScript = 'A:\SetupWinRM.ps1'
     Invoke-Expression -Command "$NextScript -AutoStart"
 }

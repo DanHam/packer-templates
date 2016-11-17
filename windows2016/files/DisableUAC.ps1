@@ -10,3 +10,6 @@ $RegSetting = 'EnableLUA'
 Set-ItemProperty -Path $RegKey -Name $RegSetting -Type DWORD -Value 0 -Force
 
 Write-Host 'Complete'
+
+# Allow time to view output before window is closed
+Start-Sleep -Seconds 2
