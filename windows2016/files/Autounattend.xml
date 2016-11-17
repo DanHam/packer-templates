@@ -105,6 +105,7 @@
                 <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
                 <ProtectYourPC>1</ProtectYourPC>
             </OOBE>
+            <TimeZone>GMT Standard Time</TimeZone>
             <UserAccounts>
                 <AdministratorPassword>
                     <Value>dgBhAGcAcgBhAG4AdABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByAFAAYQBzAHMAdwBvAHIAZAA=</Value>
