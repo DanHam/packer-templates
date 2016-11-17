@@ -109,6 +109,7 @@
       "floppy_files": [
         "files/Autounattend.xml",
         "files/DisableDefenderRTScanning.ps1",
+        "files/DisableUAC.ps1",
         "files/ConfigureWindowsUpdates.ps1",
         "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1",
