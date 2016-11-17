@@ -18,7 +18,7 @@
     "headless": "false",
 
     "disk_size": "51200",
-    "memory_size": "4096",
+    "memory_size": "2048",
     "cpu_count": "2",
 
     "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
@@ -65,6 +65,9 @@
       "floppy_files": [
         "files/Autounattend.xml",
         "files/DisableDefenderRTScanning.ps1",
+        "files/DisableUAC.ps1",
+        "files/ConfigureWindowsUpdates.ps1",
+        "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1"
       ],
 
@@ -106,6 +109,8 @@
       "floppy_files": [
         "files/Autounattend.xml",
         "files/DisableDefenderRTScanning.ps1",
+        "files/ConfigureWindowsUpdates.ps1",
+        "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1",
         "files/oracle.cer"
       ],
@@ -126,7 +131,8 @@
       "scripts": [
         "files/DontExpireVagrantPassword.ps1",
         "files/InstallGuestTools.ps1",
-        "files/EnableDefenderRTScanning.ps1"
+        "files/EnableDefenderRTScanning.ps1",
+        "files/EnableUAC.ps1"
       ]
     }
   ],

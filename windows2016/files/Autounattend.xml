@@ -139,8 +139,18 @@
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <Order>2</Order>
-                    <Description>WinRM Setup and Configuration</Description>
-                    <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\SetupWinRM.ps1</CommandLine>
+                    <Description>Disable UAC to allow automated install of Windows Updates</Description>
+                    <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\DisableUAC.ps1</CommandLine>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <Description>Configure Windows Updates</Description>
+                    <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\ConfigureWindowsUpdates.ps1</CommandLine>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>4</Order>
+                    <Description>Install Windows Updates</Description>
+                    <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\WindowsUpdates.ps1</CommandLine>
                 </SynchronousCommand>
             </FirstLogonCommands>
         </component>
