@@ -26,3 +26,6 @@ Stop-Service -Name wuauserv -Force
 Start-Service -Name wuauserv
 
 Write-Host 'Complete'
+
+# Allow time to view output before window is closed
+Start-Sleep -Seconds 2
