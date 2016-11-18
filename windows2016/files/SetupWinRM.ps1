@@ -3,7 +3,7 @@
 Write-Host 'Configuring WinRM'
 
 # Prevent Packer from connecting to WinRM while we configure the service
-Set-NetFirewallRule -DisplayGroup 'Windows Remote Management' -Enabled False
+Disable-NetFirewallRule -DisplayGroup 'Windows Remote Management'
 
 # Configure the WinRM service to start automatically on boot
 Write-Host '* Setting the WinRM Service start up type to Automatic'
@@ -49,7 +49,7 @@ Write-Host '* Configuring Windows firewall to allow access to WinRM'
     Set-NetFirewallRule -Name $_ -Direction Inbound -Action Allow
 }
 # Re-enable the rule group
-Set-NetFireWallRule -DisplayGroup 'Windows Remote Management' -Enabled True
+Enable-NetFireWallRule -DisplayGroup 'Windows Remote Management'
 
 # Enable Remote UAC via registry setting
 Write-Host '* Enabling UAC for remote (WinRM) users'
