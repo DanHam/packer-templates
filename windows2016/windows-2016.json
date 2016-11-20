@@ -24,7 +24,7 @@
     "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
     "vboxga_iso_path": "C:/Windows/Temp/VBoxGuestAdditions.iso",
 
-    "shutdown_command": "shutdown /s /t 10 /f /d p:4:1",
+    "shutdown_command": "A:/PackerShutdown.bat",
     "shutdown_timeout": "30m"
   },
   "builders": [
@@ -68,7 +68,10 @@
         "files/DisableUAC.ps1",
         "files/ConfigureWindowsUpdates.ps1",
         "files/WindowsUpdates.ps1",
-        "files/SetupWinRM.ps1"
+        "files/SetupWinRM.ps1",
+        "files/PackerShutdown.bat",
+        "files/SysprepUnattend.xml",
+        "files/SetupComplete.cmd"
       ],
 
       "shutdown_command": "{{user `shutdown_command`}}",
@@ -113,7 +116,10 @@
         "files/ConfigureWindowsUpdates.ps1",
         "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1",
-        "files/oracle.cer"
+        "files/oracle.cer",
+        "files/PackerShutdown.bat",
+        "files/SysprepUnattend.xml",
+        "files/SetupComplete.cmd"
       ],
 
       "shutdown_command": "{{user `shutdown_command`}}",
@@ -133,7 +139,8 @@
         "files/DontExpireVagrantPassword.ps1",
         "files/InstallGuestTools.ps1",
         "files/EnableDefenderRTScanning.ps1",
-        "files/EnableUAC.ps1"
+        "files/EnableUAC.ps1",
+        "files/SetupPostSysprep.ps1"
       ]
     }
   ],
