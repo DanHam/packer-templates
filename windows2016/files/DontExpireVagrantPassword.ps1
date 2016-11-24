@@ -1,9 +1,11 @@
 ﻿# Configure the Vagrant Users password to never expire
-# Requires Powershell >= 5.1
 #
-If ( (Get-LocalUser -Name "vagrant" -ErrorAction SilentlyContinue).PasswordExpires ) {
+$VUser = Get-WmiObject -Class Win32_UserAccount -Filter 'name = "vagrant"'
+If ( $VUser.PasswordExpires ) {
     Write-Host 'Configuring the Vagrant users password to never expire'
-    Set-LocalUser -Name 'vagrant' -PasswordNeverExpires $true
+    $VUser |
+    Set-WmiInstance -Argument @{PasswordExpires = 0} |
+    Out-Null
 } else {
     Write-Host 'The Vagrant users password is set to never expire'
 }
