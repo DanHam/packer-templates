@@ -173,7 +173,14 @@
       "type": "vagrant",
       "output": "boxes/{{user `template`}}-{{.Provider}}.box",
       "keep_input_artifact": true,
-      "vagrantfile_template": "templates/vagrantfile_{{user `template`}}.template"
+      "override": {
+        "vmware": {
+          "vagrantfile_template": "templates/vagrantfile_{{user `template`}}.vmware"
+        },
+        "virtualbox": {
+          "vagrantfile_template": "templates/vagrantfile_{{user `template`}}.virtualbox"
+        }
+      }
     }
   ]
 }

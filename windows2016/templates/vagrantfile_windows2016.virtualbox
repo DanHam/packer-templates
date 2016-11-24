@@ -12,27 +12,10 @@ Vagrant.configure(2) do |config|
   config.winrm.username = 'vagrant'
   config.winrm.password = 'vagrant'
 
-  # VMware Fusion specific options
-  config.vm.provider :vmware_fusion do |vf|
-    vf.vmx['memsize'] = '2048'
-    vf.vmx['numvcpus'] = '2'
-    vf.vmx['scsi0.virtualDev'] = 'lsisas1068'
-    vf.vmx['RemoteDisplay.vnc.enabled'] = 'false'
-  end
-
-  # VMware Workstation specific options
-  config.vm.provider :vmware_workstation do |vw|
-    vw.vmx['memsize'] = '2048'
-    vw.vmx['numvcpus'] = '2'
-    vw.vmx['scsi0.virtualDev'] = 'lsisas1068'
-    vw.vmx['RemoteDisplay.vnc.enabled'] = 'false'
-  end
-
   # Virtualbox specific options
   config.vm.provider :virtualbox do |vb|
     vb.customize ['modifyvm', :id, '--memory', 2048]
     vb.customize ['modifyvm', :id, '--cpus', 2]
-    vb.customize ['modifyvm', :id, '--vram', 128]
     vb.customize ['modifyvm', :id, '--vram', 128]
     vb.customize ['setextradata', 'global', 'GUI/SuppressMessages', 'all']
   end
