@@ -24,9 +24,16 @@
     "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
     "vboxga_iso_path": "C:/Windows/Temp/VBoxGuestAdditions.iso",
 
+    "clean_winsxs": "true",
+    "clean_general": "true",
+    "remove_features_on_demand": "false",
+    "optimise_win_volume": "true",
+    "zero_free_space": "true",
+
     "shutdown_command": "A:/PackerShutdown.bat",
     "shutdown_timeout": "30m"
   },
+
   "builders": [
     {
       "type": "vmware-iso",
@@ -64,8 +71,10 @@
 
       "floppy_files": [
         "files/Autounattend.xml",
+        "files/DisableActionCentreSecurityNotifications.ps1",
         "files/DisableDefenderRTScanning.ps1",
         "files/DisableUAC.ps1",
+        "files/DisablePagefile.ps1",
         "files/ConfigureWindowsUpdates.ps1",
         "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1",
@@ -111,8 +120,10 @@
 
       "floppy_files": [
         "files/Autounattend.xml",
+        "files/DisableActionCentreSecurityNotifications.ps1",
         "files/DisableDefenderRTScanning.ps1",
         "files/DisableUAC.ps1",
+        "files/DisablePagefile.ps1",
         "files/ConfigureWindowsUpdates.ps1",
         "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1",
@@ -133,14 +144,26 @@
       "type": "powershell",
       "environment_vars": [
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
-        "VBOXGA_ISO_PATH={{user `vboxga_iso_path`}}"
+        "VBOXGA_ISO_PATH={{user `vboxga_iso_path`}}",
+        "CLEAN_WINSXS={{user `clean_winsxs`}}",
+        "CLEAN_GENERAL={{user `clean_general`}}",
+        "REMOVE_FEATURES_ON_DEMAND={{user `remove_features_on_demand`}}",
+        "OPTIMISE_WIN_VOLUME={{user `optimise_win_volume`}}",
+        "ZERO_FREE_SPACE={{user `zero_free_space`}}"
       ],
       "scripts": [
         "files/DontExpireVagrantPassword.ps1",
         "files/InstallGuestTools.ps1",
         "files/EnableDefenderRTScanning.ps1",
         "files/EnableUAC.ps1",
-        "files/SetupPostSysprep.ps1"
+        "files/EnableActionCentreSecurityNotifications.ps1",
+        "files/EnablePagefile.ps1",
+        "files/SetupPostSysprep.ps1",
+        "files/CleanWinSxS.ps1",
+        "files/CleanGeneral.ps1",
+        "files/RemoveWindowsFeatureOnDemand.ps1",
+        "files/OptimiseWindowsVolume.ps1",
+        "files/ZeroFreeSpace.ps1"
       ]
     }
   ],

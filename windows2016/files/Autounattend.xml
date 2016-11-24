@@ -135,21 +135,31 @@
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
                     <Order>1</Order>
+                    <Description>Disable Security and Maintenance notifications in Action Center</Description>
+                    <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\DisableActionCentreSecurityNotifications.ps1</CommandLine>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>2</Order>
                     <Description>Disable Windows Defender real-time protection</Description>
                     <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\DisableDefenderRTScanning.ps1</CommandLine>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>2</Order>
+                    <Order>3</Order>
                     <Description>Disable UAC to allow automated install of Windows Updates</Description>
                     <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\DisableUAC.ps1</CommandLine>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>3</Order>
+                    <Order>4</Order>
+                    <Description>Disable Windows Pagefile to reduce image size</Description>
+                    <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\DisablePagefile.ps1</CommandLine>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>5</Order>
                     <Description>Configure Windows Updates</Description>
                     <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\ConfigureWindowsUpdates.ps1</CommandLine>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>4</Order>
+                    <Order>6</Order>
                     <Description>Install Windows Updates</Description>
                     <CommandLine>c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe a:\WindowsUpdates.ps1</CommandLine>
                 </SynchronousCommand>
