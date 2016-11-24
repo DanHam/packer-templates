@@ -54,6 +54,8 @@ function Check-ContinueRestartOrEnd() {
             }
 
             LogWrite 'Restart Required - Restarting...'
+            # Allow time to view output before window is closed
+            Start-Sleep -Seconds 5
             Restart-Computer
         }
         default {
