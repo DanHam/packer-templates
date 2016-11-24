@@ -154,5 +154,4 @@
             </FirstLogonCommands>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim:c:/users/vagrant/documents/adk/images/windows2016/install.wim#Windows Server 2016 SERVERSTANDARDCORE" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>
