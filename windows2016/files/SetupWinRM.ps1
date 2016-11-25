@@ -26,10 +26,8 @@ winrm set winrm/config/client/auth '@{Basic="true"}' | Out-Null
 # Adjust default quota management settings for remote shells
 Write-Host '* Increasing limit on max memory allocatable to remote shells'
 winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="2048"}' | Out-Null
-Write-Host '* Increasing the max concurrent users who can open shells to 30'
-winrm set winrm/config/winrs '@{MaxConcurrentUsers="30"}' | Out-Null
-Write-Host '* Increasing the max number of processes per shell to 30'
-winrm set winrm/config/winrs '@{MaxProcessesPerShell="30"}' | Out-Null
+Write-Host '* Increasing the max concurrent users who can open shells to 10'
+winrm set winrm/config/winrs '@{MaxConcurrentUsers="10"}' | Out-Null
 
 Write-Host '* Restarting the WinRM service'
 Stop-Service -Name WinRM
