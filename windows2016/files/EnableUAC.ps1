@@ -3,15 +3,15 @@
 Write-Host 'Ensuring UAC is enabled'
 
 # UAC is set to enabled when the registry setting has a value of 1
-$RegKey = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
-$RegSetting = 'EnableLUA'
+$Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
+$Setting = 'EnableLUA'
 
-$CurrentValue = (Get-ItemPropertyValue -Path $RegKey -Name $RegSetting)
+$CurrentValue = (Get-ItemProperty -Path $Key -Name $Setting).$Setting
 
 If ( $CurrentValue -ne 1 ) {
     Write-Host '* Re-enabling UAC as it is currently disabled'
-    Set-ItemProperty -Path $RegKey -Name $RegSetting -Type DWORD -Value 1 -Force
-    Write-Host '* WARNING: A reboot will be required to activate the setting'
+    Set-ItemProperty -Path $Key -Name $Setting -Type DWORD -Value 1 -Force
+    Write-Host '* WARNING: A reboot will be required to activate UAC'
 }
 elseif ( $CurrentValue -eq 1 )
 {
