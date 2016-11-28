@@ -9,3 +9,4 @@
 # Ignore scripts to remove/clean build artifacts
 */clean
 # Ignore logs
+*log
