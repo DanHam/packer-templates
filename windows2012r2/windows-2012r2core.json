@@ -22,7 +22,6 @@
     "cpu_count": "2",
 
     "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
-    "vboxga_iso_path": "C:/Windows/Temp/VBoxGuestAdditions.iso",
 
     "clean_winsxs": "true",
     "clean_general": "true",
@@ -102,8 +101,7 @@
       "vm_name": "{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
       "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
-      "guest_additions_mode": "upload",
-      "guest_additions_path": "{{user `vboxga_iso_path`}}",
+      "guest_additions_mode": "attach",
 
       "hard_drive_interface": "sata",
       "disk_size": "{{user `disk_size`}}",
@@ -140,7 +138,6 @@
       "type": "powershell",
       "environment_vars": [
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
-        "VBOXGA_ISO_PATH={{user `vboxga_iso_path`}}",
         "CLEAN_WINSXS={{user `clean_winsxs`}}",
         "CLEAN_GENERAL={{user `clean_general`}}",
         "REMOVE_FEATURES_ON_DEMAND={{user `remove_features_on_demand`}}",
