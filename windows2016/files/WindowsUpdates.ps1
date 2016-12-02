@@ -21,6 +21,7 @@ function ExitAndRunNextBuildScript {
     Start-Sleep -Seconds 2
     $NextScript = 'A:\SetupWinRM.ps1'
     Invoke-Expression -Command "$NextScript -AutoStart"
+    exit
 }
 
 function LogWrite {
