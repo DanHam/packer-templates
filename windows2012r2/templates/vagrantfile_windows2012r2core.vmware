@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = 'windows-2012r2core'
+
+  # Configure Vagrant for Windows
+  config.vm.guest = :windows
+  config.vm.communicator = 'winrm'
+
+  # Default Vagrant user
+  config.winrm.username = 'vagrant'
+  config.winrm.password = 'vagrant'
+
+  # VMware Fusion specific options
+  config.vm.provider :vmware_fusion do |vf|
+    vf.vmx['memsize'] = '2048'
+    vf.vmx['numvcpus'] = '2'
+    vf.vmx['scsi0.virtualDev'] = 'lsisas1068'
+    vf.vmx['RemoteDisplay.vnc.enabled'] = 'false'
+  end
+
+  # VMware Workstation specific options
+  config.vm.provider :vmware_workstation do |vw|
+    vw.vmx['memsize'] = '2048'
+    vw.vmx['numvcpus'] = '2'
+    vw.vmx['scsi0.virtualDev'] = 'lsisas1068'
+    vw.vmx['RemoteDisplay.vnc.enabled'] = 'false'
+  end
+end
