@@ -4,7 +4,7 @@
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
-    "debug": "true",
+    "debug": "false",
     "headless": "true",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7x86_64/CentOS-7-x86_64-DVD-1611.iso",
