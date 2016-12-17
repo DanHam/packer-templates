@@ -99,7 +99,7 @@ if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
     ANSWERS_FILE="$(mktemp -t --tmpdir=/tmp vmware-answer-XXXXXX.txt)"
     # Output answers to the temp file
     printf "%s" "\
-        # Proceed with legacy installer?
+        # Check for missing kernel drivers?
         yes
         # Directory to install binary files?
         /usr/bin
@@ -113,28 +113,24 @@ if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
         /usr/lib/vmware-tools
         # Create the directory for library files?
         yes
-        # Directory in which to install the common agent library files?
-        /usr/lib
-        # Directory in which to install the common agent transient files?
-        /var/lib
         # Directory in which to install the documentation files?
-        /usr/share/docs/vmware-tools
+        /usr/share/doc/vmware-tools
         # Create the directory for documentation files?
         yes
         # Configure VMware Tools now?
         yes
+        # Overwrite open-vm-tools vmware-hgfsclient binary?
+        no
+        # Overwrite open-vm-tools vmhgfs-fuse binary?
+        no
         # Enable the shared folders feature for Worstation/Fusion?
         yes
         # Change the path to the detected value of the gcc binary?
         no
         # Change the path to the detected location of the kernel headers?
         no
-        # Enable drag and drop copying of files between host and guest?
-        no
         # Enable automatic rebuild of VMware kernel modules?
         yes
-        # Enable the Guest Authentication feature?
-        no
     " | sed 's/^ *//g' | egrep -v "^#|$^" > ${ANSWERS_FILE}
 fi
 
