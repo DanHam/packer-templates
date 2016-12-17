@@ -1,14 +1,14 @@
 {
   "variables": {
-    "template": "centos-72-x86_64",
+    "template": "centos-73-x86_64",
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
     "debug": "false",
     "headless": "true",
 
-    "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7.2x86_64/CentOS-7-x86_64-DVD-1511.iso",
-    "iso_checksum": "907e5755f824c5848b9c8efbb484f3cd945e93faa024bad6ba875226f9683b16",
+    "iso_url": "file:///Users/dan/stuff/iso/os/centos/centos7x86_64/CentOS-7-x86_64-DVD-1611.iso",
+    "iso_checksum": "c455ee948e872ad2194bdddd39045b83634e8613249182b88f549bb2319d97eb",
     "iso_checksum_type": "sha256",
 
     "installer_boot_time": "5s",
