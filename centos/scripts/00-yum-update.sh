@@ -39,7 +39,7 @@ fi
 
 # Check if updates are required and store the list of update packages
 yum check-update > $UPDATE_FILE
-# yum check-update provides the following exit codes:
+#: yum check-update provides the following exit codes:
 #     100 => updates are available
 #     1   => an error occurred
 #     0   => no updates
@@ -71,13 +71,26 @@ yum clean all > $REDIRECT
 
 # Reboot if required
 if [ $REBOOT == 1 ]; then
-    echo "System restart required post install of updates. Rebooting..."
+    echo "System restart required post install of updates."
+    echo "Stopping the ssh server and then rebooting..."
     # Give time for the output to be logged/sent back to Packer
     sleep 1 # ... ok, so it's pretty quick!
-    # nohup prevents freezes in Packer due to execution moving to the next
-    # script while a reboot is in progress. This should be coupled with a
-    # "pause_before" stanza for the next provisioner in the Packer
-    # to guarantee the required behaviour.
+    # Regardless of what we try and do with shutdown commands there still
+    # seem to be certain situations under which Packer will freeze due to
+    # a reboot interupting a ssh session. Currently, this behaviour occurs
+    # when, having completed execution of this script, Packer will
+    # establish a new ssh session to clean up and remove this script.
+    # The connection is successfully established while the machine is
+    # shutting down. Packer then doesn't seem to pick up that the
+    # connection has dissapeared and sits there doing nothing! This only
+    # occurs with the Virtualbox builder, and then only if headless is set
+    # to true, and all that has only occurred after the change to CentOS
+    # 7.3...
+    # Although rather ugly, for the time being it seems it's safer to
+    # deliberately kill the ssh session so that Packer detects the
+    # disconnect and then cannot reconnect until the reboot is complete
+    systemctl stop sshd.service
+    # Reboot
     nohup shutdown --reboot now </dev/null >/dev/null 2>&1 &
 fi
 
