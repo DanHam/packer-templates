@@ -38,9 +38,6 @@ $Key = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
 $Setting = 'LocalAccountTokenFilterPolicy'
 Set-ItemProperty -Path $Key -Name $Setting -Value 1 -Force
 
-# Give WinRM time to become fully operational before allowing access
-Start-Sleep -Seconds 3
-
 Write-Host '* Configuring Windows firewall to allow access to WinRM'
 (Get-NetFirewallRule -DisplayGroup 'Windows Remote Management').Name | % {
     Set-NetFirewallRule -Name $_ -Direction Inbound -Action Allow
