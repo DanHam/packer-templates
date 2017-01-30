@@ -51,7 +51,7 @@ if ($platform -like '*innotek*') {
         Write-Host '* Adding Oracle CA cert to Trusted Publisher store'
         certutil -addstore -f 'TrustedPublisher' A:\oracle.cer | Out-Null
         Write-Host '* Installing the Guest Additions'
-        $parameters = '/S'
+        $parameters = '/l /S'
         Start-Process $installer $parameters -Wait
     } else {
         Write-Host '* WARNING: Failed to find Guest Additions installer'
