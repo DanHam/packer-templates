@@ -13,4 +13,4 @@ REM Windows Setup but before the first logon screen is displayed.
 netsh advfirewall firewall set rule group="Windows Remote Management" new enable=No
 
 REM Sysprep the machine
-c:\windows\system32\sysprep\sysprep.exe /oobe /generalize /shutdown /quiet /unattend:A:\SysprepUnattend.xml
+c:\windows\system32\sysprep\sysprep.exe /oobe /generalize /mode:vm /shutdown /quiet /unattend:A:\SysprepUnattend.xml
