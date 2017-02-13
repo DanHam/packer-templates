@@ -28,11 +28,12 @@ if ($platform -like '*innotek*') {
     # If we have found and mounted the ISO or if we are checking whether
     # the Guest Additions have been 'attached' the same method can be
     # used to enumerate the drive letter and root and subsequently set the
-    # path to the installer.
+    # path to the installer and software signing certificates.
     # If we have found and mounted the ISO but fail to find the installer
-    # it's possible the ISO is corrupt. Otherwise it's possible the ISO
-    # has not been attached. It could also be possible in either case that
-    # the name of the installer has been changed
+    # or certificates it's possible the ISO is corrupt. Otherwise it's
+    # possible the ISO has not been attached. It could also be possible in
+    # either case that the name of the installer or certificate directory
+    # has been changed.
     Get-Volume | % {
         if ( $($_.FileSystemLabel) -like 'VBOXADDITIONS*' ) {
             Write-Host "* Guest Additions in Volume $($_.DriveLetter)"
@@ -42,19 +43,32 @@ if ($platform -like '*innotek*') {
             if (Test-Path -Path $installer) {
                 [bool]$vboxga_installer_found = $true
             }
+            # Set the full path to the software signing certificates
+            $certdir = $root + 'cert'
+            if (Test-Path -Path $certdir) {
+                $certs = Get-ChildItem -Path $certdir -Recurse | where {
+                    $_.Extension -eq ".cer" } | % { $_.FullName }
+                if ($certs) {
+                    [bool]$vboxga_certs_found = $true
+                }
+            }
         }
     }
 
     # Install the Guest Additions
-    if ($vboxga_installer_found) {
-        # Install the Oracle certificate so the vbox additions are trusted
-        Write-Host '* Adding Oracle CA cert to Trusted Publisher store'
-        certutil -addstore -f 'TrustedPublisher' A:\oracle.cer | Out-Null
+    if ($vboxga_installer_found -and $vboxga_certs_found) {
+        # Install all the Oracle signing certificates. This will ensure
+        # the vbox additions drivers and software are trusted and will
+        # prevent errors in the silent install
+        Write-Host '* Adding Oracle signing certs to Trusted Publisher store'
+        foreach ($cert in $certs) {
+            certutil -addstore -f 'TrustedPublisher' $cert | Out-Null
+        }
         Write-Host '* Installing the Guest Additions'
         $parameters = '/l /S'
         Start-Process $installer $parameters -Wait
     } else {
-        Write-Host '* WARNING: Failed to find Guest Additions installer'
+        Write-Host '* WARNING: Guest Additions installer or certs not found'
     }
 
     # Regardless of whether the installer was actually found, If the Guest

@@ -121,7 +121,6 @@
         "files/ConfigureWindowsUpdates.ps1",
         "files/WindowsUpdates.ps1",
         "files/SetupWinRM.ps1",
-        "files/oracle.cer",
         "files/PackerShutdown.bat",
         "files/SysprepUnattend.xml",
         "files/SetupComplete.cmd"
