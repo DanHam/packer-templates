@@ -15,7 +15,7 @@
     "winrm_password": "vagrant",
     "winrm_timeout": "5h",
 
-    "headless": "false",
+    "headless": "true",
 
     "disk_size": "51200",
     "memory_size": "2048",
