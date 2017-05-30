@@ -125,10 +125,6 @@ if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
         no
         # Enable the shared folders feature for Worstation/Fusion?
         yes
-        # Change the path to the detected value of the gcc binary?
-        no
-        # Change the path to the detected location of the kernel headers?
-        no
         # Enable automatic rebuild of VMware kernel modules?
         yes
     " | sed 's/^ *//g' | egrep -v "^#|$^" > ${ANSWERS_FILE}
