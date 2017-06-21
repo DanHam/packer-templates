@@ -18,7 +18,7 @@
     "memory_size": "512",
     "cpu_count": "1",
     "disk_size_vmware": "10240",
-    "disk_size_virtualbox": "2048",
+    "disk_size_virtualbox": "10240",
     "disk_size_amazon": "2048",
     "vmtools_shared_folders": "true",
     "vmtools_shared_folders_fstab": "false",
