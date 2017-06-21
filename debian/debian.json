@@ -5,7 +5,7 @@
     "guest_os_type_virtualbox": "Debian_64",
     "part_scheme": "std",
 
-    "debug": "true",
+    "debug": "false",
     "headless": "false",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.0x86_64/debian-9.0.0-amd64-netinst.iso",
