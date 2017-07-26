@@ -173,7 +173,7 @@
         ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
         ["modifyvm", "{{.Name}}", "--vram", "16"],
         ["modifyvm", "{{.Name}}", "--audio", "none"],
-        ["modifyvm", "{{.Name}}", "--usb", "off"]
+        ["modifyvm", "{{.Name}}", "--usb", "off"],
         ["setextradata", "global", "GUI/SuppressMessages", "all"]
       ],
       "vm_name": "{{user `template`}}-{{build_name}}",
