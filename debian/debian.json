@@ -6,7 +6,7 @@
     "part_scheme": "std",
 
     "debug": "false",
-    "headless": "false",
+    "headless": "true",
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.0x86_64/debian-9.0.0-amd64-netinst.iso",
     "iso_checksum": "08a25863ae2369de462e55b539050dab0adb03262a4aefda208e907ef9ea2fff2158a77f6a6eddb4ac7fbd2fcc9cc64edd34f70e211eceac4bb6f308fefc3f0a",
@@ -239,9 +239,10 @@
         "scripts/00-grub-config.sh",
         "scripts/01-disable-system-beep.sh",
         "scripts/02-configure-ssh.sh",
-        "scripts/03-debian-fix-mesg-n-when-not-tty.sh",
-        "scripts/04-configure-chrony.sh",
-        "scripts/05-configure-timedate-settings.sh"
+        "scripts/03-configure-chrony.sh",
+        "scripts/04-configure-timedate-settings.sh",
+        "scripts/05-debian-fix-mesg-n-when-not-tty.sh",
+        "scripts/06-debian-fix-console-setup-keyboard.sh"
       ]
     },
     {
