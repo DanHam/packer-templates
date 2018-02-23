@@ -61,6 +61,8 @@
     "sysprep_op_tmp_files": "true",
     "sysprep_op_yum_uuid": "true",
 
+    "zero_script_upload_path": "/tmp/zero-free-space.sh",
+
     "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}"
   },
@@ -404,10 +406,18 @@
       ]
     },
     {
+      "type": "file",
+      "source": "scripts/zero-free-space.sh",
+      "destination": "{{user `zero_script_upload_path`}}"
+    },
+    {
       "type": "shell",
+      "environment_vars": [
+        "ZERO_SCRIPT_UPLOAD_PATH={{user `zero_script_upload_path`}}"
+      ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/91-zero-free-space.sh"
+        "scripts/90-create-zero-free-space-unit-file.sh"
       ]
     }
   ],
