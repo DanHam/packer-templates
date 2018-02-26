@@ -113,4 +113,9 @@ fi
 
 echo "Complete" >> ${REDIRECT}
 
+# Ensure logging output is written to disk as the next steps in the
+# shutdown process unmount the filesystems
+sync
+
+
 exit 0
