@@ -20,14 +20,14 @@ Requires=multi-user.target
 Type=oneshot
 RemainAfterExit=yes
 ExecStart=/bin/true
-ExecStop=/sbin/userdel --force --remove --selinux-user packer
+ExecStop=/usr/sbin/userdel --force --remove packer
 # Delete the passwd, shadow, and group backup files as they will include
 # the packer build user, password and group
-ExecStop=/usr/bin/rm -f /etc/passwd- /etc/shadow- /etc/group-
-ExecStop=/usr/bin/rm -f /etc/sudoers.d/packer
+ExecStop=/bin/rm -f /etc/passwd- /etc/shadow- /etc/group-
+ExecStop=/bin/rm -f /etc/sudoers.d/packer
 # Remove and disable this unit on first run
 ExecStop=/usr/bin/find /etc/systemd/system/ -name ${UNIT} \
-    -exec /usr/bin/rm -f '{}' \;
+    -exec /bin/rm -f '{}' \;
 
 [Install]
 WantedBy=multi-user.target
