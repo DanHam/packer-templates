@@ -8,6 +8,7 @@ echo "Creating packer-virt-sysprep systemd unit file..."
 
 # Unit file
 UNIT_FILE_LOCATION="/etc/systemd/system/packer-virt-sysprep.service"
+UNIT="${UNIT_FILE_LOCATION##*/}"
 
 # The directory that is to be used to hold all packer-virt-sysprep files
 # and operations scripts is specified in the Packer configuration template
@@ -25,8 +26,15 @@ Requires=multi-user.target
 Type=oneshot
 RemainAfterExit=yes
 ExecStart=/bin/true
+# Run all required packer-virt-sysprep operations
 ExecStop=${PREFIX}/packer-virt-sysprep-run-ops.sh
-ExecStop=${PREFIX}/packer-virt-sysprep-cleanup.sh
+# Remove all packer-virt-sysprep scripts; Disable and remove associated
+# systemd services upon first use
+ExecStop=/bin/rm -rf ${PACKER_VIRT_SYSPREP_DIR}
+# Use find/rm to disable and remove the unit file as systemd seems to run
+# into problems when systemctl commands are used within a unit file
+ExecStop=/usr/bin/find /etc/systemd/system/ -name ${UNIT} \
+    -exec /bin/rm -f '{}' \;
 
 [Install]
 WantedBy=multi-user.target
