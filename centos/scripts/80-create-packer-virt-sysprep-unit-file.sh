@@ -30,11 +30,11 @@ ExecStart=/bin/true
 ExecStop=${PREFIX}/packer-virt-sysprep-run-ops.sh
 # Remove all packer-virt-sysprep scripts; Disable and remove associated
 # systemd services upon first use
-ExecStop=/usr/bin/rm -rf ${PACKER_VIRT_SYSPREP_DIR}
+ExecStop=/bin/rm -rf ${PACKER_VIRT_SYSPREP_DIR}
 # Use find/rm to disable and remove the unit file as systemd seems to run
 # into problems when systemctl commands are used within a unit file
 ExecStop=/usr/bin/find /etc/systemd/system/ -name ${UNIT} \
-    -exec /usr/bin/rm -f '{}' \;
+    -exec /bin/rm -f '{}' \;
 
 [Install]
 WantedBy=multi-user.target
