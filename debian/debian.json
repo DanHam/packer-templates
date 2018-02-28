@@ -425,8 +425,7 @@
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/90-set-apt-install-recommends.sh",
-        "scripts/91-packer-cleanup.sh",
-        "scripts/92-zero-free-space.sh"
+        "scripts/91-zero-free-space.sh"
       ]
     }
   ],
