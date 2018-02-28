@@ -1,15 +1,15 @@
 {
   "variables": {
-    "template": "debian-92-x86_64",
+    "template": "debian-93-x86_64",
     "guest_os_type_vmware": "debian8-64",
     "guest_os_type_virtualbox": "Debian_64",
     "part_scheme": "std",
 
     "debug": "false",
-    "headless": "true",
+    "headless": "false",
 
-    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.2x86_64/debian-9.2.1-amd64-netinst.iso",
-    "iso_checksum": "ebfe25dc593967e39349b205480b0ec0103ef4a0468c602f4857e13d06d407bfe876162399e0e8d4dea5675953dc37ab585316f307ccf9f4440124b4f719df04",
+    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.3x86_64/debian-9.3.0-amd64-netinst.iso",
+    "iso_checksum": "8775231d6f56a3d8f116eb64fe048f5cbd2ea0f8c092a1cb7608bcb4106f9c85cb69ce68f53bd381019ab40f1c0316843036daf3fd9107c81c58a240334cc747",
     "iso_checksum_type": "sha512",
 
     "installer_boot_time": "5s",
