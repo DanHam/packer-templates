@@ -416,8 +416,7 @@
       "scripts": [
         "scripts/80-create-packer-virt-sysprep-unit-file.sh",
         "scripts/81-create-packer-virt-sysprep-run-control-script.sh",
-        "scripts/83-set-up-packer-virt-sysprep-service.sh",
-        "scripts/84-create-remove-packer-user-unit-file.sh"
+        "scripts/82-create-remove-packer-user-unit-file.sh"
       ]
    },
    {
