@@ -24,8 +24,10 @@
     "vmtools_shared_folders_fstab": "false",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
-    "ssh_username": "root",
+    "ssh_username": "packer",
     "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
+
+    "shutdown_command": "sudo /sbin/poweroff",
 
     "admin_create_vmware": "true",
     "admin_create_virtualbox": "true",
@@ -111,7 +113,7 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "10000s",
 
-      "shutdown_command": "/sbin/poweroff"
+      "shutdown_command": "{{user `shutdown_command`}}"
     },
     {
       "type": "virtualbox-iso",
@@ -158,7 +160,7 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "10000s",
 
-      "shutdown_command": "/sbin/poweroff"
+      "shutdown_command": "{{user `shutdown_command`}}"
     },
     {
       "name": "amazon-builder",
@@ -206,21 +208,21 @@
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
       "ssh_wait_timeout": "10000s",
 
-      "shutdown_command": "/sbin/poweroff"
+      "shutdown_command": "{{user `shutdown_command`}}"
     }
   ],
 
   "provisioners": [
     {
       "type": "shell",
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}",
         "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}"
       ],
       "inline": [
-        "mkdir $PACKER_DIR",
-        "mkdir $PACKER_VIRT_SYSPREP_DIR"
+        "mkdir --mode=777 $PACKER_DIR",
+        "mkdir --mode=777 $PACKER_VIRT_SYSPREP_DIR"
       ]
     },
     {
@@ -234,7 +236,7 @@
       "environment_vars": [
         "DEBUG={{user `debug`}}"
       ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/00-grub-config.sh",
         "scripts/01-disable-system-beep.sh",
@@ -263,7 +265,7 @@
         "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
         "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
       ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/10-create-admin-user.sh",
         "scripts/11-configure-sudoers.sh",
@@ -288,7 +290,7 @@
         "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
         "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
       ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
             "scripts/11-configure-sudoers.sh",
@@ -319,7 +321,7 @@
         "AWS_IMPORT_FIX_FIXES_SCRIPT=aws-import-fixes-and-cleanup.sh",
         "AWS_IMPORT_FIX_CLEAN_SCRIPT=aws-import-fix-clean.sh"
       ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
             "scripts/11-configure-sudoers.sh",
@@ -396,7 +398,7 @@
           ]
         }
       },
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/80-create-packer-virt-sysprep-unit-file.sh",
         "scripts/81-create-packer-virt-sysprep-run-control-script.sh",
@@ -409,7 +411,7 @@
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}"
       ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "inline": [
         "rm -rf $PACKER_DIR"
       ]
@@ -420,7 +422,7 @@
         "DEBUG={{user `debug`}}",
         "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}"
       ],
-      "execute_command": "{{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/90-set-apt-install-recommends.sh",
         "scripts/91-packer-cleanup.sh",
