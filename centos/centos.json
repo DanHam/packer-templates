@@ -251,8 +251,7 @@
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-configure-sudoers.sh",
-            "scripts/12-selinux.sh",
+            "scripts/11-selinux.sh",
             "scripts/20-install-open-vm-tools.sh",
             "scripts/21-install-vmware-tools.sh"
       ]
@@ -278,8 +277,7 @@
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-configure-sudoers.sh",
-            "scripts/12-selinux.sh",
+            "scripts/11-selinux.sh",
             "scripts/20-install-vbox-guest-additions.sh"
       ]
     },
@@ -311,8 +309,7 @@
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
             "scripts/10-create-admin-user.sh",
-            "scripts/11-configure-sudoers.sh",
-            "scripts/12-selinux.sh",
+            "scripts/11-selinux.sh",
             "scripts/20-install-cloud-packages.sh",
             "scripts/21-aws-configure-cloud-init.sh",
             "scripts/22-aws-disable-cloud-init-services.sh",
