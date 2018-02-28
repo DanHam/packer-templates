@@ -33,10 +33,10 @@ ExecStart=/bin/true
 # Run the script to zero out all free space on filesystems
 ExecStop=${ZERO_SCRIPT_LOCATION}
 # Remove the script after running
-ExecStop=/usr/bin/rm -f ${ZERO_SCRIPT_LOCATION}
+ExecStop=/bin/rm -f ${ZERO_SCRIPT_LOCATION}
 # Remove and disable this unit on first run
 ExecStop=/usr/bin/find /etc/systemd/system/ -name ${UNIT} \
-    -exec /usr/bin/rm -f '{}' \;
+    -exec /bin/rm -f '{}' \;
 
 [Install]
 WantedBy=multi-user.target
