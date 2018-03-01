@@ -15,9 +15,9 @@ fi
 APT_RECOMMENDS="/etc/apt/apt.conf.d/00InstallRecommends"
 
 if [ -e ${APT_RECOMMENDS} ]; then
-    # Although simply deleting the file would restore the default behaviour
-    # it's convenient to have it left in place in case the user wants to
-    # revert change this setting in the future
+    # Although simply deleting the file would restore the default
+    # behaviour it's convenient to have it left in place in case the
+    # user wants to revert change this setting in the future
     sed -i '/^APT::Install-Recommends/ s/false/true/' ${APT_RECOMMENDS}
 fi
 
