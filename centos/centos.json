@@ -5,7 +5,7 @@
     "guest_os_type_virtualbox": "RedHat_64",
 
     "debug": "false",
-    "headless": "false",
+    "headless": "true",
 
     "iso_url": "/Users/dan/stuff/iso/os/centos/centos7x86_64/CentOS-7-x86_64-DVD-1708.iso",
     "iso_checksum": "ec7500d4b006702af6af023b1f8f1b890b6c7ee54400bb98cef968b883cd6546",
