@@ -71,6 +71,7 @@ do
 done
 
 # Remove packages
-yum -y remove ${REMOVE_LIST[@]} > $REDIRECT
+yum -C -y remove --setopt="clean_requirements_on_remove=1" \
+    ${REMOVE_LIST[@]} > $REDIRECT
 
 exit 0
