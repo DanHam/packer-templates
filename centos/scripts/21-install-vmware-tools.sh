@@ -39,15 +39,23 @@
 #   * make
 #   * kernel-headers
 #   * kernel-devel
+#
+# Since the image is typically rebuilt when kernel updates are required
+# we won't need the ability to compile the VMware tools again.
+# As such, with the exception of make (which is installed as part of the
+# base install), these packages are removed post build and install of the
+# VMware tools modules.
+# The option to automatically rebuild VMware tools kernel modules when
+# the kernel is upgraded is explicitly disabled.
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "${DEBUG}" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
 
 # Configure list of packages that need to be installed
-PACKAGES=" perl gcc make kernel-headers kernel-devel"
+PACKAGES=" perl gcc kernel-headers kernel-devel"
 # Install required package
 echo "Installing packages required by the VMware tools installer..."
-yum -y install $PACKAGES > ${REDIRECT}
+yum -y install ${PACKAGES} > ${REDIRECT}
 
 # Set the path to the perl executable
 PERL="$(command -v perl)"
@@ -126,7 +134,7 @@ if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
         # Enable the shared folders feature for Worstation/Fusion?
         yes
         # Enable automatic rebuild of VMware kernel modules?
-        yes
+        no
     " | sed 's/^ *//g' | egrep -v "^#|$^" > ${ANSWERS_FILE}
 fi
 
@@ -158,11 +166,15 @@ umount ${VMWARE_MNT}
 rm -rf ${VMWARE_EXTRACT} ${VMWARE_MNT} ${VMWARE_ISO} ${ANSWERS_FILE}
 
 
-# Configure VMware Tools to automatically rebuild kernel modules post
-# update of the kernel
-echo "Configuring VMware tools to rebuild modules upon kernel update..."
-sed -i.bak 's/answer AUTO_KMODS_ENABLED_ANSWER no/answer AUTO_KMODS_ENABLED_ANSWER yes/g' ${VMWARE_CONFIG}
-sed -i 's/answer AUTO_KMODS_ENABLED no/answer AUTO_KMODS_ENABLED yes/g' ${VMWARE_CONFIG}
+# Configure VMware Tools to disable the automatic rebuild of kernel
+# modules post update of the kernel
+echo "Preventing tools from auto rebuiling modules on kernel update..."
+sed -i 's/answer AUTO_KMODS_ENABLED_ANSWER yes/answer AUTO_KMODS_ENABLED_ANSWER no/g' ${VMWARE_CONFIG}
+sed -i 's/answer AUTO_KMODS_ENABLED yes/answer AUTO_KMODS_ENABLED no/g' ${VMWARE_CONFIG}
 
+# Remove all packages (and deps) required to build and install the tools
+echo "Removing all packages required to build and install the tools..."
+yum -C remove -y --setopt="clean_requirements_on_remove=1" ${PACKAGES} > \
+    ${REDIRECT}
 
 exit 0
