@@ -35,7 +35,7 @@ if ($platform -like '*innotek*') {
     # either case that the name of the installer or certificate directory
     # has been changed.
     Get-Volume | % {
-        if ( $($_.FileSystemLabel) -like 'VBOXADDITIONS*' ) {
+        if ( $($_.FileSystemLabel) -like 'VBox*' ) {
             Write-Host "* Guest Additions in Volume $($_.DriveLetter)"
             $root = (Get-PSDrive -Name $($_.DriveLetter)).Root
             # Set the full path to the installer
