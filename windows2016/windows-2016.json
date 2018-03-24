@@ -18,7 +18,7 @@
     "headless": "true",
 
     "disk_size": "51200",
-    "memory_size": "2048",
+    "memory_size": "4096",
     "cpu_count": "2",
 
     "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
@@ -114,6 +114,9 @@
         ["modifyvm", "{{.Name}}", "--audio", "none"],
         ["modifyvm", "{{.Name}}", "--usb", "off"],
         ["setextradata", "global", "GUI/SuppressMessages", "all"]
+      ],
+      "export_opts": [
+        "--ovf20"
       ],
 
       "floppy_files": [

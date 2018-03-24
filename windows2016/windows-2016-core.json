@@ -114,6 +114,9 @@
         ["modifyvm", "{{.Name}}", "--usb", "off"],
         ["setextradata", "global", "GUI/SuppressMessages", "all"]
       ],
+      "export_opts": [
+        "--ovf20"
+      ],
 
       "floppy_files": [
         "answer_files/{{user `template`}}/Autounattend.xml",
