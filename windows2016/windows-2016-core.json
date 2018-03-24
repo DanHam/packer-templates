@@ -146,6 +146,7 @@
         "ZERO_FREE_SPACE={{user `zero_free_space`}}"
       ],
       "scripts": [
+        "files/DotNetOptimizationSpeedUp.ps1",
         "files/DontExpireVagrantPassword.ps1",
         "files/InstallGuestTools.ps1",
         "files/EnableDefenderRTScanning.ps1",
