@@ -4,7 +4,7 @@
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
-    "debug": "true",
+    "debug": "false",
     "headless": "true",
 
     "iso_url": "/Users/dan/stuff/iso/os/centos/centos7x86_64/CentOS-7-x86_64-DVD-1708.iso",
@@ -98,8 +98,7 @@
         "sound.present": "FALSE",
         "floppy0.present": "FALSE",
         "usb.present": "FALSE",
-        "usb.vbluetooth.startConnected": "FALSE",
-        "ethernet0.pcislotnumber": "32"
+        "usb.vbluetooth.startConnected": "FALSE"
       },
       "vm_name": "{{user `template`}}-{{build_name}}",
       "vmdk_name": "{{user `template`}}-{{build_name}}",
