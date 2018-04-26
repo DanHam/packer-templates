@@ -5,7 +5,8 @@
 # Ignore all output files
 */output-*/
 # Ignore boxes and associated files
-*/boxes/*
+*/boxes/*.box
+*/boxes/*.json
 # Ignore scripts to remove/clean build artifacts
 */clean
 # Ignore logs
