@@ -217,6 +217,7 @@
     {
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
+      "expect_disconnect": true,
       "environment_vars": [
         "DEBUG={{user `debug`}}"
       ],
