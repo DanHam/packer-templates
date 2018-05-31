@@ -100,7 +100,8 @@
         "sound.present": "FALSE",
         "floppy0.present": "FALSE",
         "usb.present": "FALSE",
-        "usb.vbluetooth.startConnected": "FALSE"
+        "usb.vbluetooth.startConnected": "FALSE",
+        "ethernet0.virtualDev": "vmxnet3"
       },
       "vm_name": "{{user `template`}}-{{build_name}}",
       "vmdk_name": "{{user `template`}}-{{build_name}}",
