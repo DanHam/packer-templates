@@ -24,7 +24,7 @@
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "ssh_username": "packer",
-    "ssh_private_key": "/Users/dan/.ssh/neos.id_rsa",
+    "ssh_private_key": "/Users/dan/.ssh/id_rsa",
     "ssh_timeout": "15m",
 
     "shutdown_command": "sudo /sbin/poweroff",
@@ -39,7 +39,7 @@
     "admin_groups": "wheel",
     "admin_shell": "/bin/bash",
     "admin_gecos": "CentOS Administrator",
-    "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHL7YEa3CXVSjYE2Msx5JTCe7z8e3WtER59aeYl9co1mUljR4xb427qCxbwW2D95mwds2/rQ2HdvV5gH1Y3SN6NQsu85X8LPgO2tnszkNkNjqi0JI4o/71wJ15gSOS3aA7iScj9Kvq6LdgDyEXTW+nyxNv5KWJr8jaRune3g/85rzHCihzIoiTH/dK3LyQdKd2FyujAQeGawexhgMkEKPfg85WE8GdpnolfWBtb94tyXjo21CKLbaGgTIXxqWLUpxnWgpMQlnCpp59UuShOxWbN+Usv7m0/cvAa22RJbidIzRIls3XQBIP8S8oayhW/TXfBLZ1rzK52JkFpyxM0qvlZuqLjwYJZQBp8+o9qot1UXnIFm0c62O8NoQGGcnE/hE71pUSmGxscy5uBlAIDP+Km1G7BIXCoL3KCXb06op4XJNPoqRYzVjREgNlFejKzLp+5TgPC6O4uKelAP5CdJCTPdvhwZtQ7vtS4UfbxTbHc4392y5+Zt8dNmRaKtgpqVkaqqzBf7yBlvbgROK3RJMG7oAszNOKIKH07bol9o+/t3JrdSgBaiYE6vNLJUzx3tSmnD1fLL1ZzyVnElFkrsoHwYBtlnnGqC6K3IlvtnkmPHL4bM68a0FhpRTsg+NMtUvZhYjoDZRBx5bgRHptIHT7QeICc7TcaRx1aKRqoPF9tw== neos@neos-infrastructure.com",
+    "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV14up9OBdbyUPuuSCUOnSyTZOTx4i13nyIASlkQpLs7zKUIJL8Sni7BASmN3LFi9+BsiuBxC3RkVj84H6fe+mKqC6zpdFtWE2dN7U0bOXGVnDPOSXcW7B52NRP+sL7ShTcpDBsLUq0N4Hc64XSTOAbfOiQY9OUPSiW5nUQSuPHm9K1G0w//dImqyiikBWvBWJag2phaZDbeOz7nHcOdZnLhv0uWZBq/YRSdo0Jyn3yg/lG07PaWslPPw2s4eG7i/eWNbkWUshvRGdzU+pf5NCQl4iCetuaXlPUpIFZzjTgPE5IE+gXCue7Bg08ZAz25lk3g8B3TYlhfCkVm/8nQAGuYnTLMfxwacPJIXDTd/mD7efyNOOpz8nmylZoaiFBVrQWdmlVopqIMXArK+/NE4Md58ErUKPQY0Z/J/rFANN4JRFVU2XcC/0wl+uTvPxigspLpozp4mmjG/JCUhTNbihK/ICd4G87Xl+SAGoCEfly3NQcXpLgRUJou255Gj+CkRT2cOeCoNDhLlDLJ7d/twB0LzVfgQAGMCMWButudiCaX6NOSDhUAcHIKoNxQN28cO1xKGrEKxlw0iR2XWUftowxjfvifRYlbHAtrw6UXofNiZWfl8fPpHKPvbEgB83kK3OMWMP1cUAksMCUJdD8hCMPFxLS9Kj6cSz9Xlq/CSKyQ== JustSomeFooKey",
 
     "selinux_relabel_vmware": "false",
     "selinux_relabel_virtualbox": "false",
@@ -447,7 +447,7 @@
       "access_key": "{{user `aws_access_key`}}",
       "secret_key": "{{user `aws_secret_key`}}",
       "region": "eu-west-2",
-      "s3_bucket_name": "neos-infrastructure.com-eu-west-2-vmimport-bucket",
+      "s3_bucket_name": "foosite.co.uk-vmimport",
       "s3_key_name": "{{user `template`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
       "ami_name": "{{user `template`}}-{{isotime \"2006-01-02-150405\"}}",
       "skip_clean": "false",
