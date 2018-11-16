@@ -28,8 +28,7 @@
 
     "shutdown_command": "sudo /sbin/poweroff",
 
-    "admin_create_vmware": "true",
-    "admin_create_virtualbox": "true",
+    "admin_create": "true",
     "admin_user": "debadmin",
     "admin_group": "debadmin",
     "admin_uid": "1000",
@@ -185,7 +184,16 @@
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
-        "DEBUG={{user `debug`}}"
+        "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
@@ -195,7 +203,8 @@
         "scripts/03-configure-chrony.sh",
         "scripts/04-configure-timedate-settings.sh",
         "scripts/05-debian-fix-mesg-n-when-not-tty.sh",
-        "scripts/06-debian-fix-console-setup-keyboard.sh"
+        "scripts/06-debian-fix-console-setup-keyboard.sh",
+        "scripts/07-create-admin-user.sh"
       ]
     },
     {
@@ -204,21 +213,11 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "ADMIN_CREATE={{user `admin_create_vmware`}}",
-        "ADMIN_USER={{user `admin_user`}}",
-        "ADMIN_GROUP={{user `admin_group`}}",
-        "ADMIN_UID={{user `admin_uid`}}",
-        "ADMIN_GID={{user `admin_gid`}}",
-        "ADMIN_GROUPS={{user `admin_groups`}}",
-        "ADMIN_SHELL={{user `admin_shell`}}",
-        "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
         "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
         "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/10-create-admin-user.sh",
         "scripts/20-install-open-vm-tools.sh",
         "scripts/21-open-vm-tools-config-shared-folders.sh"
       ]
@@ -229,20 +228,10 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "ADMIN_CREATE={{user `admin_create_virtualbox`}}",
-        "ADMIN_USER={{user `admin_user`}}",
-        "ADMIN_GROUP={{user `admin_group`}}",
-        "ADMIN_UID={{user `admin_uid`}}",
-        "ADMIN_GID={{user `admin_gid`}}",
-        "ADMIN_GROUPS={{user `admin_groups`}}",
-        "ADMIN_SHELL={{user `admin_shell`}}",
-        "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
         "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-            "scripts/10-create-admin-user.sh",
             "scripts/20-install-vbox-guest-additions.sh"
       ]
     },
