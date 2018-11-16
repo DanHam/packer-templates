@@ -19,7 +19,6 @@
     "cpu_count": "1",
     "disk_size_vmware": "10240",
     "disk_size_virtualbox": "10240",
-    "disk_size_amazon": "2048",
     "vmtools_shared_folders": "true",
     "vmtools_shared_folders_fstab": "false",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
@@ -31,7 +30,6 @@
 
     "admin_create_vmware": "true",
     "admin_create_virtualbox": "true",
-    "admin_create_amazon": "false",
     "admin_user": "debadmin",
     "admin_group": "debadmin",
     "admin_uid": "1000",
@@ -46,7 +44,6 @@
     "packer_virt_sysprep_dir": "/packer-virt-sysprep",
     "packer_virt_sysprep_defer_run_vmware": "false",
     "packer_virt_sysprep_defer_run_virtualbox": "false",
-    "packer_virt_sysprep_defer_run_amazon": "true",
     "sysprep_op_bash_history": "true",
     "sysprep_op_crash_data":   "true",
     "sysprep_op_dhcp_client_state": "true",
@@ -60,10 +57,7 @@
     "sysprep_op_tmp_files": "true",
     "sysprep_op_yum_uuid": "false",
 
-    "zero_script_upload_path": "/tmp/zero-free-space.sh",
-
-    "aws_access_key": "{{env `PACKER_AWS_ACCESS_KEY`}}",
-    "aws_secret_key": "{{env `PACKER_AWS_SECRET_KEY`}}"
+    "zero_script_upload_path": "/tmp/zero-free-space.sh"
   },
 
   "builders": [
@@ -166,54 +160,6 @@
       "ssh_wait_timeout": "10000s",
 
       "shutdown_command": "{{user `shutdown_command`}}"
-    },
-    {
-      "name": "amazon-builder",
-      "type": "virtualbox-iso",
-      "http_directory": "http",
-      "communicator": "ssh",
-      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
-      "headless": "{{user `headless`}}",
-
-      "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
-
-      "boot_command": [
-        "<esc><wait>",
-        "install <wait>",
-        "auto <wait>",
-        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-{{user `part_scheme`}}.cfg <wait>",
-        "debian-installer=en_GB <wait>",
-        "locale=en_GB <wait>",
-        "keymap=uk <wait>",
-        "hostname=localhost <wait>",
-        "domain=localdomain <wait>",
-        "<enter>"
-      ],
-      "boot_wait": "{{user `installer_boot_time`}}",
-
-      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
-      "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
-        ["modifyvm", "{{.Name}}", "--vram", "16"],
-        ["modifyvm", "{{.Name}}", "--audio", "none"],
-        ["modifyvm", "{{.Name}}", "--usb", "off"],
-        ["setextradata", "global", "GUI/SuppressMessages", "all"]
-      ],
-      "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
-      "format": "ova",
-      "hard_drive_interface": "sata",
-      "disk_size": "{{user `disk_size_amazon`}}",
-
-      "guest_additions_mode": "disable",
-
-      "ssh_username": "{{user `ssh_username`}}",
-      "ssh_private_key_file": "{{user `ssh_private_key`}}",
-      "ssh_wait_timeout": "10000s",
-
-      "shutdown_command": "{{user `shutdown_command`}}"
     }
   ],
 
@@ -302,44 +248,6 @@
     },
     {
       "type": "shell",
-      "only": ["amazon-builder"],
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "ADMIN_CREATE={{user `admin_create_amazon`}}",
-        "ADMIN_USER={{user `admin_user`}}",
-        "ADMIN_GROUP={{user `admin_group`}}",
-        "ADMIN_UID={{user `admin_uid`}}",
-        "ADMIN_GID={{user `admin_gid`}}",
-        "ADMIN_GROUPS={{user `admin_groups`}}",
-        "ADMIN_SHELL={{user `admin_shell`}}",
-        "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
-        "DEFER_CLOUD_INIT_SVC_UNIT=defer-cloud-init.service",
-        "DEFER_CLOUD_INIT_SVC_DIR=/defer-cloud-init",
-        "DEFER_CLOUD_INIT_SVC_ENABLE=defer-cloud-init-enable.sh",
-        "DEFER_CLOUD_INIT_SVC_CLEAN=defer-cloud-init-clean.sh",
-        "AWS_IMPORT_FIX_UNIT=aws-import-fix.service",
-        "AWS_IMPORT_FIX_DIR=/aws-import-fix",
-        "AWS_IMPORT_FIX_FIXES_SCRIPT=aws-import-fixes-and-cleanup.sh",
-        "AWS_IMPORT_FIX_CLEAN_SCRIPT=aws-import-fix-clean.sh"
-      ],
-      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
-            "scripts/10-create-admin-user.sh",
-            "scripts/20-install-cloud-packages.sh",
-            "scripts/21-aws-configure-cloud-init.sh",
-            "scripts/22-aws-disable-cloud-init-services.sh",
-            "scripts/23-aws-create-and-enable-defer-cloud-init-unit.sh",
-            "scripts/24-aws-create-defer-cloud-init-enable-script.sh",
-            "scripts/25-aws-create-defer-cloud-init-clean-script.sh",
-            "scripts/26-aws-create-and-enable-import-fixes-unit.sh",
-            "scripts/27-aws-create-import-fixes-script.sh",
-            "scripts/28-aws-create-import-fixes-clean-script.sh"
-      ]
-    },
-    {
-      "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
@@ -378,25 +286,6 @@
           "environment_vars": [
             "DEBUG={{user `debug`}}",
             "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_virtualbox`}}",
-            "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
-            "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
-            "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
-            "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
-            "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
-            "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
-            "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
-            "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
-            "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
-            "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
-            "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
-            "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
-            "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
-          ]
-        },
-        "amazon-builder": {
-          "environment_vars": [
-            "DEBUG={{user `debug`}}",
-            "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_amazon`}}",
             "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
             "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
             "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
@@ -461,21 +350,6 @@
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
-    },
-    {
-      "type": "amazon-import",
-      "only": ["amazon-builder"],
-      "access_key": "{{user `aws_access_key`}}",
-      "secret_key": "{{user `aws_secret_key`}}",
-      "region": "eu-west-2",
-      "s3_bucket_name": "foosite.co.uk-vmimport",
-      "s3_key_name": "{{user `template`}}-{{user `part_scheme`}}-import-{{isotime \"2006-01-02-150405\"}}.ova",
-      "ami_name": "{{user `template`}}-{{isotime \"2006-01-02-150405\"}}",
-      "skip_clean": "false",
-      "tags": {
-        "Description": "Packer amazon-import: {{user `template`}}-{{user `part_scheme`}} {{isotime \"2006-01-02 15:04:05\"}}",
-        "Name": "{{user `template`}}-{{user `part_scheme`}}-{{isotime \"2006-01-02-150405\"}}"
-      }
     }
   ]
 }
