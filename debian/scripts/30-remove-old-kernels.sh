@@ -40,7 +40,7 @@ done
 if [ "x${REMOVE}" != "x" ]; then
     echo "Removing kernel packages (and any orphaned dependancies of):"
     echo ${REMOVE} | tr -s '[:blank:]' '\n'
-    apt-get --purge remove --autoremove -y ${REMOVE} > ${REDIRECT}
+    apt-get --purge autoremove -y ${REMOVE} > ${REDIRECT}
 else
     echo "No old kernel packages found"
 fi

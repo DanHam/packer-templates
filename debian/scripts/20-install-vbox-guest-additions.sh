@@ -14,9 +14,8 @@
 # Ensure debconf does not ask any questions
 export DEBIAN_FRONTEND="noninteractive"
 
-# Configure list of packages that need to be installed
-PACKAGES=" gcc make linux-headers-$(uname -r) bzip2"
 # Install required package
+PACKAGES="gcc make linux-headers-$(uname -r) bzip2"
 echo "Installing packages required to compile Virtualbox Additions..."
 apt-get -y install ${PACKAGES} > ${REDIRECT}
 
@@ -52,5 +51,10 @@ sh ${GUEST_ADDITIONS_INSTALLER} > ${REDIRECT}
 umount ${GUEST_ADDITIONS_MNT}
 # Remove the temp directories and uploaded ISO
 rm -rf ${GUEST_ADDITIONS_MNT} ${GUEST_ADDITIONS_ISO}
+
+# Remove packages (and any deps) required for compiling the Guest Additions
+echo "Removing packages required to compile Virtualbox Additions..."
+apt-get -y autoremove ${PACKAGES} > ${REDIRECT}
+
 
 exit 0
