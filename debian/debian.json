@@ -230,6 +230,7 @@
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/30-remove-old-kernels.sh",
+        "scripts/31-remove-extraneous-packages.sh",
         "scripts/32-set-apt-install-recommends.sh"
       ]
     },
