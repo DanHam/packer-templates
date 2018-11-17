@@ -6,8 +6,11 @@
 # The control script is executed by the packer-virt-sysprep.service unit
 # file and provides the mechanism through which all other requested
 # virt-sysprep style scripts are executed.
-# The virt-sysprep style operations to be run are individually specified in
-# the Packer configuration template and exported as environment variables.
+#
+# By default all virt-sysprep style operations will be run unless
+# explicitly disabled in the Packer configuration template. This is
+# achieved by setting the environment variable that corresponds to the
+# operation to something other than 'true'.
 
 # Packer logging
 echo "Creating packer-virt-sysprep.service run control script..."
@@ -31,6 +34,20 @@ if [ "x${SH}" = "x" ]; then
     exit -1
 fi
 
+# All virt-sysprep style operations will run by default unless explicitly
+# disabled in the Packer template
+: ${SYSPREP_OP_BASH_HISTORY:=true}
+: ${SYSPREP_OP_CRASH_DATA:=true}
+: ${SYSPREP_OP_DHCP_CLIENT_STATE:=true}
+: ${SYSPREP_OP_FIREWALL_RULES:=true}
+: ${SYSPREP_OP_LOGFILES:=true}
+: ${SYSPREP_OP_MACHINE_ID:=true}
+: ${SYSPREP_OP_MAIL_SPOOL:=true}
+: ${SYSPREP_OP_PACKAGE_MANAGER_CACHE:=true}
+: ${SYSPREP_OP_RPM_DB:=true}
+: ${SYSPREP_OP_SSH_HOSTKEYS:=true}
+: ${SYSPREP_OP_TMP_FILES:=true}
+: ${SYSPREP_OP_YUM_UUID:=true}
 
 # Generate the packer-virt-sysprep operations control script
 
@@ -52,7 +69,6 @@ if [ "${SYSPREP_OP_CRASH_DATA}" = true ]; then
     echo "Service will run ${PREFIX}/sysprep-op-crash-data.sh"
     echo "${SH} ${PREFIX}/sysprep-op-crash-data.sh" >> ${CTRLF}
 fi
-
 
 # dhcp-client-state: Remove DHCP client release by removing:
 #     * /var/lib/dhclient/*
