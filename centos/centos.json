@@ -28,8 +28,7 @@
 
     "shutdown_command": "sudo /sbin/poweroff",
 
-    "admin_create_vmware": "true",
-    "admin_create_virtualbox": "true",
+    "admin_create": "true",
     "admin_user": "coadmin",
     "admin_group": "coadmin",
     "admin_uid": "1000",
@@ -39,8 +38,7 @@
     "admin_gecos": "CentOS Administrator",
     "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV14up9OBdbyUPuuSCUOnSyTZOTx4i13nyIASlkQpLs7zKUIJL8Sni7BASmN3LFi9+BsiuBxC3RkVj84H6fe+mKqC6zpdFtWE2dN7U0bOXGVnDPOSXcW7B52NRP+sL7ShTcpDBsLUq0N4Hc64XSTOAbfOiQY9OUPSiW5nUQSuPHm9K1G0w//dImqyiikBWvBWJag2phaZDbeOz7nHcOdZnLhv0uWZBq/YRSdo0Jyn3yg/lG07PaWslPPw2s4eG7i/eWNbkWUshvRGdzU+pf5NCQl4iCetuaXlPUpIFZzjTgPE5IE+gXCue7Bg08ZAz25lk3g8B3TYlhfCkVm/8nQAGuYnTLMfxwacPJIXDTd/mD7efyNOOpz8nmylZoaiFBVrQWdmlVopqIMXArK+/NE4Md58ErUKPQY0Z/J/rFANN4JRFVU2XcC/0wl+uTvPxigspLpozp4mmjG/JCUhTNbihK/ICd4G87Xl+SAGoCEfly3NQcXpLgRUJou255Gj+CkRT2cOeCoNDhLlDLJ7d/twB0LzVfgQAGMCMWButudiCaX6NOSDhUAcHIKoNxQN28cO1xKGrEKxlw0iR2XWUftowxjfvifRYlbHAtrw6UXofNiZWfl8fPpHKPvbEgB83kK3OMWMP1cUAksMCUJdD8hCMPFxLS9Kj6cSz9Xlq/CSKyQ== JustSomeFooKey",
 
-    "selinux_relabel_vmware": "false",
-    "selinux_relabel_virtualbox": "false",
+    "selinux_relabel": "false",
 
     "packer_dir": "/packer",
     "packer_virt_sysprep_dir": "/packer-virt-sysprep",
@@ -177,7 +175,17 @@
       "remote_folder": "{{user `packer_dir`}}",
       "expect_disconnect": true,
       "environment_vars": [
-        "DEBUG={{user `debug`}}"
+        "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "SELINUX_RELABEL={{user `selinux_relabel`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
@@ -188,7 +196,9 @@
         "scripts/04-configure-ssh.sh",
         "scripts/05-centos-systemd-fixes.sh",
         "scripts/06-configure-chrony.sh",
-        "scripts/07-configure-timedate-settings.sh"
+        "scripts/07-configure-timedate-settings.sh",
+        "scripts/08-create-admin-user.sh",
+        "scripts/09-selinux.sh"
       ]
     },
     {
@@ -197,22 +207,10 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "ADMIN_CREATE={{user `admin_create_vmware`}}",
-        "ADMIN_USER={{user `admin_user`}}",
-        "ADMIN_GROUP={{user `admin_group`}}",
-        "ADMIN_UID={{user `admin_uid`}}",
-        "ADMIN_GID={{user `admin_gid`}}",
-        "ADMIN_GROUPS={{user `admin_groups`}}",
-        "ADMIN_SHELL={{user `admin_shell`}}",
-        "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
-        "SELINUX_RELABEL={{user `selinux_relabel_vmware`}}",
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-            "scripts/10-create-admin-user.sh",
-            "scripts/11-selinux.sh",
             "scripts/20-install-open-vm-tools.sh",
             "scripts/21-install-vmware-tools.sh"
       ]
@@ -223,22 +221,10 @@
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "ADMIN_CREATE={{user `admin_create_virtualbox`}}",
-        "ADMIN_USER={{user `admin_user`}}",
-        "ADMIN_GROUP={{user `admin_group`}}",
-        "ADMIN_UID={{user `admin_uid`}}",
-        "ADMIN_GID={{user `admin_gid`}}",
-        "ADMIN_GROUPS={{user `admin_groups`}}",
-        "ADMIN_SHELL={{user `admin_shell`}}",
-        "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
-        "SELINUX_RELABEL={{user `selinux_relabel_virtualbox`}}",
         "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-            "scripts/10-create-admin-user.sh",
-            "scripts/11-selinux.sh",
             "scripts/20-install-vbox-guest-additions.sh"
       ]
     },
