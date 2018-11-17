@@ -42,8 +42,6 @@
 
     "packer_dir": "/packer",
     "packer_virt_sysprep_dir": "/packer-virt-sysprep",
-    "packer_virt_sysprep_defer_run_vmware": "false",
-    "packer_virt_sysprep_defer_run_virtualbox": "false",
     "sysprep_op_bash_history": "true",
     "sysprep_op_crash_data":   "true",
     "sysprep_op_dhcp_client_state": "true",
@@ -231,46 +229,22 @@
     {
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
-      "override": {
-        "vmware-iso": {
-          "environment_vars": [
-            "DEBUG={{user `debug`}}",
-            "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_vmware`}}",
-            "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
-            "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
-            "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
-            "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
-            "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
-            "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
-            "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
-            "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
-            "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
-            "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
-            "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
-            "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
-            "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
-          ]
-        },
-        "virtualbox-iso": {
-          "environment_vars": [
-            "DEBUG={{user `debug`}}",
-            "PACKER_VIRT_SYSPREP_DEFER_RUN={{user `packer_virt_sysprep_defer_run_virtualbox`}}",
-            "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
-            "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
-            "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
-            "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
-            "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
-            "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
-            "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
-            "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
-            "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
-            "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
-            "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
-            "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
-            "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
-          ]
-        }
-      },
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}",
+        "SYSPREP_OP_BASH_HISTORY={{user `sysprep_op_bash_history`}}",
+        "SYSPREP_OP_CRASH_DATA={{user `sysprep_op_crash_data`}}",
+        "SYSPREP_OP_DHCP_CLIENT_STATE={{user `sysprep_op_dhcp_client_state`}}",
+        "SYSPREP_OP_FIREWALL_RULES={{user `sysprep_op_firewall_rules`}}",
+        "SYSPREP_OP_LOGFILES={{user `sysprep_op_logfiles`}}",
+        "SYSPREP_OP_MACHINE_ID={{user `sysprep_op_machine_id`}}",
+        "SYSPREP_OP_MAIL_SPOOL={{user `sysprep_op_mail_spool`}}",
+        "SYSPREP_OP_PACKAGE_MANAGER_CACHE={{user `sysprep_op_package_manager_cache`}}",
+        "SYSPREP_OP_RPM_DB={{user `sysprep_op_rpm_db`}}",
+        "SYSPREP_OP_SSH_HOSTKEYS={{user `sysprep_op_ssh_hostkeys`}}",
+        "SYSPREP_OP_TMP_FILES={{user `sysprep_op_tmp_files`}}",
+        "SYSPREP_OP_YUM_UUID={{user `sysprep_op_yum_uuid`}}"
+      ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
         "scripts/80-create-packer-virt-sysprep-unit-file.sh",
