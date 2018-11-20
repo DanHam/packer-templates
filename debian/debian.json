@@ -77,17 +77,17 @@
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
         "mks.enable3d": "FALSE",
-        "serial0.present": "FALSE",
-        "sound.present": "FALSE",
-        "floppy0.present": "FALSE",
-        "usb.present": "FALSE",
-        "usb.vbluetooth.startConnected": "FALSE"
+        "floppy0.present": "FALSE"
       },
       "display_name": "Packer-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "disk_type_id": "0",
       "disk_size": "{{user `disk_size_vmware`}}",
+      "network_adapter_type": "vmxnet3",
+      "sound": false,
+      "serial": "NONE",
+      "usb": false,
 
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",

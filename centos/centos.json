@@ -67,22 +67,21 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `guest_os_type_vmware`}}",
       "vmx_data": {
-        "displayName": "Packer-{{user `template`}}-{{build_name}}",
         "memsize": "{{user `memory_size`}}",
         "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
         "mks.enable3d": "FALSE",
-        "serial0.present": "FALSE",
-        "sound.present": "FALSE",
-        "floppy0.present": "FALSE",
-        "usb.present": "FALSE",
-        "usb.vbluetooth.startConnected": "FALSE",
-        "ethernet0.virtualDev": "vmxnet3"
+        "floppy0.present": "FALSE"
       },
       "vm_name": "{{user `template`}}-{{build_name}}",
+      "display_name": "Packer-{{user `template`}}-{{build_name}}",
       "vmdk_name": "{{user `template`}}-{{build_name}}",
       "disk_type_id": "0",
       "disk_size": "{{user `disk_size_vmware`}}",
+      "network_adapter_type": "vmxnet3",
+      "sound": false,
+      "serial": "NONE",
+      "usb": false,
       "tools_upload_flavor": "linux",
       "tools_upload_path": "{{user `vmtools_iso_path`}}",
 
