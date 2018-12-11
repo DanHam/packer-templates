@@ -4,7 +4,7 @@
 Vagrant.configure(2) do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = 'centos-7.5-x86_64'
+  config.vm.box = 'centos-7.6-x86_64'
 
   # VMware provider specific options
   config.vm.provider 'vmware_fusion' do |vf|

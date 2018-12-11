@@ -1,14 +1,14 @@
 {
   "variables": {
-    "template": "centos-75-x86_64",
+    "template": "centos-76-x86_64",
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
     "debug": "false",
-    "headless": "true",
+    "headless": "false",
 
-    "iso_url": "/Users/dan/stuff/iso/os/centos/centos7x86_64/CentOS-7-x86_64-NetInstall-1804.iso",
-    "iso_checksum": "937bf0a7b0932817f84f7230f15ed88911bbbd85c0c958680792b7f8d8f9c1a9",
+    "iso_url": "/Users/dan/stuff/iso/os/centos/CentOS-7-x86_64-NetInstall-1810.iso",
+    "iso_checksum": "19d94274ef856c4dfcacb2e7cfe4be73e442a71dd65cc3fb6e46db826040b56e",
     "iso_checksum_type": "sha256",
 
     "installation_source": "http://mirror.centos.org/centos/7/os/x86_64/",
