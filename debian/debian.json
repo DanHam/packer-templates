@@ -73,14 +73,14 @@
       "version": "{{user `vmware_hardware_version`}}",
       "guest_os_type": "{{user `guest_os_type_vmware`}}",
       "vmx_data": {
-        "memsize": "{{user `memory_size`}}",
-        "numvcpus": "{{user `cpu_count`}}",
         "cpuid.coresPerSocket": "1",
         "mks.enable3d": "FALSE",
         "floppy0.present": "FALSE"
       },
-      "display_name": "Packer-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "display_name": "Packer-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "cpus": "{{user `cpu_count`}}",
+      "memory": "{{user `memory_size`}}",
       "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "disk_type_id": "0",
       "disk_size": "{{user `disk_size_vmware`}}",
