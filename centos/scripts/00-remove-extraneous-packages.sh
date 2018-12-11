@@ -44,7 +44,6 @@ PACKAGE_LIST=(
     libXxf86vm
     libdrm
     libjpeg-turbo
-    libpng
     libss
     libthai
     libtiff
