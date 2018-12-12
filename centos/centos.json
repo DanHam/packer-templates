@@ -59,7 +59,7 @@
 
       "boot_command": [
         "<tab> <wait>",
-        "inst.text inst.repo={{user `installation_source`}} inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg <wait>",
+        "inst.text inst.repo={{user `installation_source`}} inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg inst.nosave=all<wait>",
         "<enter> <wait>"
       ],
       "boot_wait": "{{user `installer_boot_time`}}",
@@ -105,7 +105,7 @@
 
       "boot_command": [
         "<tab> <wait>",
-        "inst.text inst.repo={{user `installation_source`}} inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg <wait>",
+        "inst.text inst.repo={{user `installation_source`}} inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg inst.nosave=all<wait>",
         "<enter> <wait>"
       ],
       "boot_wait": "{{user `installer_boot_time`}}",
