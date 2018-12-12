@@ -49,6 +49,7 @@ PACKAGE_LIST=(
     libtiff
     libxcb
     libxshmfence
+    linux-firmware
     mesa-libEGL
     mesa-libGL
     mesa-libgbm
