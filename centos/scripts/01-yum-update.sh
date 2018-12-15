@@ -27,7 +27,7 @@ if [ "x$(rpm -qa gpg-pubkey* | grep $RPM_GPG_KEY_ID)" = "x" ]; then
 fi
 
 # Check if updates are required
-yum check-update
+yum check-update > $REDIRECT
 # yum check-update provides the following exit codes:
 #     100 => updates are available
 #     1   => an error occurred
@@ -41,7 +41,7 @@ if [ $EXIT_CODE == 100 ]; then
     # been installed as a dependancy. We don't need this so remove
     if rpm -q linux-firmware >/dev/null; then
         echo "Removing linux-firmware packer installed with updates"
-        yum -C -y remove linux-firmware
+        yum -C -y remove linux-firmware > $REDIRECT
     fi
 elif [ $EXIT_CODE == 1 ]; then
     echo "An error occurred checking if there are updates for this system"
