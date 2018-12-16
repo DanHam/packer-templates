@@ -48,7 +48,7 @@
   "builders": [
     {
       "type": "vmware-iso",
-      "http_directory": "http",
+      "http_directory": "../common/http",
       "communicator": "ssh",
       "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
@@ -94,7 +94,7 @@
     },
     {
       "type": "virtualbox-iso",
-      "http_directory": "http",
+      "http_directory": "../common/http",
       "communicator": "ssh",
       "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
@@ -152,7 +152,7 @@
     },
     {
       "type": "file",
-      "source": "scripts/packer-virt-sysprep/",
+      "source": "../common/scripts/packer-virt-sysprep/",
       "destination": "{{user `packer_virt_sysprep_dir`}}"
     },
     {
@@ -174,16 +174,16 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/00-remove-extraneous-packages.sh",
-        "scripts/01-yum-update.sh",
-        "scripts/02-remove-old-kernels.sh",
-        "scripts/03-disable-system-beep.sh",
-        "scripts/04-configure-ssh.sh",
-        "scripts/05-centos-systemd-fixes.sh",
-        "scripts/06-configure-chrony.sh",
-        "scripts/07-configure-timedate-settings.sh",
-        "scripts/08-create-admin-user.sh",
-        "scripts/09-selinux.sh"
+        "../common/scripts/00-remove-extraneous-packages.sh",
+        "../common/scripts/01-yum-update.sh",
+        "../common/scripts/02-remove-old-kernels.sh",
+        "../common/scripts/03-disable-system-beep.sh",
+        "../common/scripts/04-configure-ssh.sh",
+        "../common/scripts/05-centos-systemd-fixes.sh",
+        "../common/scripts/06-configure-chrony.sh",
+        "../common/scripts/07-configure-timedate-settings.sh",
+        "../common/scripts/08-create-admin-user.sh",
+        "../common/scripts/09-selinux.sh"
       ]
     },
     {
@@ -196,8 +196,8 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-            "scripts/20-install-open-vm-tools.sh",
-            "scripts/21-install-vmware-tools.sh"
+            "../common/scripts/20-install-open-vm-tools.sh",
+            "../common/scripts/21-install-vmware-tools.sh"
       ]
     },
     {
@@ -210,7 +210,7 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-            "scripts/20-install-vbox-guest-additions.sh"
+            "../common/scripts/20-install-vbox-guest-additions.sh"
       ]
     },
     {
@@ -222,9 +222,9 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/80-create-packer-virt-sysprep-unit-file.sh",
-        "scripts/81-create-packer-virt-sysprep-run-control-script.sh",
-        "scripts/82-create-remove-packer-user-unit-file.sh"
+        "../common/scripts/80-create-packer-virt-sysprep-unit-file.sh",
+        "../common/scripts/81-create-packer-virt-sysprep-run-control-script.sh",
+        "../common/scripts/82-create-remove-packer-user-unit-file.sh"
       ]
     },
     {
@@ -239,7 +239,7 @@
     },
     {
       "type": "file",
-      "source": "scripts/zero-free-space.sh",
+      "source": "../common/scripts/zero-free-space.sh",
       "destination": "{{user `zero_script_upload_path`}}"
     },
     {
@@ -249,7 +249,7 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/90-create-zero-free-space-unit-file.sh"
+        "../common/scripts/90-create-zero-free-space-unit-file.sh"
       ]
     }
   ],
