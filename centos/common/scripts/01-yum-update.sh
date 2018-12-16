@@ -40,7 +40,7 @@ if [ $EXIT_CODE == 100 ]; then
     # If the kernel was updated then the linux-firmware package may have
     # been installed as a dependancy. We don't need this so remove
     if rpm -q linux-firmware >/dev/null; then
-        echo "Removing linux-firmware packer installed with updates"
+        echo "Removing linux-firmware package installed with updates"
         yum -C -y remove linux-firmware > $REDIRECT
     fi
 elif [ $EXIT_CODE == 1 ]; then
