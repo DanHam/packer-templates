@@ -1,9 +1,9 @@
 # OS X Finder: Custom folder attributes file.
 .DS_Store
 # Ignore all packer cache files
-*/packer_cache/
+**/packer_cache/
 # Ignore all output files
-*/output-*/
+**/output-*/
 # Ignore boxes and associated files
 **/boxes/*.box
 **/boxes/*.json
