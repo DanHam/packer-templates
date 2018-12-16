@@ -47,7 +47,7 @@
   "builders": [
     {
       "type": "vmware-iso",
-      "http_directory": "http",
+      "http_directory": "../common/http",
       "communicator": "ssh",
       "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
@@ -98,7 +98,7 @@
     },
     {
       "type": "virtualbox-iso",
-      "http_directory": "http",
+      "http_directory": "../common/http",
       "communicator": "ssh",
       "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
@@ -163,7 +163,7 @@
     },
     {
       "type": "file",
-      "source": "scripts/packer-virt-sysprep/",
+      "source": "../common/scripts/packer-virt-sysprep/",
       "destination": "{{user `packer_virt_sysprep_dir`}}"
     },
     {
@@ -183,14 +183,14 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/00-grub-config.sh",
-        "scripts/01-disable-system-beep.sh",
-        "scripts/02-configure-ssh.sh",
-        "scripts/03-configure-chrony.sh",
-        "scripts/04-configure-timedate-settings.sh",
-        "scripts/05-debian-fix-mesg-n-when-not-tty.sh",
-        "scripts/06-debian-fix-console-setup-keyboard.sh",
-        "scripts/07-create-admin-user.sh"
+        "../common/scripts/00-grub-config.sh",
+        "../common/scripts/01-disable-system-beep.sh",
+        "../common/scripts/02-configure-ssh.sh",
+        "../common/scripts/03-configure-chrony.sh",
+        "../common/scripts/04-configure-timedate-settings.sh",
+        "../common/scripts/05-debian-fix-mesg-n-when-not-tty.sh",
+        "../common/scripts/06-debian-fix-console-setup-keyboard.sh",
+        "../common/scripts/07-create-admin-user.sh"
       ]
     },
     {
@@ -204,8 +204,8 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/20-install-open-vm-tools.sh",
-        "scripts/21-open-vm-tools-config-shared-folders.sh"
+        "../common/scripts/20-install-open-vm-tools.sh",
+        "../common/scripts/21-open-vm-tools-config-shared-folders.sh"
       ]
     },
     {
@@ -218,7 +218,7 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-            "scripts/20-install-vbox-guest-additions.sh"
+            "../common/scripts/20-install-vbox-guest-additions.sh"
       ]
     },
     {
@@ -230,9 +230,9 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/30-remove-old-kernels.sh",
-        "scripts/31-remove-extraneous-packages.sh",
-        "scripts/32-set-apt-install-recommends.sh"
+        "../common/scripts/30-remove-old-kernels.sh",
+        "../common/scripts/31-remove-extraneous-packages.sh",
+        "../common/scripts/32-set-apt-install-recommends.sh"
       ]
     },
     {
@@ -244,9 +244,9 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/80-create-packer-virt-sysprep-unit-file.sh",
-        "scripts/81-create-packer-virt-sysprep-run-control-script.sh",
-        "scripts/82-create-remove-packer-user-unit-file.sh"
+        "../common/scripts/80-create-packer-virt-sysprep-unit-file.sh",
+        "../common/scripts/81-create-packer-virt-sysprep-run-control-script.sh",
+        "../common/scripts/82-create-remove-packer-user-unit-file.sh"
       ]
    },
    {
@@ -261,7 +261,7 @@
     },
     {
       "type": "file",
-      "source": "scripts/zero-free-space.sh",
+      "source": "../common/scripts/zero-free-space.sh",
       "destination": "{{user `zero_script_upload_path`}}"
     },
     {
@@ -271,7 +271,7 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "scripts/90-create-zero-free-space-unit-file.sh"
+        "../common/scripts/90-create-zero-free-space-unit-file.sh"
       ]
     }
   ],
