@@ -7,7 +7,5 @@
 # Ignore boxes and associated files
 **/boxes/*.box
 **/boxes/*.json
-# Ignore scripts to remove/clean build artifacts
-**/clean
 # Ignore logs
 *log

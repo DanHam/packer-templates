@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#
+# Clean packer build artifacts
+rm -f boxes/*box
+rm -rf output-windows2016-*
+rm -rf output-windows2016core-*
+# Clean packer working directory
+rm -rf packer_cache
