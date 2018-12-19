@@ -1,0 +1,23 @@
+{
+  "name": "your-org/your-box",
+  "description": "Your box description goes here",
+  "versions": [
+    {
+      "version": "0.0.1",
+      "providers": [
+        {
+          "name": "virtualbox",
+          "url": "file:///The/Full/Path/To/Your/Box/Goes/Here",
+          "checksum_type": "sha1",
+          "checksum": "Replace with the output of: sha1sum yourboxfile.box"
+        },
+        {
+          "name": "vmware_desktop",
+          "url": "file:///The/Full/Path/To/Your/Box/Goes/Here",
+          "checksum_type": "sha1",
+          "checksum": "Replace with the output of: sha1sum yourboxfile.box"
+        }
+      ]
+    }
+  ]
+}
