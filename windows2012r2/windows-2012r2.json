@@ -102,14 +102,14 @@
       "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
       "guest_additions_mode": "attach",
 
+      "cpus": "{{user `cpu_count`}}",
+      "memory": "{{user `memory_size`}}",
       "hard_drive_interface": "sata",
       "disk_size": "{{user `disk_size`}}",
+      "sound": "none",
+      "usb": false,
       "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "{{user `memory_size`}}"],
-        ["modifyvm", "{{.Name}}", "--cpus", "{{user `cpu_count`}}"],
         ["modifyvm", "{{.Name}}", "--vram", "128"],
-        ["modifyvm", "{{.Name}}", "--audio", "none"],
-        ["modifyvm", "{{.Name}}", "--usb", "off"],
         ["setextradata", "global", "GUI/SuppressMessages", "all"]
       ],
       "export_opts": [
