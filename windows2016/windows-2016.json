@@ -56,17 +56,15 @@
       "tools_upload_flavor": "windows",
       "tools_upload_path": "{{user `vmtools_iso_path`}}",
 
+      "display_name": "Packer-{{user `template`}}-{{build_name}}",
+      "cpus": "{{user `cpu_count`}}",
+      "memory": "{{user `memory_size`}}",
+      "disk_adapter_type": "lsisas1068",
       "disk_type_id": "0",
       "disk_size": "{{user `disk_size`}}",
       "vmdk_name": "{{user `template`}}-{{build_name}}",
-      "vmx_data": {
-        "memsize": "{{user `memory_size`}}",
-        "numvcpus": "{{user `cpu_count`}}",
-        "scsi0.virtualDev": "lsisas1068",
-        "RemoteDisplay.vnc.enabled": "false",
-        "usb.present": "false",
-        "sound.present": "false"
-      },
+      "sound": false,
+      "usb": false,
 
       "floppy_files": [
         "answer_files/{{user `template`}}/Autounattend.xml",
