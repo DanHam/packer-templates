@@ -1,11 +1,11 @@
-﻿# Clean up the Windows Component Store (WinSxS folder)
+# Clean up the Windows Component Store (WinSxS folder)
 #
 # This script removes all superseded versions of updates and other
 # components from the Windows Component Store
 
 # The option of whether or not to run the clean up of WinSxS is configured
 # from within the Packer template and exported as an environment variable
-If ( $env:CLEAN_WINSXS -ne $true ) {
+If ( $env:SKIP_CLEAN_WINSXS -eq $true ) {
     Write-Host 'Skipping clean up of Windows Component Store as requested'
     Write-Host 'Exiting'
     exit

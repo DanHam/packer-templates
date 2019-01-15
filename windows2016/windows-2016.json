@@ -23,11 +23,11 @@
 
     "vmtools_iso_path": "C:/Windows/Temp/vmware-tools.iso",
 
-    "clean_winsxs": "true",
-    "clean_general": "true",
+    "skip_clean_winsxs": "false",
+    "skip_clean_general": "false",
+    "skip_optimise_win_volume": "false",
+    "skip_zero_free_space": "false",
     "remove_features_on_demand": "false",
-    "optimise_win_volume": "true",
-    "zero_free_space": "true",
 
     "shutdown_command": "A:/PackerShutdown.bat",
     "shutdown_timeout": "30m"
@@ -142,11 +142,11 @@
       "type": "powershell",
       "environment_vars": [
         "VMTOOLS_ISO_PATH={{user `vmtools_iso_path`}}",
-        "CLEAN_WINSXS={{user `clean_winsxs`}}",
-        "CLEAN_GENERAL={{user `clean_general`}}",
-        "REMOVE_FEATURES_ON_DEMAND={{user `remove_features_on_demand`}}",
-        "OPTIMISE_WIN_VOLUME={{user `optimise_win_volume`}}",
-        "ZERO_FREE_SPACE={{user `zero_free_space`}}"
+        "SKIP_CLEAN_WINSXS={{user `skip_clean_winsxs`}}",
+        "SKIP_CLEAN_GENERAL={{user `skip_clean_general`}}",
+        "SKIP_OPTIMISE_WIN_VOLUME={{user `skip_optimise_win_volume`}}",
+        "SKIP_ZERO_FREE_SPACE={{user `skip_zero_free_space`}}",
+        "REMOVE_FEATURES_ON_DEMAND={{user `remove_features_on_demand`}}"
       ],
       "scripts": [
         "files/DotNetOptimizationSpeedUp.ps1",

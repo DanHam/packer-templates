@@ -3,7 +3,7 @@
 # The option of whether or not to perform a general clean up of the
 # Windows volume is configured from within the Packer template and
 # exported as an environment variable
-If ( $env:CLEAN_GENERAL -ne $true ) {
+If ( $env:SKIP_CLEAN_GENERAL -eq $true ) {
     Write-Host 'Skipping general clean up of Windows as requested'
     Write-Host 'Exiting'
     exit

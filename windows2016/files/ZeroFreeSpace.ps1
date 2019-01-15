@@ -4,7 +4,7 @@
 
 # The option of whether or not to zero-out free space is configured
 # from within the Packer template and exported as an environment variable
-If ( $env:ZERO_FREE_SPACE -ne $true ) {
+If ( $env:SKIP_ZERO_FREE_SPACE -eq $true ) {
     Write-Host 'Skipping zero of free space on Windows volume as requested'
     Write-Host 'Exiting'
     exit
