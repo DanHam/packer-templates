@@ -1,6 +1,6 @@
 {
   "variables": {
-    "template": "centos-76-x86_64",
+    "template": "centos-7-x86_64",
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
