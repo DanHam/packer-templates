@@ -27,7 +27,27 @@ if [ "$(systemctl is-active ${CHRONYD})" = "active" ]; then
 fi
 
 # Configure
+
+# Step the clock whenever the offset is greater than 1 second
 #
+# Delete any existing 'makestep' directive including any comments before it
+# and the preceding blank line
+sed -i -n '
+/^$/ b block
+H
+$ b block
+b
+:block
+x
+/makestep/!p' ${CHRONY_CONF}
+# The above command may leave a blank line at the head of the file
+sed -i "/^[[:space:]]*$/{1d}" ${CHRONY_CONF}
+# Add the required directive and comment
+printf '%s' '
+# Step the clock whenever the offset is larger than 1 second
+makestep 1.0 -1
+' >>${CHRONY_CONF}
+
 # With virtual or cloud based instances interaction with a RTC is not
 # desirable and can cause issues
 #
