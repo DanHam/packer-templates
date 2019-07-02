@@ -70,7 +70,11 @@ sed -i "s/^\(log \)/#\1/" ${CHRONY_CONF}
 
 # Virtual or cloud based instances should never be used as a time source
 sed -i "s/^\(allow\)/#\1/" ${CHRONY_CONF}
-if [ "x$(cat ${CHRONY_CONF} | grep 'deny all')" = "x" ]; then
+if grep 'deny all' ${CHRONY_CONF} &>/dev/null; then
+    # If the 'deny all' directive is present ensure it is not commented out
+    sed -i "s/#.*\(deny all\)/\1/g" ${CHRONY_CONF}
+else
+    # Otherwise add the directive to the end of the file
     printf "%s" "\
 
     # Disable use of this machine as a time server
