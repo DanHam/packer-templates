@@ -9,7 +9,7 @@ set -o errexit
 # Packer logging
 echo "Installing required packages for Ansible..."
 
-if [ "x$(rpm -qa | grep ansible)" = "x" ]; then
+if ! rpm -qa | grep ansible &>/dev/null; then
     yum install -y ansible > ${REDIRECT}
 fi
 

@@ -14,7 +14,7 @@ RPM_GPG_KEY_ID="f4a80eb5"
 RPM_GPG_KEY_FINGER="6341 AB27 53D7 8A78 A7C2  7BB1 24C6 A8A7 F4A8 0EB5"
 
 # Ensure the CentOS RPM GPG key has been imported
-if [ "x$(rpm -qa gpg-pubkey* | grep $RPM_GPG_KEY_ID)" = "x" ]; then
+if ! rpm -qa | grep gpg-pubkey | grep $RPM_GPG_KEY_ID &>/dev/null; then
     # Check the finger print of the key matches the known value
     FINGER="$(gpg -q --with-fingerprint $RPM_GPG_KEY 2>$REDIRECT |\
               grep fingerprint | \
@@ -54,16 +54,15 @@ fi
 # Remove cached packages and metadata from the yum repository
 yum clean all > $REDIRECT
 
-# Reboot if required. The command below returns 1 if a restart is required
-# or 0 otherwise
+# Reboot if required. The needs-restarting command returns 1 if a restart
+# is required or 0 otherwise
 # The 'needs-restarting' command is provided by the yum-utils package
 if ! rpm -q yum-utils >/dev/null; then
     echo "Installing yum-utils to provide the 'needs-restarting' command"
     yum -C -y install yum-utils > $REDIRECT
 fi
-needs-restarting --reboothint &>/dev/null
-REBOOT=$?
-if [ ${REBOOT} == 1 ]; then
+
+if ! needs-restarting --reboothint &>/dev/null; then
     echo "System restart required post install of updates."
     echo "Stopping the ssh server and then rebooting..."
     # Give time for the output to be logged/sent back to Packer

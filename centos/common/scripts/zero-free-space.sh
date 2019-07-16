@@ -56,7 +56,7 @@ fi
 
 
 # Perform actions on swap space to maximise efficiency of compacting
-if [ "x$(swapon -s | grep partition)" != "x" ]; then
+if swapon -s | grep partition &>/dev/null; then
     echo "Swap partition found" >> ${REDIRECT}
     # Use the lsblk utility to enumerate required information about the
     # configured swap partition
@@ -80,7 +80,7 @@ if [ "x$(swapon -s | grep partition)" != "x" ]; then
     mkswap -U ${SWAP_UUID} -L 'SWAP' ${SWAP_DEVICE} >> ${REDIRECT}
     # Ensure file system buffers are flushed before continuing
     sync
-elif [ "x$(swapon -s | grep file)" != "x" ]; then
+elif swapon -s | grep file &>/dev/null; then
     echo "Swap file found" >> ${REDIRECT}
     # Use the swapon command to enumerate required information about the
     # configured swap file

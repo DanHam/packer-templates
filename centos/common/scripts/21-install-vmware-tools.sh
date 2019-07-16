@@ -103,7 +103,7 @@ TOOLS_INSTALLER="${VMWARE_EXTRACT}/vmware-tools-distrib/vmware-install.pl"
 # When the bundled VMware Tools are installed without open-vm-tools we
 # need to configure the installation options
 # When installed with open-vm-tools we can just run with the defaults
-if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
+if ! rpm -q open-vm-tools &>/dev/null; then
     # Create a temp file to store answers for the installer
     ANSWERS_FILE="$(mktemp -t --tmpdir=/tmp vmware-answer-XXXXXX.txt)"
     # Output answers to the temp file
@@ -140,7 +140,7 @@ if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
 fi
 
 # Logging for packer
-if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
+if ! rpm -q open-vm-tools &>/dev/null; then
     # Full install of VMware tools from the bundled iso
     echo "Installing VMware Tools from the bundled iso..."
     echo "Configured install answers:" > ${REDIRECT}
@@ -154,7 +154,7 @@ else
 fi
 
 # Run the VMware Installer Perl script with required options
-if [ "x$(rpm -qa | grep open-vm-tools)" = "x" ]; then
+if ! rpm -q open-vm-tools &>/dev/null; then
     ${PERL} ${TOOLS_INSTALLER} < ${ANSWERS_FILE} > ${REDIRECT}
 else
     ${PERL} ${TOOLS_INSTALLER} --default > ${REDIRECT}

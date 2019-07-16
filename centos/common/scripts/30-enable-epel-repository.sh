@@ -7,9 +7,9 @@ set -o errexit
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
 
 # Packer logging
-echo "Enabling the EPEL yum repository..."
+echo "Ensuring the EPEL yum repository is enabled..."
 
-if [ "x$(rpm -qa | grep epel-release)" = "x" ]; then
+if ! rpm -qa | grep epel-release &>/dev/null; then
     yum install -y epel-release > ${REDIRECT}
 fi
 

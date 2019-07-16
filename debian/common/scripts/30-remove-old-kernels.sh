@@ -30,7 +30,7 @@ do
     # If any of the packages are installed add it to the list to be removed
     for PKG in ${KPKG}
     do
-        if [ "x$(dpkg -l | grep ^ii | grep ${PKG})" != "x" ]; then
+        if dpkg -l | grep ^ii | grep ${PKG} &>/dev/null; then
             REMOVE+="${PKG} "
             echo "Found deprecated package: ${PKG}" > ${REDIRECT}
         fi
