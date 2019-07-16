@@ -13,6 +13,7 @@
 # packages once the Guest Additions have been built.
 # Note that make is installed as part of the base installation and so is
 # not explicitly included in the package list below
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "${DEBUG}" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

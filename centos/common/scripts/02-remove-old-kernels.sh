@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Check for and remove old kernels and corresponding devel packages
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

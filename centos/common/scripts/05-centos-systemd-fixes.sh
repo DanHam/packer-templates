@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Minor fixes for complaints issued by systemd with regard to unit files
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

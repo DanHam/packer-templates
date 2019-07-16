@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # Remove extraneous packages installed by Anaconda
-#
+set -o errexit
+
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
 

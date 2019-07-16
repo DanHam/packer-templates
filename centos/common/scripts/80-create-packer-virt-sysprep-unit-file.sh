@@ -2,6 +2,7 @@
 #
 # Dynamically create the packer-virt-sysprep systemd unit file using
 # settings in the packer configuration template
+set -o errexit
 
 # Packer logging
 echo "Creating packer-virt-sysprep systemd unit file..."

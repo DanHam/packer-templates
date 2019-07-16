@@ -47,6 +47,7 @@
 # VMware tools modules.
 # The option to automatically rebuild VMware tools kernel modules when
 # the kernel is upgraded is explicitly disabled.
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "${DEBUG}" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

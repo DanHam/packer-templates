@@ -11,6 +11,7 @@
 # explicitly disabled in the Packer configuration template. This is
 # achieved by setting the environment variable that corresponds to the
 # operation to something other than 'true'.
+set -o errexit
 
 # Packer logging
 echo "Creating packer-virt-sysprep.service run control script..."

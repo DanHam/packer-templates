@@ -2,6 +2,7 @@
 #
 # Create a systemd unit file to remove the Packer build user and clean up
 # associated files on system shutdown.
+set -o errexit
 
 # Packer logging
 echo "Creating systemd unit file to remove Packer build user..."

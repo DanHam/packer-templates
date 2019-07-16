@@ -4,6 +4,7 @@
 #
 # Note that the policycoreutils-restorecond is only available from network
 # based repositories.
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

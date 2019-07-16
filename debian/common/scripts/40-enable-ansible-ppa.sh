@@ -2,6 +2,7 @@
 #
 # Enable apt sources for Ansible. Note that the apt repo is the same as
 # that used for Ubuntu
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

@@ -11,6 +11,7 @@
 # provisioning scripts.
 #
 # For full details see: https://github.com/mitchellh/vagrant/issues/1673
+set -o errexit
 
 # Ensure stdin is a TTY before running the mesg n command
 sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile

@@ -21,6 +21,7 @@
 # Blanking out or deleting and recreating the swap in this way ensures the
 # vmdk file is reduced to its minimum possible size when compacted with
 # vmware-vdiskmanager
+set -o errexit
 
 # Set verbose/quiet output and configure redirection appropriately
 DEBUG=false

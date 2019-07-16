@@ -3,6 +3,7 @@
 # Create a systemd unit file to zero out free space in all filesystems
 # in preparation for disk defrag and shrink utilities provided by some
 # virtualisation platforms
+set -o errexit
 
 # Packer logging
 echo "Creating systemd unit file to run zero free space service..."

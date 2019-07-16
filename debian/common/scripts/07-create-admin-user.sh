@@ -5,6 +5,7 @@
 # environment variables. Note that we do not set a password and as such
 # password based authentication is disabled. Additionally note ssh has
 # been configured to only allow authentication via ssh keys.
+set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"

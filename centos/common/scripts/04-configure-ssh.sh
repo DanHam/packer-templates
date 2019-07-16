@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Configure required ssh server options
+set -o errexit
 
 # Packer logging
 echo "Configuring ssh..."
