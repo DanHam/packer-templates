@@ -26,12 +26,12 @@ GUEST_ADDITIONS_ISO="${GUEST_ADDITIONS_PATH}"
 # Exit if the environment variable is not set
 if [ "x${GUEST_ADDITIONS_ISO}" == "x" ]; then
     echo "ERROR: Failed to set path to Virtualbox Additions ISO. Exiting"
-    exit -1
+    exit 1
 fi
 # Exit if the iso has not been uploaded
 if [ ! -e ${GUEST_ADDITIONS_ISO} ]; then
     echo "ERROR: Could not find ISO at ${GUEST_ADDITIONS_ISO}. Exiting"
-    exit -1
+    exit 1
 fi
 
 # Create a mount point for the Guest Additions ISO avoiding any possible

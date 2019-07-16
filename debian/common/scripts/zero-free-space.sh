@@ -51,7 +51,7 @@ if [ "x${FSBLK_MNTPOINT}" != "x" ]; then
 else
     echo "ERROR: Could not find any block based FS partitions. " \
          "Exiting" >> ${REDIRECT}
-    exit -1
+    exit 1
 fi
 
 
@@ -117,6 +117,5 @@ echo "Complete" >> ${REDIRECT}
 # Ensure logging output is written to disk as the next steps in the
 # shutdown process unmount the filesystems
 sync
-
 
 exit 0

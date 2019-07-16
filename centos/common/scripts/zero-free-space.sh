@@ -51,7 +51,7 @@ if [ "x${FSBLK_MNTPOINT}" != "x" ]; then
 else
     echo "ERROR: Could not find any block based FS partitions. " \
          "Exiting" >> ${REDIRECT}
-    exit -1
+    exit 1
 fi
 
 

@@ -64,7 +64,7 @@ PERL="$(command -v perl)"
 # find the executable
 if [ "x${PERL}" = "x" ]; then
     echo "ERROR: Could not locate perl. Exiting."
-    exit -1
+    exit 1
 fi
 
 # Set the path to the VMware tools iso using the environment variable
@@ -73,12 +73,12 @@ VMWARE_ISO="${VMTOOLS_ISO_PATH}"
 # Exit if the environment variable is not set
 if [ "x${VMWARE_ISO}" == "x" ]; then
     echo "ERROR: Failed to set the path to the VMware Tools ISO. Exiting"
-    exit -1
+    exit 1
 fi
 # Exit if the iso has not been uploaded
 if [ ! -e ${VMWARE_ISO} ]; then
     echo "ERROR: Could not find VMware Tools ISO at ${VMWARE_ISO}. Exiting"
-    exit -1
+    exit 1
 fi
 
 # Set the path to the VMware Tools configuration file

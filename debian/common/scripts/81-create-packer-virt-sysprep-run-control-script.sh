@@ -32,7 +32,7 @@ CTRLF="${PREFIX}/packer-virt-sysprep-run-ops.sh"
 SH="$(command -v bash)"
 if [ "x${SH}" = "x" ]; then
     echo "ERROR: Could not enumerate path for bash executable. Exiting"
-    exit -1
+    exit 1
 fi
 
 # All virt-sysprep style operations will run by default unless explicitly

@@ -54,7 +54,7 @@ if [ -e ${ZERO_SCRIPT_LOCATION} ]; then
     chmod u+x ${ZERO_SCRIPT_LOCATION}
 else
     echo "ERROR Zero free space script missing: ${ZERO_SCRIPT_LOCATION}"
-    exit -1
+    exit 1
 fi
 
 exit 0
