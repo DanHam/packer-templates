@@ -15,9 +15,8 @@ sed -i -e "/^#*UseDNS/ s/ .*/ no/" \
        -e "s/^#\(UseDNS*\)/\1/" $SSHD_CONF
 
 
-# Set to allow root ssh login with key based auth only (disables password
-# based login for root)
-sed -i -e "/^#*PermitRootLogin/ s/ .*/ without-password/" \
+# Disallow ssh based logins for root
+sed -i -e "/^#*PermitRootLogin/ s/ .*/ no/" \
        -e "s/^#\(PermitRootLogin*\)/\1/" $SSHD_CONF
 
 

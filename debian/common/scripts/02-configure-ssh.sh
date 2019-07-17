@@ -10,9 +10,8 @@ echo "Configuring ssh..."
 SSHD_CONF="/etc/ssh/sshd_config"
 
 
-# Set to allow root ssh login with key based auth only (disables password
-# based login for root)
-sed -i -e "/^#*PermitRootLogin/ s/ .*/ without-password/" \
+# Disallow ssh based logins for root
+sed -i -e "/^#*PermitRootLogin/ s/ .*/ no/" \
        -e "s/^#\(PermitRootLogin*\)/\1/" $SSHD_CONF
 
 
