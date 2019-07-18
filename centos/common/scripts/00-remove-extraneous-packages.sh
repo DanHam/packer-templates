@@ -67,12 +67,15 @@ package_list=(
 remove_list=()
 for package in ${package_list[@]}
 do
-    rpm -q ${package} &>/dev/null
-    [[ $? -eq 0 ]] && remove_list+=(${package})
+    if rpm -q ${package} &>/dev/null; then
+        remove_list+=(${package})
+    fi
 done
 
-# Remove packages
-yum -C -y remove --setopt="clean_requirements_on_remove=1" \
-    ${remove_list[@]} > ${redirect}
+# Remove packages if required
+if [ "x${remove_list}" != "x" ]; then
+    yum -C -y remove --setopt="clean_requirements_on_remove=1" \
+        ${remove_list[@]} > ${redirect}
+fi
 
 exit 0

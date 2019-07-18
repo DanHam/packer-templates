@@ -28,12 +28,14 @@ if ! rpm -qa | grep gpg-pubkey | grep ${rpm_gpg_key_id} &>/dev/null; then
 fi
 
 # Check if updates are required
-yum check-update > ${redirect}
+set +o errexit
 # yum check-update provides the following exit codes:
 #     100 => updates are available
 #     1   => an error occurred
 #     0   => no updates
+yum check-update > ${redirect}
 exit_code=$?
+set -o errexit
 
 if [ ${exit_code} == 100 ]; then
     echo "Package updates required. Updating..."
