@@ -24,99 +24,98 @@
 set -o errexit
 
 # Set verbose/quiet output and configure redirection appropriately
-DEBUG=false
-[[ "${DEBUG}" = true ]] && REDIRECT="/zero-fs.log" || REDIRECT="/dev/null"
+debug=false
+[[ "${debug}" = true ]] && redirect="/zero-fs.log" || redirect="/dev/null"
 
-echo "Running script to zero out free space in filesystems..." >> ${REDIRECT}
+echo "Running script to zero out free space in filesystems..." >> ${redirect}
 
 # Get the mount point of all block based file system partitions
-FSBLK_MNTPOINT="$(lsblk --list --output MOUNTPOINT,TYPE,FSTYPE | \
+fsblk_mntpoint="$(lsblk --list --output MOUNTPOINT,TYPE,FSTYPE | \
                   grep part | \
                   grep -v swap | \
                   cut -d' ' -f1)"
 
 # Loop over each partition or exit if we failed to find any
-if [ "x${FSBLK_MNTPOINT}" != "x" ]; then
-    for i in ${FSBLK_MNTPOINT}
+if [ "x${fsblk_mntpoint}" != "x" ]; then
+    for i in ${fsblk_mntpoint}
     do
         echo "Performing actions on ${i} to maximise efficiency of" \
-             "compacting" >> ${REDIRECT}
-        dd if=/dev/zero of=${i}/ZERO bs=1M &>> ${REDIRECT}
-        ZERO_FILE_SIZE="$(du -sh ${i}/ZERO)"
+             "compacting" >> ${redirect}
+        dd if=/dev/zero of=${i}/ZERO bs=1M &>> ${redirect}
+        zero_file_size="$(du -sh ${i}/ZERO)"
         rm -f ${i}/ZERO
-        echo "The zero file size was ${ZERO_FILE_SIZE}" >> ${REDIRECT}
+        echo "The zero file size was ${zero_file_size}" >> ${redirect}
         # Ensure file system buffers are flushed before continuing
         sync
     done
 else
     echo "ERROR: Could not find any block based FS partitions. " \
-         "Exiting" >> ${REDIRECT}
+         "Exiting" >> ${redirect}
     exit 1
 fi
 
 
 # Perform actions on swap space to maximise efficiency of compacting
 if swapon -s | grep partition &>/dev/null; then
-    echo "Swap partition found" >> ${REDIRECT}
+    echo "Swap partition found" >> ${redirect}
     # Use the lsblk utility to enumerate required information about the
     # configured swap partition
-    SWAP_INFO="$(lsblk --list --paths --output NAME,UUID,FSTYPE | \
+    swap_info="$(lsblk --list --paths --output NAME,UUID,FSTYPE | \
                  grep swap | \
                  tr -s '[:space:]' ' ')"
-    SWAP_DEVICE="$(echo "${SWAP_INFO}" | cut -d' ' -f1)"
-    SWAP_UUID="$(echo "${SWAP_INFO}" | cut -d' ' -f2)"
+    swap_device="$(echo "${swap_info}" | cut -d' ' -f1)"
+    swap_uuid="$(echo "${swap_info}" | cut -d' ' -f2)"
 
-    echo "Swap device: ${SWAP_DEVICE}" >> ${REDIRECT}
-    echo "Swap UUID: ${SWAP_UUID}" >> ${REDIRECT}
+    echo "Swap device: ${swap_device}" >> ${redirect}
+    echo "Swap UUID: ${swap_uuid}" >> ${redirect}
     echo "Zeroing out swap partition to maximise efficiency of " \
-         "compacting" >> ${REDIRECT}
+         "compacting" >> ${redirect}
 
     # Deactivate the swap
-    swapoff -U ${SWAP_UUID}
+    swapoff -U ${swap_uuid}
     # Zero out the partition
-    dd if=/dev/zero of=${SWAP_DEVICE} bs=1M &>> ${REDIRECT}
+    dd if=/dev/zero of=${swap_device} bs=1M &>> ${redirect}
     # Set up the linux swap area on the partition specifying a label to
     # allow swapon by label if required
-    mkswap -U ${SWAP_UUID} -L 'SWAP' ${SWAP_DEVICE} >> ${REDIRECT}
+    mkswap -U ${swap_uuid} -L 'SWAP' ${swap_device} >> ${redirect}
     # Ensure file system buffers are flushed before continuing
     sync
 elif swapon -s | grep file &>/dev/null; then
-    echo "Swap file found" >> ${REDIRECT}
+    echo "Swap file found" >> ${redirect}
     # Use the swapon command to enumerate required information about the
     # configured swap file
-    SWAP_INFO="$(swapon -s | grep file | tr -s '[:space:]' ' ')"
-    SWAP_FILE="$(echo "${SWAP_INFO}" | cut -d' ' -f1)"
-    SWAP_BLOCKS="$(echo "${SWAP_INFO}" | cut -d' ' -f3)"
+    swap_info="$(swapon -s | grep file | tr -s '[:space:]' ' ')"
+    swap_file="$(echo "${swap_info}" | cut -d' ' -f1)"
+    swap_blocks="$(echo "${swap_info}" | cut -d' ' -f3)"
 
-    echo "Swap file: ${SWAP_FILE}" >> ${REDIRECT}
-    echo "Swap size in blocks: ${SWAP_BLOCKS}" >> ${REDIRECT}
+    echo "Swap file: ${swap_file}" >> ${redirect}
+    echo "Swap size in blocks: ${swap_blocks}" >> ${redirect}
     echo "Zeroing out swap file to maximise efficiency of " \
-         "compacting" >> ${REDIRECT}
+         "compacting" >> ${redirect}
 
     # Deactivate the swap
-    swapoff ${SWAP_FILE}
+    swapoff ${swap_file}
     # Delete the swap file
-    rm -f ${SWAP_FILE}
+    rm -f ${swap_file}
     # Recreate and zero out the swap file with the space required
-    dd if=/dev/zero of=${SWAP_FILE} bs=1024 count=${SWAP_BLOCKS} &> \
-        ${REDIRECT}
+    dd if=/dev/zero of=${swap_file} bs=1024 count=${swap_blocks} &> \
+        ${redirect}
     # Set permissions to secure the swap file for RW by root only
-    chmod 600 ${SWAP_FILE}
+    chmod 600 ${swap_file}
     # Set up the linux swap area in the file specifying a label to allow
     # swapon by label if required
-    mkswap ${SWAP_FILE} -L 'SWAP' >> ${REDIRECT}
+    mkswap ${swap_file} -L 'SWAP' >> ${redirect}
     # Ensure file system buffers are flushed before continuing
     sync
 else
     echo "No swap configured for the system; No zeroing required" >> \
-        ${REDIRECT}
+        ${redirect}
 fi
 
-echo "Complete" >> ${REDIRECT}
+echo "Complete" >> ${redirect}
 
 # Ensure logging output is written to disk as the next steps in the
 # shutdown process unmount the filesystems
 sync
-
 
 exit 0

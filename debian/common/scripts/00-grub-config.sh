@@ -4,7 +4,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Packer logging
 echo "Configuring the GRUB bootloader..."
@@ -27,6 +27,6 @@ sed -i \
 sed -i "/^GRUB_TIMEOUT/ s/=.*/=0/" /etc/default/grub
 
 # Update grub
-update-grub &> $REDIRECT
+update-grub &> ${redirect}
 
 exit 0

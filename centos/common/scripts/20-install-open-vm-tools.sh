@@ -5,9 +5,9 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 echo "Installing open-vm-tools..."
-yum -y install open-vm-tools > $REDIRECT
+yum -y install open-vm-tools > ${redirect}
 
 exit 0

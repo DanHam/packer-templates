@@ -50,62 +50,62 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "${DEBUG}" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Configure list of packages that need to be installed
-PACKAGES=" perl gcc kernel-headers kernel-devel"
+packages=" perl gcc kernel-headers kernel-devel"
 # Install required package
 echo "Installing packages required by the VMware tools installer..."
-yum -y install ${PACKAGES} > ${REDIRECT}
+yum -y install ${packages} > ${redirect}
 
 # Set the path to the perl executable
-PERL="$(command -v perl)"
+perl_bin="$(command -v perl)"
 # Exit if for some reason the installation of perl failed or we fail to
 # find the executable
-if [ "x${PERL}" = "x" ]; then
+if [ "x${perl_bin}" = "x" ]; then
     echo "ERROR: Could not locate perl. Exiting."
     exit 1
 fi
 
 # Set the path to the VMware tools iso using the environment variable
 # defined in the Packer template and created on this system by Packer
-VMWARE_ISO="${VMTOOLS_ISO_PATH}"
+vmware_iso="${VMTOOLS_ISO_PATH}"
 # Exit if the environment variable is not set
-if [ "x${VMWARE_ISO}" == "x" ]; then
+if [ "x${vmware_iso}" == "x" ]; then
     echo "ERROR: Failed to set the path to the VMware Tools ISO. Exiting"
     exit 1
 fi
 # Exit if the iso has not been uploaded
-if [ ! -e ${VMWARE_ISO} ]; then
-    echo "ERROR: Could not find VMware Tools ISO at ${VMWARE_ISO}. Exiting"
+if [ ! -e ${vmware_iso} ]; then
+    echo "ERROR: Could not find VMware Tools ISO at ${vmware_iso}. Exiting"
     exit 1
 fi
 
 # Set the path to the VMware Tools configuration file
-VMWARE_CONFIG="/etc/vmware-tools/locations"
+vmware_config="/etc/vmware-tools/locations"
 # Create a mount point for the VMware Tools ISO avoiding any possible name
 # conflicts under /tmp through use of mktemp
-VMWARE_MNT="$(mktemp -t -d --tmpdir=/tmp vmware-mnt-XXXXXX)"
+vmware_mnt="$(mktemp -t -d --tmpdir=/tmp vmware-mnt-XXXXXX)"
 # Create a directory into which the Tools tar package will be extracted
-VMWARE_EXTRACT="$(mktemp -t -d --tmpdir=/tmp vmware-extract-XXXXXX)"
+vmware_extract="$(mktemp -t -d --tmpdir=/tmp vmware-extract-XXXXXX)"
 
 # Mount the ISO
-mount -o loop ${VMWARE_ISO} ${VMWARE_MNT} -o ro
+mount -o loop ${vmware_iso} ${vmware_mnt} -o ro
 # The tools are provided as a tar.gz package on the ISO with the name of
 # VMwareTools-<VERSION>.tar.gz.
 # Grab the path to the package
-TOOLS_TAR_PATH="$(find ${VMWARE_MNT} -iname "VMwareTools-*")"
+tools_tar_path="$(find ${vmware_mnt} -iname "VMwareTools-*")"
 # Now extract the tools into the required directory
-tar xzf ${TOOLS_TAR_PATH} -C ${VMWARE_EXTRACT}
+tar xzf ${tools_tar_path} -C ${vmware_extract}
 # Set the full path to the extracted installer package
-TOOLS_INSTALLER="${VMWARE_EXTRACT}/vmware-tools-distrib/vmware-install.pl"
+tools_installer="${vmware_extract}/vmware-tools-distrib/vmware-install.pl"
 
 # When the bundled VMware Tools are installed without open-vm-tools we
 # need to configure the installation options
 # When installed with open-vm-tools we can just run with the defaults
 if ! rpm -q open-vm-tools &>/dev/null; then
     # Create a temp file to store answers for the installer
-    ANSWERS_FILE="$(mktemp -t --tmpdir=/tmp vmware-answer-XXXXXX.txt)"
+    answers_file="$(mktemp -t --tmpdir=/tmp vmware-answer-XXXXXX.txt)"
     # Output answers to the temp file
     printf "%s" "\
         # Check for missing kernel drivers?
@@ -136,18 +136,18 @@ if ! rpm -q open-vm-tools &>/dev/null; then
         yes
         # Enable automatic rebuild of VMware kernel modules?
         no
-    " | sed 's/^ *//g' | egrep -v "^#|$^" > ${ANSWERS_FILE}
+    " | sed 's/^ *//g' | egrep -v "^#|$^" > ${answers_file}
 fi
 
 # Logging for packer
 if ! rpm -q open-vm-tools &>/dev/null; then
     # Full install of VMware tools from the bundled iso
     echo "Installing VMware Tools from the bundled iso..."
-    echo "Configured install answers:" > ${REDIRECT}
-    while read LINE
+    echo "Configured install answers:" > ${redirect}
+    while read line
     do
-        echo $LINE > ${REDIRECT}
-    done < ${ANSWERS_FILE}
+        echo ${line} > ${redirect}
+    done < ${answers_file}
 else
     # Open VM Tools with vmhgfs module from the bundled installer
     echo "Installing the VMware Tools vmhgfs module..."
@@ -155,27 +155,27 @@ fi
 
 # Run the VMware Installer Perl script with required options
 if ! rpm -q open-vm-tools &>/dev/null; then
-    ${PERL} ${TOOLS_INSTALLER} < ${ANSWERS_FILE} > ${REDIRECT}
+    ${perl_bin} ${tools_installer} < ${answers_file} > ${redirect}
 else
-    ${PERL} ${TOOLS_INSTALLER} --default > ${REDIRECT}
+    ${perl_bin} ${tools_installer} --default > ${redirect}
 fi
 
 # Clean up
 # Unmount the VMware Tools ISO
-umount ${VMWARE_MNT}
+umount ${vmware_mnt}
 # Remove the temp directories, ISO and answer files as required
-rm -rf ${VMWARE_EXTRACT} ${VMWARE_MNT} ${VMWARE_ISO} ${ANSWERS_FILE}
+rm -rf ${vmware_extract} ${vmware_mnt} ${vmware_iso} ${answers_file}
 
 
 # Configure VMware Tools to disable the automatic rebuild of kernel
 # modules post update of the kernel
 echo "Preventing tools from auto rebuiling modules on kernel update..."
-sed -i 's/answer AUTO_KMODS_ENABLED_ANSWER yes/answer AUTO_KMODS_ENABLED_ANSWER no/g' ${VMWARE_CONFIG}
-sed -i 's/answer AUTO_KMODS_ENABLED yes/answer AUTO_KMODS_ENABLED no/g' ${VMWARE_CONFIG}
+sed -i 's/answer AUTO_KMODS_ENABLED_ANSWER yes/answer AUTO_KMODS_ENABLED_ANSWER no/g' ${vmware_config}
+sed -i 's/answer AUTO_KMODS_ENABLED yes/answer AUTO_KMODS_ENABLED no/g' ${vmware_config}
 
 # Remove all packages (and deps) required to build and install the tools
 echo "Removing all packages required to build and install the tools..."
-yum -C remove -y --setopt="clean_requirements_on_remove=1" ${PACKAGES} > \
-    ${REDIRECT}
+yum -C remove -y --setopt="clean_requirements_on_remove=1" ${packages} > \
+    ${redirect}
 
 exit 0

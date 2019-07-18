@@ -24,7 +24,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "${DEBUG}" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Packer logging
 echo "Installing open-vm-tools..."
@@ -33,7 +33,7 @@ echo "Installing open-vm-tools..."
 export DEBIAN_FRONTEND="noninteractive"
 
 # Install the fuse package and then open-vm-tools from the backports repo
-apt-get -y install fuse > ${REDIRECT}
-apt-get -y install open-vm-tools > ${REDIRECT}
+apt-get -y install fuse > ${redirect}
+apt-get -y install open-vm-tools > ${redirect}
 
 exit 0

@@ -8,12 +8,12 @@ set -o errexit
 # Packer logging
 echo "Creating systemd unit file to run zero free space service..."
 
-UNIT_FILE_LOCATION="/etc/systemd/system/zero-free-space.service"
-UNIT="${UNIT_FILE_LOCATION##*/}"
+unit_file_location="/etc/systemd/system/zero-free-space.service"
+unit="${unit_file_location##*/}"
 
 # The location of the script is specified in the Packer configuration
 # template and exported as an environment variable
-ZERO_SCRIPT_LOCATION="${ZERO_SCRIPT_UPLOAD_PATH}"
+zero_script_location="${ZERO_SCRIPT_UPLOAD_PATH}"
 
 # Write the unit file
 printf "%s" "\
@@ -32,28 +32,28 @@ RemainAfterExit=yes
 TimeoutStopSec=10m
 ExecStart=/bin/true
 # Run the script to zero out all free space on filesystems
-ExecStop=${ZERO_SCRIPT_LOCATION}
+ExecStop=${zero_script_location}
 # Remove the script after running
-ExecStop=/bin/rm -f ${ZERO_SCRIPT_LOCATION}
+ExecStop=/bin/rm -f ${zero_script_location}
 # Remove and disable this unit on first run
-ExecStop=/usr/bin/find /etc/systemd/system/ -name ${UNIT} \
+ExecStop=/usr/bin/find /etc/systemd/system/ -name ${unit} \
     -exec /bin/rm -f '{}' \;
 
 [Install]
 WantedBy=multi-user.target
-" >${UNIT_FILE_LOCATION}
+" >${unit_file_location}
 
 # Make systemd aware of the newly created unit
 systemctl daemon-reload
 # Start the service
-systemctl start ${UNIT} >/dev/null 2>&1
+systemctl start ${unit} >/dev/null 2>&1
 
 # The script to zero out free space should have been uploaded by Packer
 # in a previous step. We need to ensure that it is executable.
-if [ -e ${ZERO_SCRIPT_LOCATION} ]; then
-    chmod u+x ${ZERO_SCRIPT_LOCATION}
+if [ -e ${zero_script_location} ]; then
+    chmod u+x ${zero_script_location}
 else
-    echo "ERROR Zero free space script missing: ${ZERO_SCRIPT_LOCATION}"
+    echo "ERROR Zero free space script missing: ${zero_script_location}"
     exit 1
 fi
 

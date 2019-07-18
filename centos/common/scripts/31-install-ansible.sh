@@ -4,13 +4,13 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Packer logging
 echo "Installing required packages for Ansible..."
 
 if ! rpm -qa | grep ansible &>/dev/null; then
-    yum install -y ansible > ${REDIRECT}
+    yum install -y ansible > ${redirect}
 fi
 
 exit 0

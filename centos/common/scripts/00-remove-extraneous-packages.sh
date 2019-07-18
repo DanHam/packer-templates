@@ -4,7 +4,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for Packer
 echo "Removing extraneous packages installed by Anaconda..."
@@ -13,7 +13,7 @@ echo "Removing extraneous packages installed by Anaconda..."
 # attempts to exclude them in the %packages section. In short Anaconda
 # seems to ignore options and settings in the %packages section and does
 # its own thing regardless...
-PACKAGE_LIST=(
+package_list=(
     atk
     atkmm
     btrfs-progs
@@ -64,15 +64,15 @@ PACKAGE_LIST=(
 
 # Depending, some packages listed may not be on the system so build a list
 # to avoid error messages
-REMOVE_LIST=()
-for PACKAGE in ${PACKAGE_LIST[@]}
+remove_list=()
+for package in ${package_list[@]}
 do
-    rpm -q ${PACKAGE} &>/dev/null
-    [[ $? -eq 0 ]] && REMOVE_LIST+=(${PACKAGE})
+    rpm -q ${package} &>/dev/null
+    [[ $? -eq 0 ]] && remove_list+=(${package})
 done
 
 # Remove packages
 yum -C -y remove --setopt="clean_requirements_on_remove=1" \
-    ${REMOVE_LIST[@]} > $REDIRECT
+    ${remove_list[@]} > ${redirect}
 
 exit 0

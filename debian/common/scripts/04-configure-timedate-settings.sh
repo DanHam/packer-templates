@@ -4,7 +4,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Packer logging
 echo "Configuring system time and date settings..."
@@ -15,15 +15,15 @@ echo "Configuring system time and date settings..."
 # ported over to systemd style unit files so we need to check for startup
 # scripts for each run level
 if [ "x$(find /etc/rc?.d -name S??ntp -o -name S??chrony)" != "x" ]; then
-    echo "System time configured to use NTP based source" > ${REDIRECT}
+    echo "System time configured to use NTP based source" > ${redirect}
     timedatectl set-ntp true
 else
-    echo "System time will not use an NTP based source" > ${REDIRECT}
+    echo "System time will not use an NTP based source" > ${redirect}
     timedatectl set-ntp false
 fi
 
 # Disable unsupported reading of time from the RTC in the local time zone
-echo "Disabling system setting of the RTC" > ${REDIRECT}
+echo "Disabling system setting of the RTC" > ${redirect}
 timedatectl set-local-rtc false
 
 exit 0

@@ -4,44 +4,44 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for packer
 echo "Checking for and removing old kernel packages as required..."
 echo "Current kernel package is linux-image-$(uname -r)"
 
 # Initialise list of old kernel and associated packages to remove
-REMOVE=""
+remove=""
 # All installed kernels will have a corresponding vmlinuz file under /boot
 # Old and outdated kernels installed on the system can be found by
 # comparing their vmlinuz files with the running kernel version
 for i in $(ls /boot | grep vmlinuz | grep -v $(uname -r))
 do
     # Determine the numeric version of the old kernel
-    VERSION="$(echo $i | sed -e 's/vmlinuz-//g' \
+    version="$(echo $i | sed -e 's/vmlinuz-//g' \
                              -e 's/-rt//g' \
                              -e 's/-amd64//g' \
                              -e 's/-dbg//g' )"
-    echo "Old kernel found with version: ${VERSION}"
+    echo "Old kernel found with version: ${version}"
 
     # Find all possible kernel image, header, and support package names for
     # the given version
-    KPKG="$(apt-cache search ${VERSION} | cut -d' ' -f1 | grep ${VERSION})"
+    kpkg="$(apt-cache search ${version} | cut -d' ' -f1 | grep ${version})"
     # If any of the packages are installed add it to the list to be removed
-    for PKG in ${KPKG}
+    for pkg in ${kpkg}
     do
-        if dpkg -l | grep ^ii | grep ${PKG} &>/dev/null; then
-            REMOVE+="${PKG} "
-            echo "Found deprecated package: ${PKG}" > ${REDIRECT}
+        if dpkg -l | grep ^ii | grep ${pkg} &>/dev/null; then
+            remove+="${pkg} "
+            echo "Found deprecated package: ${pkg}" > ${redirect}
         fi
     done
 done
 
 # Remove all deprecated packages
-if [ "x${REMOVE}" != "x" ]; then
+if [ "x${remove}" != "x" ]; then
     echo "Removing kernel packages (and any orphaned dependancies of):"
-    echo ${REMOVE} | tr -s '[:blank:]' '\n'
-    apt-get --purge autoremove -y ${REMOVE} > ${REDIRECT}
+    echo ${remove} | tr -s '[:blank:]' '\n'
+    apt-get --purge autoremove -y ${remove} > ${redirect}
 else
     echo "No old kernel packages found"
 fi

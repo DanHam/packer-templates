@@ -7,8 +7,8 @@ set -o errexit
 # Packer logging
 echo "Creating systemd unit file to remove Packer build user..."
 
-UNIT_FILE_LOCATION="/etc/systemd/system/remove-packer-user.service"
-UNIT="${UNIT_FILE_LOCATION##*/}"
+unit_file_location="/etc/systemd/system/remove-packer-user.service"
+unit="${unit_file_location##*/}"
 
 # Write the unit file
 printf "%s" "\
@@ -27,16 +27,16 @@ ExecStop=/usr/sbin/userdel --force --remove packer
 ExecStop=/bin/rm -f /etc/passwd- /etc/shadow- /etc/group-
 ExecStop=/bin/rm -f /etc/sudoers.d/packer
 # Remove and disable this unit on first run
-ExecStop=/usr/bin/find /etc/systemd/system/ -name ${UNIT} \
+ExecStop=/usr/bin/find /etc/systemd/system/ -name ${unit} \
     -exec /bin/rm -f '{}' \;
 
 [Install]
 WantedBy=multi-user.target
-" >${UNIT_FILE_LOCATION}
+" >${unit_file_location}
 
 # Make systemd aware of the newly created unit
 systemctl daemon-reload
 # Start the service
-systemctl start ${UNIT} >/dev/null 2>&1
+systemctl start ${unit} >/dev/null 2>&1
 
 exit 0

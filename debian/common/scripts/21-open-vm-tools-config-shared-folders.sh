@@ -5,7 +5,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "${DEBUG}" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 
 # Configure shared folder support if requested in the packer template
@@ -38,7 +38,7 @@ if [ "${VMTOOLS_SHARED_FOLDERS_FSTAB}" = true ]
 then
     if [ "x$(cat /etc/fstab | grep vmhgfs-fuse)" = "x" ]
     then
-        echo "Adding required line to /etc/fstab..." > ${REDIRECT}
+        echo "Adding required line to /etc/fstab..." > ${redirect}
         printf "%s" "\
             # Enable use of shared folders for VMware Workstation and Fusion
             .host:/ /mnt/hgfs fuse.vmhgfs-fuse rw,nosuid,nodev,uid=0,gid=0,allow_other,users,defaults 0 0

@@ -7,7 +7,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for packer
 echo "Installing and configuring SELinux utilities..."
@@ -15,7 +15,7 @@ echo "Installing and configuring SELinux utilities..."
 
 # Install useful SELinux packages
 yum install -y policycoreutils-restorecond \
-               policycoreutils-python > ${REDIRECT}
+               policycoreutils-python > ${redirect}
 
 # Ensure the restorecond daemon is set to start at boot
 systemctl enable restorecond.service

@@ -4,11 +4,11 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "$DEBUG" = true ]] && REDIRECT="/dev/stdout" || REDIRECT="/dev/null"
+[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Logging for packer
 echo "Installing required packages for Ansible..."
 
-DEBIAN_FRONTEND="noninteractive" apt-get -y install ansible > ${REDIRECT}
+DEBIAN_FRONTEND="noninteractive" apt-get -y install ansible > ${redirect}
 
 exit 0
