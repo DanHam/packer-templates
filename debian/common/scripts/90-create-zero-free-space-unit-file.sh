@@ -46,7 +46,7 @@ WantedBy=multi-user.target
 # Make systemd aware of the newly created unit
 systemctl daemon-reload
 # Start the service
-systemctl start ${unit} >/dev/null 2>&1
+systemctl start ${unit} &>/dev/null
 
 # The script to zero out free space should have been uploaded by Packer
 # in a previous step. We need to ensure that it is executable.

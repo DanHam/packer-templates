@@ -83,7 +83,7 @@ if ! needs-restarting --reboothint &>/dev/null; then
     # disconnect and then cannot reconnect until the reboot is complete
     systemctl stop sshd.service
     # Reboot
-    nohup shutdown --reboot now </dev/null >/dev/null 2>&1 &
+    nohup shutdown --reboot now </dev/null &>/dev/null &
 fi
 
 exit 0

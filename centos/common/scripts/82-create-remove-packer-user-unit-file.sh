@@ -37,6 +37,6 @@ WantedBy=multi-user.target
 # Make systemd aware of the newly created unit
 systemctl daemon-reload
 # Start the service
-systemctl start ${unit} >/dev/null 2>&1
+systemctl start ${unit} &>/dev/null
 
 exit 0
