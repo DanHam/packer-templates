@@ -21,6 +21,11 @@
 # Blanking out or deleting and recreating the swap in this way ensures the
 # vmdk file is reduced to its minimum possible size when compacted with
 # vmware-vdiskmanager
+#
+# Note: When used on a partition the dd commands below will always returns
+# an error when there is no more space left in the filesystem. As such, we
+# need to explicitly return true to avoid inadvertantly triggering the
+# 'errexit' option
 set -o errexit
 
 # Set verbose/quiet output and configure redirection appropriately
@@ -41,7 +46,7 @@ if [ "x${fsblk_mntpoint}" != "x" ]; then
     do
         echo "Performing actions on ${i} to maximise efficiency of" \
              "compacting" >> ${redirect}
-        dd if=/dev/zero of=${i}/ZERO bs=1M &>> ${redirect}
+        dd if=/dev/zero of=${i}/ZERO bs=1M 2>/dev/null || true &>> ${redirect}
         zero_file_size="$(du -sh ${i}/ZERO)"
         rm -f ${i}/ZERO
         echo "The zero file size was ${zero_file_size}" >> ${redirect}
@@ -49,48 +54,72 @@ if [ "x${fsblk_mntpoint}" != "x" ]; then
         sync
     done
 else
-    echo "ERROR: Could not find any block based FS partitions. " \
+    echo "ERROR: Could not find any block based FS partitions." \
          "Exiting" >> ${redirect}
     exit 1
 fi
 
 
 # Perform actions on swap space to maximise efficiency of compacting
-if swapon -s | grep partition &>/dev/null; then
+if swapon --summary | grep partition &>/dev/null; then
     echo "Swap partition found" >> ${redirect}
     # Use the lsblk utility to enumerate required information about the
     # configured swap partition
-    swap_info="$(lsblk --list --paths --output NAME,UUID,FSTYPE | \
-                 grep swap | \
+    swap_info="$(lsblk --list --paths --output FSTYPE,NAME,UUID,LABEL | \
+                 grep ^swap | \
                  tr -s '[:space:]' ' ')"
-    swap_device="$(echo "${swap_info}" | cut -d' ' -f1)"
-    swap_uuid="$(echo "${swap_info}" | cut -d' ' -f2)"
+    swap_device="$(echo "${swap_info}" | cut -d' ' -f2)"
+    swap_uuid="$(echo "${swap_info}" | cut -d' ' -f3)"
+    swap_label="$(echo "${swap_info}" | cut -d' ' -f4)"
 
     echo "Swap device: ${swap_device}" >> ${redirect}
     echo "Swap UUID: ${swap_uuid}" >> ${redirect}
-    echo "Zeroing out swap partition to maximise efficiency of " \
+    if [ "x${swap_label}" = "x" ]; then
+        echo "The label for the swap partition was not set" >> ${redirect}
+        echo "Setting swap partition label to 'SWAP'" >> ${redirect}
+        swap_label="SWAP"
+    else
+        echo "Swap Label: ${swap_label}" >> ${redirect}
+    fi
+    echo "Zeroing out swap partition to maximise efficiency of" \
          "compacting" >> ${redirect}
 
     # Deactivate the swap
-    swapoff -U ${swap_uuid}
+    swapoff UUID=${swap_uuid}
     # Zero out the partition
-    dd if=/dev/zero of=${swap_device} bs=1M &>> ${redirect}
-    # Set up the linux swap area on the partition specifying a label to
-    # allow swapon by label if required
-    mkswap -U ${swap_uuid} -L 'SWAP' ${swap_device} >> ${redirect}
+    dd if=/dev/zero of=${swap_device} bs=1M 2>/dev/null || true &>> ${redirect}
+    # Set up the linux swap area on the partition reusing the existing UUID
+    # and label as required
+    mkswap --uuid ${swap_uuid} --label "${swap_label}" ${swap_device} >> \
+        ${redirect}
     # Ensure file system buffers are flushed before continuing
     sync
-elif swapon -s | grep file &>/dev/null; then
+    # Make the OS aware of the changes to the partition table
+    partprobe
+else
+    echo "No active swap partition found" >> ${redirect}
+fi
+
+if swapon --summary | grep file &>/dev/null; then
     echo "Swap file found" >> ${redirect}
     # Use the swapon command to enumerate required information about the
     # configured swap file
-    swap_info="$(swapon -s | grep file | tr -s '[:space:]' ' ')"
+    swap_info="$(swapon --summary | grep file | tr -s '[:space:]' ' ')"
     swap_file="$(echo "${swap_info}" | cut -d' ' -f1)"
     swap_blocks="$(echo "${swap_info}" | cut -d' ' -f3)"
+    swap_label="$(swaplabel ${swap_file} | \
+                  sed -n '/^LABEL:/ s/^LABEL: \(.*\)/\1/g p')"
 
     echo "Swap file: ${swap_file}" >> ${redirect}
     echo "Swap size in blocks: ${swap_blocks}" >> ${redirect}
-    echo "Zeroing out swap file to maximise efficiency of " \
+    if [ "x${swap_label}" = "x" ]; then
+        echo "The label for the swap file was not set" >> ${redirect}
+        echo "Setting swap file label to 'SWAP'" >> ${redirect}
+        swap_label="SWAP"
+    else
+        echo "Swap Label: ${swap_label}" >> ${redirect}
+    fi
+    echo "Zeroing out swap file to maximise efficiency of" \
          "compacting" >> ${redirect}
 
     # Deactivate the swap
@@ -98,18 +127,16 @@ elif swapon -s | grep file &>/dev/null; then
     # Delete the swap file
     rm -f ${swap_file}
     # Recreate and zero out the swap file with the space required
-    dd if=/dev/zero of=${swap_file} bs=1024 count=${swap_blocks} &> \
+    dd if=/dev/zero of=${swap_file} bs=1024 count=${swap_blocks} &>> \
         ${redirect}
     # Set permissions to secure the swap file for RW by root only
     chmod 600 ${swap_file}
-    # Set up the linux swap area in the file specifying a label to allow
-    # swapon by label if required
-    mkswap ${swap_file} -L 'SWAP' >> ${redirect}
+    # Set up the linux swap file
+    mkswap ${swap_file} --label "${swap_label}" >> ${redirect}
     # Ensure file system buffers are flushed before continuing
     sync
 else
-    echo "No swap configured for the system; No zeroing required" >> \
-        ${redirect}
+    echo "No active swap file found" >> ${redirect}
 fi
 
 echo "Complete" >> ${redirect}
