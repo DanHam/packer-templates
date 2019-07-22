@@ -15,7 +15,7 @@
     "installer_boot_time": "5s",
 
     "vmware_hardware_version": "9",
-    "memory_size": "512",
+    "memory_size": "1024",
     "cpu_count": "1",
     "disk_size_vmware": "10240",
     "disk_size_virtualbox": "10240",
