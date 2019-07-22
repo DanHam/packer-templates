@@ -1,6 +1,6 @@
 {
   "variables": {
-    "template": "debian-kitchen-ansible",
+    "template": "debian-9-kitchen-ansible",
     "guest_os_type_vmware": "debian8-64",
     "guest_os_type_virtualbox": "Debian_64",
     "part_scheme": "std",
