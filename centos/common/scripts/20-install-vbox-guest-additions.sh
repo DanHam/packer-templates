@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Install the Virtualbox Guest Additions. Compilition of the additions
-# requires the following packages be present on the system:
+# requires the following packages be installed:
 #
 #   * gcc
 #   * make
@@ -47,8 +47,27 @@ guest_additions_installer="${guest_additions_mnt}/VBoxLinuxAdditions.run"
 mount -o loop ${guest_additions_iso} ${guest_additions_mnt} -o ro
 
 # Run the Virtualbox installer
+#
+# The Virtualbox installer returns:
+#
+# * 0 if the kernel modules were properly created and loaded
+# * 1 if the modules could not be build or loaded (except due to already
+#     running older modules)
+# * 2 if running modules probably prevented the new ones from loading
+#
+# An exit code of 2 is fine as the new modules will be used after the
+# system is restarted. As such we need to temporarily disable the option to
+# exit on error
 echo "Installing Virtualbox Guest Additions..."
+set +o errexit
 sh ${guest_additions_installer} > ${redirect}
+# Only an exit code of 1 should be considered an error
+if [ $? -eq 1 ]; then
+    echo 'An error occurred installing the Virtualbox Guest additions'
+    echo 'The installer returned an exit code of 1'
+    exit 1
+fi
+set -o errexit
 
 # Clean up
 # Unmount the Guest Additions ISO
@@ -56,7 +75,7 @@ umount ${guest_additions_mnt}
 # Remove the temp directories and uploaded ISO
 rm -rf ${guest_additions_mnt} ${guest_additions_iso}
 
-# Remove the packages and any dependancies required for compiling
+# Remove packages (and any deps) required for compiling the Guest Additions
 echo "Removing packages required to compile Virtualbox Additions..."
 yum remove -y --setopt="clean_requirements_on_remove=1" ${packages} > \
     ${redirect}

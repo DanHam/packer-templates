@@ -47,9 +47,28 @@ guest_additions_installer="${guest_additions_mnt}/VBoxLinuxAdditions.run"
 # Mount the ISO
 mount -o loop ${guest_additions_iso} ${guest_additions_mnt} -o ro
 
-# Run the VMware Installer Perl script with required options
+# Run the Virtualbox installer
+#
+# The Virtualbox installer returns:
+#
+# * 0 if the kernel modules were properly created and loaded
+# * 1 if the modules could not be build or loaded (except due to already
+#     running older modules)
+# * 2 if running modules probably prevented the new ones from loading
+#
+# An exit code of 2 is fine as the new modules will be used after the
+# system is restarted. As such we need to temporarily disable the option to
+# exit on error
 echo "Installing Virtualbox Guest Additions..."
+set +o errexit
 sh ${guest_additions_installer} > ${redirect}
+# Only an exit code of 1 should be considered an error
+if [ $? -eq 1 ]; then
+    echo 'An error occurred installing the Virtualbox Guest additions'
+    echo 'The installer returned an exit code of 1'
+    exit 1
+fi
+set -o errexit
 
 # Clean up
 # Unmount the Guest Additions ISO
@@ -60,6 +79,5 @@ rm -rf ${guest_additions_mnt} ${guest_additions_iso}
 # Remove packages (and any deps) required for compiling the Guest Additions
 echo "Removing packages required to compile Virtualbox Additions..."
 apt-get -y autoremove ${packages} > ${redirect}
-
 
 exit 0
