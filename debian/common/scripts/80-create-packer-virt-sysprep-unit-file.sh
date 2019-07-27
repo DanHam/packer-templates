@@ -34,7 +34,7 @@ ExecStop=${prefix}/packer-virt-sysprep-run-ops.sh
 ExecStop=/bin/rm -rf ${PACKER_VIRT_SYSPREP_DIR}
 # Use find/rm to disable and remove the unit file as systemd seems to run
 # into problems when systemctl commands are used within a unit file
-ExecStop=/usr/bin/find /etc/systemd/system/ -name ${unit} \
+ExecStop=/usr/bin/find /etc/systemd/system/ -name ${unit} \\
     -exec /bin/rm -f '{}' \;
 
 [Install]
