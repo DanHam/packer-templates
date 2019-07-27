@@ -1,0 +1,295 @@
+{
+  "variables": {
+    "template": "debian-10-x86_64",
+    "guest_os_type_vmware": "debian8-64",
+    "guest_os_type_virtualbox": "Debian_64",
+    "part_scheme": "std",
+
+    "debug": "false",
+    "headless": "false",
+
+    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian10.0x86_64/debian-10.0.0-amd64-netinst.iso",
+    "iso_checksum": "d808985468652393cf31d30fe7d6f60f5041337980b25dd00f2ab9553248b564cf38174c8251f410ddbe221e57fefc78849f9879141e25a5dfb31d8043fccc5c",
+    "iso_checksum_type": "sha512",
+
+    "installer_boot_time": "5s",
+
+    "vmware_hardware_version": "9",
+    "memory_size": "1024",
+    "cpu_count": "1",
+    "disk_size_vmware": "10240",
+    "disk_size_virtualbox": "10240",
+    "vmtools_shared_folders": "true",
+    "vmtools_shared_folders_fstab": "false",
+    "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
+
+    "ssh_username": "packer",
+    "ssh_private_key": "/Users/dan/.ssh/id_rsa",
+
+    "shutdown_command": "sudo /sbin/poweroff",
+
+    "admin_create": "true",
+    "admin_user": "debadmin",
+    "admin_group": "debadmin",
+    "admin_uid": "1000",
+    "admin_gid": "1000",
+    "admin_groups": "cdrom,floppy,sudo,audio,dip,video,plugdev,netdev,systemd-journal",
+    "admin_shell": "/bin/bash",
+    "admin_gecos": "Debian Administrator",
+    "admin_ssh_authorised_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDV14up9OBdbyUPuuSCUOnSyTZOTx4i13nyIASlkQpLs7zKUIJL8Sni7BASmN3LFi9+BsiuBxC3RkVj84H6fe+mKqC6zpdFtWE2dN7U0bOXGVnDPOSXcW7B52NRP+sL7ShTcpDBsLUq0N4Hc64XSTOAbfOiQY9OUPSiW5nUQSuPHm9K1G0w//dImqyiikBWvBWJag2phaZDbeOz7nHcOdZnLhv0uWZBq/YRSdo0Jyn3yg/lG07PaWslPPw2s4eG7i/eWNbkWUshvRGdzU+pf5NCQl4iCetuaXlPUpIFZzjTgPE5IE+gXCue7Bg08ZAz25lk3g8B3TYlhfCkVm/8nQAGuYnTLMfxwacPJIXDTd/mD7efyNOOpz8nmylZoaiFBVrQWdmlVopqIMXArK+/NE4Md58ErUKPQY0Z/J/rFANN4JRFVU2XcC/0wl+uTvPxigspLpozp4mmjG/JCUhTNbihK/ICd4G87Xl+SAGoCEfly3NQcXpLgRUJou255Gj+CkRT2cOeCoNDhLlDLJ7d/twB0LzVfgQAGMCMWButudiCaX6NOSDhUAcHIKoNxQN28cO1xKGrEKxlw0iR2XWUftowxjfvifRYlbHAtrw6UXofNiZWfl8fPpHKPvbEgB83kK3OMWMP1cUAksMCUJdD8hCMPFxLS9Kj6cSz9Xlq/CSKyQ== JustSomeFooKey",
+
+    "packer_dir": "/packer",
+    "apt_install_recommends": "true",
+    "packer_virt_sysprep_dir": "/packer-virt-sysprep",
+    "zero_script_upload_path": "/tmp/zero-free-space.sh"
+  },
+
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "http_directory": "../common/http",
+      "communicator": "ssh",
+      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "headless": "{{user `headless`}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "auto <wait>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-{{user `part_scheme`}}.cfg <wait>",
+        "debian-installer=en_GB <wait>",
+        "locale=en_GB <wait>",
+        "keymap=uk <wait>",
+        "hostname=localhost <wait>",
+        "domain=localdomain <wait>",
+        "<enter>"
+      ],
+      "boot_wait": "{{user `installer_boot_time`}}",
+
+      "version": "{{user `vmware_hardware_version`}}",
+      "guest_os_type": "{{user `guest_os_type_vmware`}}",
+      "vmx_data": {
+        "cpuid.coresPerSocket": "1",
+        "mks.enable3d": "FALSE",
+        "floppy0.present": "FALSE",
+        "usb.vbluetooth.startConnected": "FALSE"
+      },
+      "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "display_name": "Packer-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "cpus": "{{user `cpu_count`}}",
+      "memory": "{{user `memory_size`}}",
+      "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "disk_type_id": "0",
+      "disk_size": "{{user `disk_size_vmware`}}",
+      "network_adapter_type": "vmxnet3",
+      "sound": false,
+      "serial": "NONE",
+      "usb": false,
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+      "ssh_wait_timeout": "10000s",
+
+      "shutdown_command": "{{user `shutdown_command`}}"
+    },
+    {
+      "type": "virtualbox-iso",
+      "http_directory": "../common/http",
+      "communicator": "ssh",
+      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
+      "headless": "{{user `headless`}}",
+
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+
+      "boot_command": [
+        "<esc><wait>",
+        "install <wait>",
+        "auto <wait>",
+        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-{{user `part_scheme`}}.cfg <wait>",
+        "debian-installer=en_GB <wait>",
+        "locale=en_GB <wait>",
+        "keymap=uk <wait>",
+        "hostname=localhost <wait>",
+        "domain=localdomain <wait>",
+        "<enter>"
+      ],
+      "boot_wait": "{{user `installer_boot_time`}}",
+
+      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
+      "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--vram", "16"],
+        ["setextradata", "global", "GUI/SuppressMessages", "all"]
+      ],
+       "export_opts": [
+        "--ovf20"
+      ],
+      "vm_name": "{{user `template`}}-{{build_name}}",
+      "cpus": "{{user `cpu_count`}}",
+      "memory": "{{user `memory_size`}}",
+      "hard_drive_interface": "sata",
+      "disk_size": "{{user `disk_size_virtualbox`}}",
+      "sound": "none",
+      "usb": false,
+
+      "guest_additions_mode": "upload",
+      "guest_additions_path": "{{user `guest_additions_path`}}",
+
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_private_key_file": "{{user `ssh_private_key`}}",
+      "ssh_wait_timeout": "10000s",
+
+      "shutdown_command": "{{user `shutdown_command`}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "environment_vars": [
+        "PACKER_DIR={{user `packer_dir`}}",
+        "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}"
+      ],
+      "inline": [
+        "mkdir --mode=777 $PACKER_DIR",
+        "mkdir --mode=777 $PACKER_VIRT_SYSPREP_DIR"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../common/scripts/packer-virt-sysprep/",
+      "destination": "{{user `packer_virt_sysprep_dir`}}"
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_CREATE={{user `admin_create`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_GECOS={{user `admin_gecos`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "../common/scripts/00-grub-config.sh",
+        "../common/scripts/01-disable-system-beep.sh",
+        "../common/scripts/02-configure-ssh.sh",
+        "../common/scripts/03-configure-chrony.sh",
+        "../common/scripts/04-configure-timedate-settings.sh",
+        "../common/scripts/05-debian-fix-mesg-n-when-not-tty.sh",
+        "../common/scripts/06-debian-fix-console-setup-keyboard.sh",
+        "../common/scripts/07-create-admin-user.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["vmware-iso"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
+        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "../common/scripts/20-install-open-vm-tools.sh",
+        "../common/scripts/21-open-vm-tools-config-shared-folders.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["virtualbox-iso"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+            "../common/scripts/20-install-vbox-guest-additions.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "../common/scripts/30-remove-old-kernels.sh",
+        "../common/scripts/31-remove-extraneous-packages.sh",
+        "../common/scripts/32-set-apt-install-recommends.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "../common/scripts/80-create-packer-virt-sysprep-unit-file.sh",
+        "../common/scripts/81-create-packer-virt-sysprep-run-control-script.sh",
+        "../common/scripts/82-create-remove-packer-user-unit-file.sh"
+      ]
+   },
+   {
+      "type": "shell",
+      "environment_vars": [
+        "PACKER_DIR={{user `packer_dir`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "inline": [
+        "rm -rf $PACKER_DIR"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "../common/scripts/zero-free-space.sh",
+      "destination": "{{user `zero_script_upload_path`}}"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "ZERO_SCRIPT_UPLOAD_PATH={{user `zero_script_upload_path`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "../common/scripts/90-create-zero-free-space-unit-file.sh"
+      ]
+    }
+  ],
+
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "only": ["vmware-iso", "virtualbox-iso"],
+      "keep_input_artifact": true,
+      "override": {
+        "vmware": {
+          "vagrantfile_template": "files/{{user `template`}}/Vagrantfile.vmware"
+        },
+        "virtualbox": {
+          "vagrantfile_template": "files/{{user `template`}}/Vagrantfile.virtualbox"
+        }
+      },
+      "output": "boxes/{{user `template`}}-{{.Provider}}.box"
+    }
+  ]
+}

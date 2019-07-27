@@ -2,5 +2,5 @@
 #
 # Clean packer build artifacts
 rm -f boxes/*box
-rm -rf output-debian-?-x86_64-*
+rm -rf output-debian-*-x86_64-*
 rm -rf packer_cache
