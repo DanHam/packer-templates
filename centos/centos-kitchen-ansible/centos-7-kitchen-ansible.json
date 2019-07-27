@@ -1,6 +1,6 @@
 {
   "variables": {
-    "template": "centos-kitchen-ansible",
+    "template": "centos-7-kitchen-ansible",
     "guest_os_type_vmware": "centos-64",
     "guest_os_type_virtualbox": "RedHat_64",
 
