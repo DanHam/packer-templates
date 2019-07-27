@@ -283,10 +283,10 @@
       "keep_input_artifact": true,
       "override": {
         "vmware": {
-          "vagrantfile_template": "files/Vagrantfile.vmware"
+          "vagrantfile_template": "files/{{user `template`}}/Vagrantfile.vmware"
         },
         "virtualbox": {
-          "vagrantfile_template": "files/Vagrantfile.virtualbox"
+          "vagrantfile_template": "files/{{user `template`}}/Vagrantfile.virtualbox"
         }
       },
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
