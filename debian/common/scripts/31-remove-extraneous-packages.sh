@@ -11,6 +11,9 @@ echo "Removing extraneous packages..."
 
 # Packages common to Debian 9 and 10
 common="avahi-autoipd
+        binutils
+        console-setup
+        console-setup-linux
         cpp
         dictionaries-common
         discover
@@ -29,17 +32,22 @@ common="avahi-autoipd
         libusb-0.1-4
         make
         os-prober
+        perl
         task-english
         task-laptop
         tasksel
         tasksel-data
-        wamerican"
+        util-linux-locales
+        wamerican
+        xkb-data"
 
 # Packages found on Debian 9 only
 debian9="cpp-6"
 
 # Packages found on Debian 10 only
-debian10="cpp-7 \
+debian10="binutils-common
+          binutils-x86-64-linux-gnu
+          cpp-7
           gdbm-l10n"
 
 # Concatenate lists to get the full package list for the given version
