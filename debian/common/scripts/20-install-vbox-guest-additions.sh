@@ -19,10 +19,31 @@ set -o errexit
 # Ensure debconf does not ask any questions
 export DEBIAN_FRONTEND="noninteractive"
 
-# Install required package
-packages="gcc make linux-headers-$(uname -r) bzip2"
-echo "Installing packages required to compile Virtualbox Additions..."
-apt-get -y install ${packages} > ${redirect}
+# Set up list of packages required to build the Guest Additions
+build_deps=(
+    gcc
+    make
+    linux-headers-$(uname -r)
+    bzip2
+)
+# Initialise the array used to store the list of packages needed just for
+# the build of the Guest Additions
+build_pkgs=()
+
+# Check through the list of required packages adding any that are not
+# installed to the list. These packages will be removed once complete
+for pkg in ${build_deps[@]}
+do
+    if ! dpkg -l | grep ${pkg} | grep ^ii &>/dev/null; then
+        build_pkgs+=("${pkg}")
+    fi
+done
+
+# Install required packages for build
+if [ ${#build_pkgs[@]} -gt 0 ]; then
+    echo "Ensuring packages required to build Guest Additions are installed..."
+    apt-get -y install ${build_pkgs[@]} > ${redirect}
+fi
 
 # Set the path to the Virtualbox tools iso using the environment variable
 # defined in the Packer template and created on this system by Packer
@@ -77,7 +98,9 @@ umount ${guest_additions_mnt}
 rm -rf ${guest_additions_mnt} ${guest_additions_iso}
 
 # Remove packages (and any deps) required for compiling the Guest Additions
-echo "Removing packages required to compile Virtualbox Additions..."
-apt-get -y autoremove ${packages} > ${redirect}
+if [ ${#build_pkgs[@]} -gt 0 ]; then
+    echo "Removing packages installed only to build the Guest Additions..."
+    apt-get -y autoremove ${build_pkgs[@]} > ${redirect}
+fi
 
 exit 0

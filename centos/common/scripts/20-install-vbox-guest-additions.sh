@@ -11,17 +11,36 @@
 # We won't need to compile the Guest Additions again as we would rebuild
 # the image should a kernel update be required. As such, we can remove the
 # packages once the Guest Additions have been built.
-# Note that make is installed as part of the base installation and so is
-# not explicitly included in the package list below
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
-# Install required package
-packages="gcc kernel-devel bzip2"
-echo "Installing packages required to compile Virtualbox Additions..."
-yum -y install ${packages} > ${redirect}
+# Set up list of packages required to build the Guest Additions
+build_deps=(
+    gcc
+    make
+    kernel-devel
+    bzip2
+)
+# Initialise the array used to store the list of packages needed just for
+# the build of the Guest Additions
+build_pkgs=()
+
+# Check through the list of required packages adding any that are not
+# installed to the list. These packages will be removed once complete
+for pkg in ${build_deps[@]}
+do
+    if ! rpm -q ${pkg} &>/dev/null; then
+        build_pkgs+=("${pkg}")
+    fi
+done
+
+# Install required packages for build
+if [ ${#build_pkgs[@]} -gt 0 ]; then
+    echo "Ensuring packages required to build Guest Additions are installed..."
+    yum -y install ${build_pkgs[@]} > ${redirect}
+fi
 
 # Set the path to the Virtualbox tools iso using the environment variable
 # defined in the Packer template and created on this system by Packer
@@ -76,8 +95,10 @@ umount ${guest_additions_mnt}
 rm -rf ${guest_additions_mnt} ${guest_additions_iso}
 
 # Remove packages (and any deps) required for compiling the Guest Additions
-echo "Removing packages required to compile Virtualbox Additions..."
-yum remove -y --setopt="clean_requirements_on_remove=1" ${packages} > \
-    ${redirect}
+if [ ${#build_pkgs[@]} -gt 0 ]; then
+    echo "Removing packages installed only to build the Guest Additions..."
+    yum remove -y --setopt="clean_requirements_on_remove=1" \
+        ${build_pkgs[@]} > ${redirect}
+fi
 
 exit 0

@@ -42,8 +42,7 @@
 #
 # Since the image is typically rebuilt when kernel updates are required
 # we won't need the ability to compile the VMware tools again.
-# As such, with the exception of make (which is installed as part of the
-# base install), these packages are removed post build and install of the
+# As such, these packages are removed post build and install of the
 # VMware tools modules.
 # The option to automatically rebuild VMware tools kernel modules when
 # the kernel is upgraded is explicitly disabled.
@@ -52,11 +51,32 @@ set -o errexit
 # Set verbose/quiet output based on env var configured in Packer template
 [[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
 
-# Configure list of packages that need to be installed
-packages=" perl gcc kernel-headers kernel-devel"
-# Install required package
-echo "Installing packages required by the VMware tools installer..."
-yum -y install ${packages} > ${redirect}
+# Set up list of packages required to build the VMware tools
+build_deps=(
+    perl
+    gcc
+    make
+    kernel-headers
+    kernel-devel
+)
+# Initialise the array used to store the list of packages needed just for
+# the build of VMware tools
+build_pkgs=()
+
+# Check through the list of required packages adding any that are not
+# installed to the list. These packages will be removed once complete
+for pkg in ${build_deps[@]}
+do
+    if ! rpm -q ${pkg} &>/dev/null; then
+        build_pkgs+=("${pkg}")
+    fi
+done
+
+# Install required packages for build
+if [ ${#build_pkgs[@]} -gt 0 ]; then
+    echo "Ensuring packages required to build VMware tools are installed..."
+    yum -y install ${build_pkgs[@]} > ${redirect}
+fi
 
 # Set the path to the perl executable
 perl_bin="$(command -v perl)"
@@ -173,9 +193,11 @@ echo "Preventing tools from auto rebuiling modules on kernel update..."
 sed -i 's/answer AUTO_KMODS_ENABLED_ANSWER yes/answer AUTO_KMODS_ENABLED_ANSWER no/g' ${vmware_config}
 sed -i 's/answer AUTO_KMODS_ENABLED yes/answer AUTO_KMODS_ENABLED no/g' ${vmware_config}
 
-# Remove all packages (and deps) required to build and install the tools
-echo "Removing all packages required to build and install the tools..."
-yum -C remove -y --setopt="clean_requirements_on_remove=1" ${packages} > \
-    ${redirect}
+# Remove packages (and any deps) required to build and install the tools
+if [ ${#build_pkgs[@]} -gt 0 ]; then
+    echo "Removing packages installed only to build VMware tools..."
+    yum remove -y --setopt="clean_requirements_on_remove=1" \
+        ${build_pkgs[@]} > ${redirect}
+fi
 
 exit 0
