@@ -9,3 +9,12 @@
 **/boxes/*.json
 # Ignore logs
 *log
+# Ignore all files under directories named 'vagrantfiles' - these will contain
+# dynamically generated Vagrantfiles for inclusion in the resultant box
+**/vagrantfiles/**
+# ... except any directories or subdirectories under 'vagrantfiles'...
+!**/vagrantfiles/**/
+# ... that end in '.snippet'
+!*.snippet
+# ... or .md
+!*.md
