@@ -41,7 +41,12 @@
     "packer_dir": "/packer",
     "apt_install_recommends": "true",
     "packer_virt_sysprep_dir": "/packer-virt-sysprep",
-    "zero_script_upload_path": "/tmp/zero-free-space.sh"
+    "zero_script_upload_path": "/tmp/zero-free-space.sh",
+
+    "local_shell_binary": "/opt/local/bin/bash",
+    "vagrantfile_base_dir": "vagrantfiles",
+    "vagrantfile_filename_prefix": "Vagrantfile",
+    "vagrant_cloud_org": "foosite"
   },
 
   "builders": [
@@ -290,17 +295,28 @@
 
   "post-processors": [
     {
+      "type": "shell-local",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "TEMPLATE={{user `template`}}",
+        "VAGRANTFILE_BASE_DIR={{user `vagrantfile_base_dir`}}",
+        "VAGRANTFILE_NAME={{user `vagrantfile_filename_prefix`}}.{{build_type}}",
+        "VAGRANT_CLOUD_ORG={{user `vagrant_cloud_org`}}"
+      ],
+      "execute_command": [
+        "{{user `local_shell_binary`}}", "-c", "chmod +x {{.Script}} && {{.Vars}} {{.Script}}; chmod -x {{.Script}}"
+      ],
+      "scripts": [
+        "../../common/scripts/post-processor/00-generate-box-vagrantfiles.sh"
+      ]
+    },
+    {
       "type": "vagrant",
       "only": ["vmware-iso", "virtualbox-iso"],
       "keep_input_artifact": true,
-      "override": {
-        "vmware": {
-          "vagrantfile_template": "files/{{user `template`}}/Vagrantfile.vmware"
-        },
-        "virtualbox": {
-          "vagrantfile_template": "files/{{user `template`}}/Vagrantfile.virtualbox"
-        }
-      },
+      "vagrantfile_template": "{{user `vagrantfile_base_dir`}}/{{user `template`}}/{{user `vagrantfile_filename_prefix`}}.{{build_type}}",
+      "vagrantfile_template_generated": true,
       "output": "boxes/{{user `template`}}-{{.Provider}}.box"
     }
   ]
