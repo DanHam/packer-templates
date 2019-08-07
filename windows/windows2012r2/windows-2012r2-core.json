@@ -68,14 +68,14 @@
 
       "floppy_files": [
         "answer_files/{{user `template`}}/Autounattend.xml",
-        "files/DisableUAC.ps1",
-        "files/DisablePagefile.ps1",
-        "files/ConfigureWindowsUpdates.ps1",
-        "files/WindowsUpdates.ps1",
-        "files/SetupWinRM.ps1",
-        "files/PackerShutdown.bat",
-        "files/SysprepUnattend.xml",
-        "files/SetupComplete.cmd"
+        "../common/scripts/DisableUAC.ps1",
+        "../common/scripts/DisablePagefile.ps1",
+        "../common/scripts/ConfigureWindowsUpdates.ps1",
+        "../common/scripts/WindowsUpdates.ps1",
+        "../common/scripts/SetupWinRM.ps1",
+        "../common/scripts/PackerShutdown.bat",
+        "../common/scripts/SysprepUnattend.xml",
+        "../common/scripts/SetupComplete.cmd"
       ],
 
       "shutdown_command": "{{user `shutdown_command`}}",
@@ -117,14 +117,14 @@
 
       "floppy_files": [
         "answer_files/{{user `template`}}/Autounattend.xml",
-        "files/DisableUAC.ps1",
-        "files/DisablePagefile.ps1",
-        "files/ConfigureWindowsUpdates.ps1",
-        "files/WindowsUpdates.ps1",
-        "files/SetupWinRM.ps1",
-        "files/PackerShutdown.bat",
-        "files/SysprepUnattend.xml",
-        "files/SetupComplete.cmd"
+        "../common/scripts/DisableUAC.ps1",
+        "../common/scripts/DisablePagefile.ps1",
+        "../common/scripts/ConfigureWindowsUpdates.ps1",
+        "../common/scripts/WindowsUpdates.ps1",
+        "../common/scripts/SetupWinRM.ps1",
+        "../common/scripts/PackerShutdown.bat",
+        "../common/scripts/SysprepUnattend.xml",
+        "../common/scripts/SetupComplete.cmd"
       ],
 
       "shutdown_command": "{{user `shutdown_command`}}",
@@ -145,16 +145,16 @@
         "REMOVE_FEATURES_ON_DEMAND={{user `remove_features_on_demand`}}"
       ],
       "scripts": [
-        "files/DontExpireVagrantPassword.ps1",
-        "files/InstallGuestTools.ps1",
-        "files/EnableUAC.ps1",
-        "files/EnablePagefile.ps1",
-        "files/SetupPostSysprep.ps1",
-        "files/CleanWinSxS.ps1",
-        "files/CleanGeneral.ps1",
-        "files/RemoveWindowsFeatureOnDemand.ps1",
-        "files/OptimiseWindowsVolume.ps1",
-        "files/ZeroFreeSpace.ps1"
+        "../common/scripts/DontExpireVagrantPassword.ps1",
+        "../common/scripts/InstallGuestTools.ps1",
+        "../common/scripts/EnableUAC.ps1",
+        "../common/scripts/EnablePagefile.ps1",
+        "../common/scripts/SetupPostSysprep.ps1",
+        "./scripts/CleanWinSxS.ps1",
+        "../common/scripts/CleanGeneral.ps1",
+        "../common/scripts/RemoveWindowsFeatureOnDemand.ps1",
+        "../common/scripts/OptimiseWindowsVolume.ps1",
+        "../common/scripts/ZeroFreeSpace.ps1"
       ]
     }
   ],
