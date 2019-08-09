@@ -1,0 +1,7 @@
+# Virtualbox specific options
+config.vm.provider :virtualbox do |vb|
+  vb.customize ['modifyvm', :id, '--memory', 2048]
+  vb.customize ['modifyvm', :id, '--cpus', 2]
+  vb.customize ['modifyvm', :id, '--vram', 128]
+  vb.customize ['setextradata', 'global', 'GUI/SuppressMessages', 'all']
+end

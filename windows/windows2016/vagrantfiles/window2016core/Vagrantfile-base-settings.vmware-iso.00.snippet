@@ -1,0 +1,15 @@
+# VMware Fusion specific options
+config.vm.provider :vmware_fusion do |vf|
+  vf.vmx['memsize'] = '2048'
+  vf.vmx['numvcpus'] = '2'
+  vf.vmx['scsi0.virtualDev'] = 'lsisas1068'
+  vf.vmx['RemoteDisplay.vnc.enabled'] = 'false'
+end
+
+# VMware Workstation specific options
+config.vm.provider :vmware_workstation do |vw|
+  vw.vmx['memsize'] = '2048'
+  vw.vmx['numvcpus'] = '2'
+  vw.vmx['scsi0.virtualDev'] = 'lsisas1068'
+  vw.vmx['RemoteDisplay.vnc.enabled'] = 'false'
+end
