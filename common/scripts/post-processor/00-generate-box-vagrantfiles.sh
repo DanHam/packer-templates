@@ -54,12 +54,15 @@ Vagrant.configure(2) do |config|
   config.vm.box = '${vagrantcloud_boxname}'
 EOF
 
+# Set the communicator based on the setting configured in the Packer
+# template. If unset default to ssh
+communicator="${COMMUNICATOR:-ssh}"
 
 # Set the box user name from the setting configured in the Packer template
 if [ "${BOX_USERNAME:-x}" != "x" ]; then
     echo "Setting box username in Vagrantfile to ${BOX_USERNAME}" > ${redirect}
     printf "%s" "
-      config.ssh.username = '${BOX_USERNAME}'
+      config.${communicator}.username = '${BOX_USERNAME}'
     " | sed 's/^ \{4\}//g' >> "${vagrantfile}"
 fi
 
