@@ -60,9 +60,20 @@ communicator="${COMMUNICATOR:-ssh}"
 
 # Set the box user name from the setting configured in the Packer template
 if [ "${BOX_USERNAME:-x}" != "x" ]; then
-    echo "Setting box username in Vagrantfile to ${BOX_USERNAME}" > ${redirect}
+    echo "Setting box username to ${BOX_USERNAME}" > ${redirect}
     printf "%s" "
       config.${communicator}.username = '${BOX_USERNAME}'
+    " | sed 's/^ \{4\}//g' >> "${vagrantfile}"
+fi
+
+# Set box users password if configured in the Packer template and this is a
+# Windows build (communicator is winrm). *nix instances should use ssh key
+# based authentication
+if [ "${BOX_USERNAME:-x}" != "x" ] && [ "${BOX_USERPASSWD:-x}" != "x" ] && \
+   [ "${communicator}" = "winrm" ]; then
+    echo "Setting box user password to ${BOX_USERPASSWD}" > ${redirect}
+    printf "%s" "\
+      config.${communicator}.password = '${BOX_USERPASSWD}'
     " | sed 's/^ \{4\}//g' >> "${vagrantfile}"
 fi
 
