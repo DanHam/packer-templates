@@ -55,13 +55,13 @@ Vagrant.configure(2) do |config|
 EOF
 
 
-# Set the ssh user name from setting configured in Packer template. Vagrant
-# will then connect with the correct user name matching the admin user
-# created in the box during the build
-echo "Setting ssh username in Vagrantfile to ${ADMIN_USER}" > ${redirect}
-cat <<EOF >> "${vagrantfile}"
-  config.ssh.username = '${ADMIN_USER}'
-EOF
+# Set the box user name from the setting configured in the Packer template
+if [ "${BOX_USERNAME:-x}" != "x" ]; then
+    echo "Setting box username in Vagrantfile to ${BOX_USERNAME}" > ${redirect}
+    printf "%s" "
+      config.ssh.username = '${BOX_USERNAME}'
+    " | sed 's/^ \{4\}//g' >> "${vagrantfile}"
+fi
 
 # Incorporate custom settings and fixes from all relevant Vagrantfile snippets
 while IFS= read -r -d '' snippet; do

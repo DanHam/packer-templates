@@ -264,7 +264,7 @@
       "type": "shell-local",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
-        "ADMIN_USER={{user `admin_user`}}",
+        "BOX_USERNAME={{user `admin_user`}}",
         "TEMPLATE={{user `template`}}",
         "VAGRANTFILE_BASE_DIR={{user `vagrantfile_base_dir`}}",
         "VAGRANTFILE_NAME={{user `vagrantfile_filename_prefix`}}.{{build_type}}",
