@@ -80,8 +80,10 @@ fi
 # Incorporate custom settings and fixes from all relevant Vagrantfile snippets
 while IFS= read -r -d '' snippet; do
     echo "Incorporating ${snippet} into box Vagrantfile" > ${redirect}
-    echo "" >> "${vagrantfile}" # Insert blank line
-    cat "${snippet}" | sed -E 's/(.*)/  \1/g' >> "${vagrantfile}" # Indent
+    # Insert blank line
+    echo "" >> "${vagrantfile}"
+    # Indent all except blank lines by two spaces
+    cat "${snippet}" | sed -E '/^$/ !s/(.*)/  \1/g' >> "${vagrantfile}"
 done < <(find ${wd} -type f \
              -name "*${PACKER_BUILDER_TYPE}*.snippet" \
              -print0 | sort -z)
