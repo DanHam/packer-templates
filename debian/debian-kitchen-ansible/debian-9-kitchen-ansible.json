@@ -316,7 +316,6 @@
     },
     {
       "type": "vagrant",
-      "only": ["vmware-iso", "virtualbox-iso"],
       "keep_input_artifact": true,
       "vagrantfile_template": "{{user `vagrantfile_base_dir`}}/{{user `template`}}/{{user `vagrantfile_filename_prefix`}}.{{build_type}}",
       "vagrantfile_template_generated": true,
