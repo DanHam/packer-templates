@@ -27,7 +27,7 @@
 set -o errexit -o nounset
 
 # Set verbose/quiet output based on setting configured in Packer template
-[ "${DEBUG}" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
+[ "${DEBUG:-false}" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Packer logging
 echo "Generating Vagrantfiles for inclusion in the Vagrant box..."

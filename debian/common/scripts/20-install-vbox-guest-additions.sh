@@ -14,7 +14,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
+[ "${DEBUG:-false}" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Ensure debconf does not ask any questions
 export DEBIAN_FRONTEND="noninteractive"

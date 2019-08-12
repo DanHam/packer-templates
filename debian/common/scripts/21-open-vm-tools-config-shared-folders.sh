@@ -5,7 +5,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
+[ "${DEBUG:-false}" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 
 # Configure shared folder support if requested in the packer template

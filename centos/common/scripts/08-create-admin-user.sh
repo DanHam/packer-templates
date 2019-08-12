@@ -8,7 +8,7 @@
 set -o errexit
 
 # Set verbose/quiet output based on env var configured in Packer template
-[[ "${DEBUG}" = true ]] && redirect="/dev/stdout" || redirect="/dev/null"
+[ "${DEBUG:-false}" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Exit unless user creation was requested in the packer template
 if [ "${ADMIN_CREATE}" = true ]; then
