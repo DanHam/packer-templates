@@ -198,6 +198,19 @@
       "keep_input_artifact": true,
       "vagrantfile_template": "{{user `vagrantfile_base_dir`}}/{{user `template`}}/{{user `vagrantfile_filename_prefix`}}.{{build_type}}",
       "vagrantfile_template_generated": true
+    },
+    {
+      "type": "shell-local",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "VAGRANTFILE_BASE_DIR={{user `vagrantfile_base_dir`}}"
+      ],
+      "execute_command": [
+        "{{user `local_shell_binary`}}", "-c", "chmod +x {{.Script}} && {{.Vars}} {{.Script}}; chmod -x {{.Script}}"
+      ],
+      "scripts": [
+        "../../common/scripts/post-processor/99-clean-up-generated-box-vagrantfiles.sh"
+      ]
     }
   ]
 }
