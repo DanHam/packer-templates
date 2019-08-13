@@ -22,6 +22,7 @@
     "vmtools_iso_path": "/tmp/vmware-tools.iso",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
+    "communicator": "ssh",
     "ssh_username": "packer",
     "ssh_private_key": "/Users/dan/.ssh/id_rsa",
     "ssh_timeout": "15m",
@@ -54,7 +55,7 @@
     {
       "type": "vmware-iso",
       "http_directory": "../common/http",
-      "communicator": "ssh",
+      "communicator": "{{user `communicator`}}",
       "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
@@ -100,7 +101,7 @@
     {
       "type": "virtualbox-iso",
       "http_directory": "../common/http",
-      "communicator": "ssh",
+      "communicator": "{{user `communicator`}}",
       "output_directory": "output-{{user `template`}}-{{build_name}}",
       "headless": "{{user `headless`}}",
 
@@ -265,6 +266,8 @@
       "environment_vars": [
         "DEBUG={{user `debug`}}",
         "BOX_USERNAME={{user `admin_user`}}",
+        "BOX_USERPASSWD={{user `admin_passwd`}}",
+        "COMMUNICATOR={{user `communicator`}}",
         "TEMPLATE={{user `template`}}",
         "VAGRANTFILE_BASE_DIR={{user `vagrantfile_base_dir`}}",
         "VAGRANTFILE_NAME={{user `vagrantfile_filename_prefix`}}.{{build_type}}",
