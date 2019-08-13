@@ -170,7 +170,7 @@
   ],
 
   "post-processors": [
-     {
+    {
       "type": "shell-local",
       "environment_vars": [
         "DEBUG={{user `debug`}}",
