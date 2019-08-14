@@ -9,3 +9,5 @@ cat <<EOF >/etc/modprobe.d/disable_system_beeps.conf
 blacklist pcspkr
 blacklist snd_pcsp
 EOF
+
+exit 0

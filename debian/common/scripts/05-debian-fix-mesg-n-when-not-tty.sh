@@ -15,3 +15,5 @@ set -o errexit
 
 # Ensure stdin is a TTY before running the mesg n command
 sed -i 's/^mesg n$/tty -s \&\& mesg n/g' /root/.profile
+
+exit 0

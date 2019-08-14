@@ -7,3 +7,5 @@ set -o errexit
 
 # For UK keyboard layouts the correct XKBLAYOUT is 'gb' not 'uk'
 sed -i '/^XKBLAYOUT=/ s/uk/gb/g' /etc/default/keyboard
+
+exit 0
