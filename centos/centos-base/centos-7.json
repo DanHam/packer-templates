@@ -282,13 +282,21 @@
         "../../common/scripts/post-processor/00-generate-box-vagrantfiles.sh"
       ]
     },
-    {
-      "type": "vagrant",
-      "keep_input_artifact": true,
-      "vagrantfile_template": "{{user `vagrantfile_base_dir`}}/{{user `template`}}/{{user `vagrantfile_filename_prefix`}}.{{build_type}}",
-      "vagrantfile_template_generated": true,
-      "output": "boxes/{{user `template`}}-{{.Provider}}.box"
-    },
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": true,
+        "vagrantfile_template": "{{user `vagrantfile_base_dir`}}/{{user `template`}}/{{user `vagrantfile_filename_prefix`}}.{{build_type}}",
+        "vagrantfile_template_generated": true,
+        "output": "boxes/{{user `template`}}-{{.Provider}}.box"
+      },
+      {
+        "type": "vagrant-cloud",
+        "box_tag": "{{ user `vagrant_cloud_org` }}/{{ user `template` }}",
+        "version": "{{isotime \"200601\"}}.{{isotime \"02\"}}.0",
+        "version_description": "Packer templates available on [GitHub](https://github.com/DanHam/packer-templates)"
+      }
+    ],
     {
       "type": "shell-local",
       "environment_vars": [
