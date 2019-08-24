@@ -1,4 +1,5 @@
 # VMware provider specific options
 config.vm.provider 'vmware_desktop' do |vd|
   vd.vmx['ethernet0.virtualDev'] = 'vmxnet3'
+  vd.whitelist_verified = true
 end

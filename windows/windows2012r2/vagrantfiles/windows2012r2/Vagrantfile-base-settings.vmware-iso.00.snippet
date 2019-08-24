@@ -4,4 +4,5 @@ config.vm.provider 'vmware_desktop' do |vd|
   vd.vmx['numvcpus'] = '2'
   vd.vmx['scsi0.virtualDev'] = 'lsisas1068'
   vd.vmx['RemoteDisplay.vnc.enabled'] = 'false'
+  vd.whitelist_verified = true
 end
