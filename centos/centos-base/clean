@@ -2,5 +2,5 @@
 #
 # Clean packer build artifacts
 rm -f boxes/*box
-rm -rf output-centos-7-x86_64-*
+rm -rf output-centos-7-*
 rm -rf packer_cache
