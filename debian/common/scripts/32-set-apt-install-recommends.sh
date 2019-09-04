@@ -5,8 +5,7 @@
 set -o errexit
 
 # Restore the default behaviour if requested in the packer template
-if [ "${APT_INSTALL_RECOMMENDS}" = true ]
-then
+if [ "${APT_INSTALL_RECOMMENDS}" = true ]; then
     echo "Restoring default APT behaviour of installing 'Recommends'..."
 else
     exit 0

@@ -9,8 +9,7 @@ set -o errexit
 
 
 # Configure shared folder support if requested in the packer template
-if [ "${VMTOOLS_SHARED_FOLDERS}" = true ]
-then
+if [ "${VMTOOLS_SHARED_FOLDERS}" = true ]; then
     echo "Configuring system to allow use of shared host/guest folders..."
 else
     exit 0
@@ -18,8 +17,7 @@ fi
 
 
 # Ensure the open-vm-tools package is installed
-if [ "x$(dpkg -l | grep open-vm-tools)" = "x" ]
-then
+if [ "x$(dpkg -l | grep open-vm-tools)" = "x" ]; then
     echo "ERROR: Open VM tools installation not found. Exiting"
     exit 1
 fi
@@ -34,10 +32,8 @@ fi
 # for convenience with user configured shares.
 # Configured shares will be available to under /mnt/hgfs/<share name> and
 # will be have rw permissions for all users
-if [ "${VMTOOLS_SHARED_FOLDERS_FSTAB}" = true ]
-then
-    if [ "x$(cat /etc/fstab | grep vmhgfs-fuse)" = "x" ]
-    then
+if [ "${VMTOOLS_SHARED_FOLDERS_FSTAB}" = true ]; then
+    if [ "x$(cat /etc/fstab | grep vmhgfs-fuse)" = "x" ]; then
         echo "Adding required line to /etc/fstab..." > ${redirect}
         printf "%s" "\
             # Enable use of shared folders for VMware Workstation and Fusion
