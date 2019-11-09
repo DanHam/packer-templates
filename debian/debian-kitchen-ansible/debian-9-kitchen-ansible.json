@@ -8,8 +8,8 @@
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.9x86_64/debian-9.9.0-amd64-netinst.iso",
-    "iso_checksum": "42d9818abc4a08681dc0638f07e7aeb35d0c44646ab1e5b05a31a71d76c99da52b6192db9a3e852171ac78c2ba6b110b337c0b562c7be3d32e86a105023a6a0c",
+    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.11x86_64/debian-9.11.0-amd64-netinst.iso",
+    "iso_checksum": "6953c392ac4d47cd951b5418a59f857d268ec22fc24c26878053f2b78f9e4bd8dd0791336a55c175a79a6855f89fe18f93125c0c7593977955b3baf4d71fa4b4",
     "iso_checksum_type": "sha512",
 
     "installer_boot_time": "5s",
