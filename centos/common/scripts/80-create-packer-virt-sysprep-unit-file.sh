@@ -20,7 +20,7 @@ prefix="${PACKER_VIRT_SYSPREP_DIR}"
 printf "%s" "\
 [Unit]
 Description=Virt-sysprep style operations for Packer builds
-Before=shutdown.target reboot.target halt.target
+Before=network-pre.target shutdown.target reboot.target halt.target
 Requires=multi-user.target
 
 [Service]
