@@ -8,8 +8,8 @@
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.11x86_64/debian-9.11.0-amd64-netinst.iso",
-    "iso_checksum": "6953c392ac4d47cd951b5418a59f857d268ec22fc24c26878053f2b78f9e4bd8dd0791336a55c175a79a6855f89fe18f93125c0c7593977955b3baf4d71fa4b4",
+    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.12x86_64/debian-9.12.0-amd64-netinst.iso",
+    "iso_checksum": "af81de39678db1f814be4ce1b7b64b891f6f59926d6f835842c4b52b462ac7e78c45b5efd8273c196d64ba0b2dd1a0aabfb97c6e4f10702ee11a72e07aec9d67",
     "iso_checksum_type": "sha512",
 
     "installer_boot_time": "5s",
@@ -97,7 +97,7 @@
 
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
-      "ssh_wait_timeout": "10000s",
+      "ssh_timeout": "10000s",
 
       "shutdown_command": "{{user `shutdown_command`}}"
     },
@@ -147,7 +147,7 @@
 
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
-      "ssh_wait_timeout": "10000s",
+      "ssh_timeout": "10000s",
 
       "shutdown_command": "{{user `shutdown_command`}}"
     }
