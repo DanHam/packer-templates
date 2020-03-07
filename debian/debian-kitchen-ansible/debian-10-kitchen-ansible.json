@@ -19,6 +19,8 @@
     "cpu_count": "1",
     "disk_size_vmware": "10240",
     "disk_size_virtualbox": "10240",
+    "vmtools_shared_folders": "true",
+    "vmtools_shared_folders_fstab": "false",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "communicator": "ssh",
@@ -198,6 +200,21 @@
         "../common/scripts/06-debian-fix-console-setup-keyboard.sh",
         "../common/scripts/07-debian-fix-ifup-lockup.sh",
         "../common/scripts/08-create-admin-user.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "only": ["vmware-iso"],
+      "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}",
+        "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
+        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "scripts": [
+        "../common/scripts/20-install-open-vm-tools.sh",
+        "../common/scripts/21-open-vm-tools-config-shared-folders.sh"
       ]
     },
     {
