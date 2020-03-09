@@ -13,4 +13,4 @@ CentOS Linux 7 (1810) Base | foosite/centos-7
 
 * Packer
 * VMware Fusion Professional Version 8.5.10 (7527438)
-* Virtualbox Version 6.0.10r132072
+* Virtualbox Version 6.1.4r136177
