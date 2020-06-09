@@ -10,7 +10,6 @@
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian9.11x86_64/debian-9.11.0-amd64-netinst.iso",
     "iso_checksum": "6953c392ac4d47cd951b5418a59f857d268ec22fc24c26878053f2b78f9e4bd8dd0791336a55c175a79a6855f89fe18f93125c0c7593977955b3baf4d71fa4b4",
-    "iso_checksum_type": "sha512",
 
     "installer_boot_time": "5s",
 
@@ -61,7 +60,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "boot_command": [
         "<esc><wait>",
@@ -112,7 +110,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "boot_command": [
         "<esc><wait>",

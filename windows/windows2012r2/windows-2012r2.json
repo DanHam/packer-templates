@@ -6,7 +6,6 @@
 
     "iso_url": "/Users/dan/stuff/iso/os/Windows2012/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
     "iso_checksum": "849734f37346385dac2c101e4aacba4626bb141c",
-    "iso_checksum_type": "sha1",
 
     "communicator": "winrm",
     "winrm_use_ssl": "false",
@@ -46,7 +45,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "communicator": "{{user `communicator`}}",
       "winrm_use_ssl": "{{user `winrm_use_ssl`}}",
@@ -94,7 +92,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "communicator": "{{user `communicator`}}",
       "winrm_use_ssl": "{{user `winrm_use_ssl`}}",

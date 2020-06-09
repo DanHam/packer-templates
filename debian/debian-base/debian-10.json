@@ -10,7 +10,6 @@
 
     "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian10.4x86_64/debian-10.4.0-amd64-netinst.iso",
     "iso_checksum": "ec69e4bfceca56222e6e81766bf235596171afe19d47c20120783c1644f72dc605d341714751341051518b0b322d6c84e9de997815e0c74f525c66f9d9eb4295",
-    "iso_checksum_type": "sha512",
 
     "installer_boot_time": "5s",
 
@@ -61,7 +60,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "boot_command": [
         "<esc><wait>",
@@ -112,7 +110,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "boot_command": [
         "<esc><wait>",

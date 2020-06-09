@@ -9,7 +9,6 @@
 
     "iso_url": "/Users/dan/stuff/iso/os/centos/CentOS-7-x86_64-NetInstall-1810.iso",
     "iso_checksum": "19d94274ef856c4dfcacb2e7cfe4be73e442a71dd65cc3fb6e46db826040b56e",
-    "iso_checksum_type": "sha256",
 
     "installation_source": "http://mirror.centos.org/centos/7/os/x86_64/",
     "installer_boot_time": "5s",
@@ -62,7 +61,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "boot_command": [
         "<tab> <wait>",
@@ -108,7 +106,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "boot_command": [
         "<tab> <wait>",

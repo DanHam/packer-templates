@@ -6,7 +6,6 @@
 
     "iso_url": "/Users/dan/stuff/iso/os/Windows2016/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
     "iso_checksum": "3bb1c60417e9aeb3f4ce0eb02189c0c84a1c6691",
-    "iso_checksum_type": "sha1",
 
     "communicator": "winrm",
     "winrm_use_ssl": "false",
@@ -46,7 +45,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "communicator": "{{user `communicator`}}",
       "winrm_use_ssl": "{{user `winrm_use_ssl`}}",
@@ -94,7 +92,6 @@
 
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
 
       "communicator": "{{user `communicator`}}",
       "winrm_use_ssl": "{{user `winrm_use_ssl`}}",
