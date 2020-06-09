@@ -47,7 +47,8 @@
     "local_shell_binary": "/opt/local/bin/bash",
     "vagrantfile_base_dir": "vagrantfiles",
     "vagrantfile_filename_prefix": "Vagrantfile",
-    "vagrant_cloud_org": "foosite"
+    "vagrant_cloud_org": "foosite",
+    "vagrant_cloud_revision": "0"
   },
 
   "builders": [
@@ -313,7 +314,7 @@
       {
         "type": "vagrant-cloud",
         "box_tag": "{{ user `vagrant_cloud_org` }}/{{ user `template` }}",
-        "version": "{{isotime \"200601\"}}.{{isotime \"02\"}}.0",
+        "version": "{{isotime \"200601\"}}.{{isotime \"02\"}}.{{ user `vagrant_cloud_revision` }}",
         "version_description": "Packer templates available on [GitHub](https://github.com/DanHam/packer-templates)"
       }
     ],
