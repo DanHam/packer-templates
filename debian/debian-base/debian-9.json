@@ -199,8 +199,7 @@
         "../common/scripts/05-debian-fix-mesg-n-when-not-tty.sh",
         "../common/scripts/06-debian-fix-console-setup-keyboard.sh",
         "../common/scripts/07-debian-fix-ifup-lockup.sh",
-        "../common/scripts/08-create-admin-user.sh",
-        "../common/scripts/09-revert-dhcp-client-id-workaround.sh"
+        "../common/scripts/08-create-admin-user.sh"
       ]
     },
     {
