@@ -7,8 +7,8 @@
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "/Users/dan/stuff/iso/os/centos/CentOS-7-x86_64-NetInstall-1908.iso",
-    "iso_checksum": "6ffa7ad44e8716e4cd6a5c3a85ba5675a935fc0448c260f43b12311356ba85ad",
+    "iso_url": "/Users/dan/stuff/iso/os/centos/CentOS-7-x86_64-NetInstall-2003.iso",
+    "iso_checksum": "101bc813d2af9ccf534d112cbe8670e6d900425b297d1a4d2529c5ad5f226372",
 
     "installation_source": "http://mirror.centos.org/centos/7/os/x86_64/",
     "installer_boot_time": "5s",
