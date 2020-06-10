@@ -4,7 +4,7 @@
     "guest_os_type_vmware": "windows9srv-64",
     "guest_os_type_virtualbox": "Windows2012_64",
 
-    "iso_url": "/Users/dan/stuff/iso/os/Windows2016/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
+    "iso_url": "{{env `HOME`}}/stuff/iso/os/Windows2016/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
     "iso_checksum": "3bb1c60417e9aeb3f4ce0eb02189c0c84a1c6691",
 
     "communicator": "winrm",

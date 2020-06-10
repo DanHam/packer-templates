@@ -4,7 +4,7 @@
     "guest_os_type_vmware": "windows8srv-64",
     "guest_os_type_virtualbox": "Windows2012_64",
 
-    "iso_url": "/Users/dan/stuff/iso/os/Windows2012/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
+    "iso_url": "{{env `HOME`}}/stuff/iso/os/Windows2012/9600.17050.WINBLUE_REFRESH.140317-1640_X64FRE_SERVER_EVAL_EN-US-IR3_SSS_X64FREE_EN-US_DV9.ISO",
     "iso_checksum": "849734f37346385dac2c101e4aacba4626bb141c",
 
     "communicator": "winrm",

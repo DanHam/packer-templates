@@ -8,7 +8,7 @@
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "file:///Users/dan/stuff/iso/os/debian/debian10.1x86_64/debian-10.1.0-amd64-netinst.iso",
+    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian10.1x86_64/debian-10.1.0-amd64-netinst.iso",
     "iso_checksum": "23237b0a100a860b3dc7ffcfb5baae4bed5460ac5f3f2b929df3154f3319b9809055b695264586f60289cc6cb25077c12938cc612fee01756bfa779c87d5a315",
 
     "installer_boot_time": "5s",
