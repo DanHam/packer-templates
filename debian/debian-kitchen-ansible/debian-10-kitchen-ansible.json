@@ -8,8 +8,8 @@
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian10.1x86_64/debian-10.1.0-amd64-netinst.iso",
-    "iso_checksum": "23237b0a100a860b3dc7ffcfb5baae4bed5460ac5f3f2b929df3154f3319b9809055b695264586f60289cc6cb25077c12938cc612fee01756bfa779c87d5a315",
+    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian10.5x86_64/debian-10.5.0-amd64-netinst.iso",
+    "iso_checksum": "0a6aee1d9aafc1ed095105c052f9fdd65ed00ea9274188c9cd0072c8e6838ab40e246d45a1e6956d74ef1b04a1fc042151762f25412e9ff0cbf49418eef7992e",
 
     "installer_boot_time": "5s",
 
