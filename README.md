@@ -7,10 +7,10 @@ Templates and scripts for use in building boxes with Packer
 |---|---|
 Debian GNU/Linux 9 Base | foosite/debian-9
 Debian GNU/Linux 10 Base | foosite/debian-10
-CentOS Linux 7 (2003) Base | foosite/centos-7
+CentOS Linux 7 Base | foosite/centos-7
 
 ### Current build tools
 
 * Packer
 * VMware Fusion Professional Version 8.5.10 (7527438)
-* Virtualbox Version 6.1.12r139181
+* Virtualbox Version 6.1.14r140239
