@@ -8,8 +8,8 @@
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian9.12x86_64/debian-9.12.0-amd64-netinst.iso",
-    "iso_checksum": "af81de39678db1f814be4ce1b7b64b891f6f59926d6f835842c4b52b462ac7e78c45b5efd8273c196d64ba0b2dd1a0aabfb97c6e4f10702ee11a72e07aec9d67",
+    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian9.13x86_64/debian-9.13.0-amd64-netinst.iso",
+    "iso_checksum": "4a26730eade45c61f861df9aa872cb4a32099d98677d75437b44f044ebc967a9330e0f4fa60bf48b7daf7e5969b8e06e05fb480c1a7d7240e8ec7aed0d2c476d",
 
     "installer_boot_time": "5s",
 
