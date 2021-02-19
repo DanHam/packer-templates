@@ -1,25 +1,20 @@
 {
   "variables": {
-    "template": "debian-9-kitchen-ansible",
-    "guest_os_type_vmware": "debian8-64",
-    "guest_os_type_virtualbox": "Debian_64",
+    "template": "debian-9",
+    "guest_os_type": "Debian_64",
     "part_scheme": "std",
 
     "debug": "false",
     "headless": "false",
 
-    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian9.11x86_64/debian-9.11.0-amd64-netinst.iso",
-    "iso_checksum": "6953c392ac4d47cd951b5418a59f857d268ec22fc24c26878053f2b78f9e4bd8dd0791336a55c175a79a6855f89fe18f93125c0c7593977955b3baf4d71fa4b4",
+    "iso_url": "file://{{env `HOME`}}/stuff/iso/os/debian/debian9.13x86_64/debian-9.13.0-amd64-netinst.iso",
+    "iso_checksum": "4a26730eade45c61f861df9aa872cb4a32099d98677d75437b44f044ebc967a9330e0f4fa60bf48b7daf7e5969b8e06e05fb480c1a7d7240e8ec7aed0d2c476d",
 
     "installer_boot_time": "5s",
 
-    "vmware_hardware_version": "9",
     "memory_size": "1024",
     "cpu_count": "1",
-    "disk_size_vmware": "10240",
-    "disk_size_virtualbox": "10240",
-    "vmtools_shared_folders": "true",
-    "vmtools_shared_folders_fstab": "false",
+    "disk_size": "10240",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "communicator": "ssh",
@@ -52,56 +47,6 @@
 
   "builders": [
     {
-      "type": "vmware-iso",
-      "http_directory": "../common/http",
-      "communicator": "{{user `communicator`}}",
-      "output_directory": "output-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
-      "headless": "{{user `headless`}}",
-
-      "iso_url": "{{user `iso_url`}}",
-      "iso_checksum": "{{user `iso_checksum`}}",
-
-      "boot_command": [
-        "<esc><wait>",
-        "install <wait>",
-        "auto <wait>",
-        "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed-{{user `part_scheme`}}.cfg <wait>",
-        "debian-installer=en_GB <wait>",
-        "locale=en_GB <wait>",
-        "keymap=uk <wait>",
-        "hostname=localhost <wait>",
-        "domain=localdomain <wait>",
-        "<enter>"
-      ],
-      "boot_wait": "{{user `installer_boot_time`}}",
-
-      "version": "{{user `vmware_hardware_version`}}",
-      "guest_os_type": "{{user `guest_os_type_vmware`}}",
-      "vmx_data": {
-        "cpuid.coresPerSocket": "1",
-        "mks.enable3d": "FALSE",
-        "floppy0.present": "FALSE",
-        "usb.vbluetooth.startConnected": "FALSE"
-      },
-      "vm_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
-      "display_name": "Packer-{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
-      "cpus": "{{user `cpu_count`}}",
-      "memory": "{{user `memory_size`}}",
-      "vmdk_name": "{{user `template`}}-{{user `part_scheme`}}-{{build_name}}",
-      "disk_type_id": "0",
-      "disk_size": "{{user `disk_size_vmware`}}",
-      "network_adapter_type": "vmxnet3",
-      "sound": false,
-      "serial": "NONE",
-      "usb": false,
-
-      "ssh_username": "{{user `ssh_username`}}",
-      "ssh_private_key_file": "{{user `ssh_private_key`}}",
-      "ssh_wait_timeout": "10000s",
-
-      "shutdown_command": "{{user `shutdown_command`}}"
-    },
-    {
       "type": "virtualbox-iso",
       "http_directory": "../common/http",
       "communicator": "{{user `communicator`}}",
@@ -125,7 +70,7 @@
       ],
       "boot_wait": "{{user `installer_boot_time`}}",
 
-      "guest_os_type": "{{user `guest_os_type_virtualbox`}}",
+      "guest_os_type": "{{user `guest_os_type`}}",
       "vboxmanage": [
         ["modifyvm", "{{.Name}}", "--vram", "16"],
         ["setextradata", "global", "GUI/SuppressMessages", "all"]
@@ -137,7 +82,7 @@
       "cpus": "{{user `cpu_count`}}",
       "memory": "{{user `memory_size`}}",
       "hard_drive_interface": "sata",
-      "disk_size": "{{user `disk_size_virtualbox`}}",
+      "disk_size": "{{user `disk_size`}}",
       "sound": "none",
       "usb": false,
 
@@ -146,7 +91,7 @@
 
       "ssh_username": "{{user `ssh_username`}}",
       "ssh_private_key_file": "{{user `ssh_private_key`}}",
-      "ssh_wait_timeout": "10000s",
+      "ssh_timeout": "10000s",
 
       "shutdown_command": "{{user `shutdown_command`}}"
     }
@@ -174,17 +119,20 @@
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
-        "DEBUG={{user `debug`}}",
         "ADMIN_CREATE={{user `admin_create`}}",
-        "ADMIN_USER={{user `admin_user`}}",
-        "ADMIN_GROUP={{user `admin_group`}}",
-        "ADMIN_PASSWD={{user `admin_passwd`}}",
-        "ADMIN_UID={{user `admin_uid`}}",
-        "ADMIN_GID={{user `admin_gid`}}",
-        "ADMIN_GROUPS={{user `admin_groups`}}",
-        "ADMIN_SHELL={{user `admin_shell`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
-        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}"
+        "ADMIN_GID={{user `admin_gid`}}",
+        "ADMIN_GROUP={{user `admin_group`}}",
+        "ADMIN_GROUPS={{user `admin_groups`}}",
+        "ADMIN_PASSWD={{user `admin_passwd`}}",
+        "ADMIN_SHELL={{user `admin_shell`}}",
+        "ADMIN_SSH_AUTHORISED_KEY={{user `admin_ssh_authorised_key`}}",
+        "ADMIN_UID={{user `admin_uid`}}",
+        "ADMIN_USER={{user `admin_user`}}",
+        "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}",
+        "DEBUG={{user `debug`}}",
+        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}",
+        "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
@@ -196,78 +144,19 @@
         "../common/scripts/05-debian-fix-mesg-n-when-not-tty.sh",
         "../common/scripts/06-debian-fix-console-setup-keyboard.sh",
         "../common/scripts/07-debian-fix-ifup-lockup.sh",
-        "../common/scripts/08-create-admin-user.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "only": ["vmware-iso"],
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "VMTOOLS_SHARED_FOLDERS={{user `vmtools_shared_folders`}}",
-        "VMTOOLS_SHARED_FOLDERS_FSTAB={{user `vmtools_shared_folders_fstab`}}"
-      ],
-      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
-        "../common/scripts/20-install-open-vm-tools.sh",
-        "../common/scripts/21-open-vm-tools-config-shared-folders.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "only": ["virtualbox-iso"],
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "GUEST_ADDITIONS_PATH={{user `guest_additions_path`}}"
-      ],
-      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
-            "../common/scripts/20-install-vbox-guest-additions.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "APT_INSTALL_RECOMMENDS={{user `apt_install_recommends`}}"
-      ],
-      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
+        "../common/scripts/08-create-admin-user.sh",
+        "../common/scripts/20-install-vbox-guest-additions.sh",
         "../common/scripts/30-remove-old-kernels.sh",
         "../common/scripts/31-remove-extraneous-packages.sh",
-        "../common/scripts/32-set-apt-install-recommends.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}"
-      ],
-      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
+        "../common/scripts/32-set-apt-install-recommends.sh",
         "../common/scripts/40-enable-ansible-ppa.sh",
-        "../common/scripts/41-install-ansible.sh"
-      ]
-    },
-    {
-      "type": "shell",
-      "remote_folder": "{{user `packer_dir`}}",
-      "environment_vars": [
-        "DEBUG={{user `debug`}}",
-        "PACKER_VIRT_SYSPREP_DIR={{user `packer_virt_sysprep_dir`}}"
-      ],
-      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
+        "../common/scripts/41-install-ansible.sh",
         "../common/scripts/80-create-packer-virt-sysprep-unit-file.sh",
         "../common/scripts/81-create-packer-virt-sysprep-run-control-script.sh",
         "../common/scripts/82-create-remove-packer-user-unit-file.sh"
       ]
-   },
-   {
+    },
+    {
       "type": "shell",
       "environment_vars": [
         "PACKER_DIR={{user `packer_dir`}}"
@@ -298,10 +187,10 @@
     {
       "type": "shell-local",
       "environment_vars": [
-        "DEBUG={{user `debug`}}",
         "BOX_USERNAME={{user `admin_user`}}",
         "BOX_USERPASSWD={{user `admin_passwd`}}",
         "COMMUNICATOR={{user `communicator`}}",
+        "DEBUG={{user `debug`}}",
         "TEMPLATE={{user `template`}}",
         "VAGRANTFILE_BASE_DIR={{user `vagrantfile_base_dir`}}",
         "VAGRANTFILE_NAME={{user `vagrantfile_filename_prefix`}}.{{build_type}}",
