@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-#
-# Clean packer build artifacts
-rm -f boxes/*box
-rm -rf output-windows2012r2-*
-rm -rf output-windows2012r2core-*
-rm -rf packer_cache
