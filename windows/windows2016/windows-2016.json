@@ -71,16 +71,16 @@
 
       "floppy_files": [
         "answer_files/{{user `template`}}/Autounattend.xml",
-        "../common/scripts/DisableActionCentreSecurityNotifications.ps1",
+        "./scripts/DisableActionCentreSecurityNotifications.ps1",
         "./scripts/DisableDefenderRTScanning.ps1",
-        "../common/scripts/DisableUAC.ps1",
-        "../common/scripts/DisablePagefile.ps1",
-        "../common/scripts/ConfigureWindowsUpdates.ps1",
-        "../common/scripts/WindowsUpdates.ps1",
-        "../common/scripts/SetupWinRM.ps1",
-        "../common/scripts/PackerShutdown.bat",
-        "../common/scripts/SysprepUnattend.xml",
-        "../common/scripts/SetupComplete.cmd"
+        "./scripts/DisableUAC.ps1",
+        "./scripts/DisablePagefile.ps1",
+        "./scripts/ConfigureWindowsUpdates.ps1",
+        "./scripts/WindowsUpdates.ps1",
+        "./scripts/SetupWinRM.ps1",
+        "./scripts/PackerShutdown.bat",
+        "./scripts/SysprepUnattend.xml",
+        "./scripts/SetupComplete.cmd"
       ],
 
       "shutdown_command": "{{user `shutdown_command`}}",
@@ -101,18 +101,18 @@
       ],
       "scripts": [
         "./scripts/DotNetOptimizationSpeedUp.ps1",
-        "../common/scripts/DontExpireVagrantPassword.ps1",
-        "../common/scripts/InstallGuestTools.ps1",
+        "./scripts/DontExpireVagrantPassword.ps1",
+        "./scripts/InstallGuestTools.ps1",
         "./scripts/EnableDefenderRTScanning.ps1",
-        "../common/scripts/EnableUAC.ps1",
-        "../common/scripts/EnableActionCentreSecurityNotifications.ps1",
-        "../common/scripts/EnablePagefile.ps1",
-        "../common/scripts/SetupPostSysprep.ps1",
+        "./scripts/EnableUAC.ps1",
+        "./scripts/EnableActionCentreSecurityNotifications.ps1",
+        "./scripts/EnablePagefile.ps1",
+        "./scripts/SetupPostSysprep.ps1",
         "./scripts/CleanWinSxS.ps1",
-        "../common/scripts/CleanGeneral.ps1",
-        "../common/scripts/RemoveWindowsFeatureOnDemand.ps1",
-        "../common/scripts/OptimiseWindowsVolume.ps1",
-        "../common/scripts/ZeroFreeSpace.ps1"
+        "./scripts/CleanGeneral.ps1",
+        "./scripts/RemoveWindowsFeatureOnDemand.ps1",
+        "./scripts/OptimiseWindowsVolume.ps1",
+        "./scripts/ZeroFreeSpace.ps1"
       ]
     }
   ],
