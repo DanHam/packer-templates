@@ -1,7 +1,7 @@
 {
   "variables": {
     "template": "windows2016core",
-    "guest_os_type": "Windows2012_64",
+    "guest_os_type": "Windows2016_64",
 
     "iso_url": "{{env `HOME`}}/stuff/iso/os/Windows2016/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.ISO",
     "iso_checksum": "3bb1c60417e9aeb3f4ce0eb02189c0c84a1c6691",
