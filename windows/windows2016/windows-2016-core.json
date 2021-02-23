@@ -17,8 +17,8 @@
     "headless": "false",
 
     "disk_size": "51200",
-    "memory_size": "2048",
-    "cpu_count": "2",
+    "memory_size": "8192",
+    "cpu_count": "4",
 
     "skip_clean_winsxs": "false",
     "skip_clean_general": "false",
