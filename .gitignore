@@ -18,3 +18,5 @@
 !*.snippet
 # ... or .md
 !*.md
+# Ignore tmp files in ${TMPDIR}
+tmp/**
