@@ -13,5 +13,4 @@ CentOS Linux 7 Base | foosite/centos-7
 ## Current build tools
 
 * Packer
-* VMware Fusion Professional Version 8.5.10 (7527438)
-* Virtualbox Version 6.1.16r140961
+* Virtualbox Version 6.1.18r142142
