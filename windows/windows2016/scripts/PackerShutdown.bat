@@ -1,4 +1,4 @@
-﻿@echo off
+@echo off
 REM Packer shutdown script: Disable access to WinRM and sysprep the machine
 
 REM When first booted the created image will run through the post sysprep
