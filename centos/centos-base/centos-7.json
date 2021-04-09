@@ -114,7 +114,27 @@
     {
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "script": "../common/scripts/00-remove-extraneous-packages.sh"
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
       "expect_disconnect": true,
+      "skip_clean": true,
+      "pause_after": "10s",
+      "environment_vars": [
+        "DEBUG={{user `debug`}}"
+      ],
+      "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
+      "script": "../common/scripts/01-yum-update.sh"
+    },
+    {
+      "type": "shell",
+      "remote_folder": "{{user `packer_dir`}}",
       "environment_vars": [
         "ADMIN_CREATE={{user `admin_create`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
@@ -133,8 +153,6 @@
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
       "scripts": [
-        "../common/scripts/00-remove-extraneous-packages.sh",
-        "../common/scripts/01-yum-update.sh",
         "../common/scripts/02-remove-old-kernels.sh",
         "../common/scripts/03-disable-system-beep.sh",
         "../common/scripts/04-configure-ssh.sh",

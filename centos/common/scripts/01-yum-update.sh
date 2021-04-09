@@ -77,12 +77,23 @@ if ! needs-restarting --reboothint &>/dev/null; then
     # The connection is successfully established while the machine is
     # shutting down. Packer then doesn't seem to pick up that the
     # connection has dissapeared and sits there doing nothing! This only
-    # occurs with the Virtualbox builder, and then only if headless is set
-    # to true, and all that has only occurred after the change to CentOS
-    # 7.3...
-    # Although rather ugly, for the time being it seems it's safer to
-    # deliberately kill the ssh session so that Packer detects the
-    # disconnect and then cannot reconnect until the reboot is complete
+    # occurs with the Virtualbox builder and has only occurred after the
+    # change to CentOS 7.3.
+    # Prior to Packer 1.6.5 (approx) halting the ssh server prevented the
+    # problems outlined above. However, for whatever reason this no longer
+    # seems to work. It is now necessary to set "skip_clean": true in the
+    # Packer template to skip the clean up step and stop Packer from
+    # hanging. In addition "pause_after": "10s" must be set to prevent
+    # Packer from immediately trying to connect again to execute the next
+    # script. Previously the "expect_disconnect": true setting has been
+    # used in the Packer template to try and give Packer a heads up that a
+    # reboot would be occuring. This does not seem to help. However, it is
+    # still left in the template as it at least documents that we
+    # expect/know that a reboot will occur.
+    # With these parameters set, stopping the sshd service is
+    # probably no longer required. However, for the time being we'll keep
+    # this behaviour as it doesn't hurt and seems to allow Packer to
+    # realise the ssh connection has dissapeared.
     systemctl stop sshd.service
     # Reboot
     nohup shutdown --reboot now </dev/null &>/dev/null &
