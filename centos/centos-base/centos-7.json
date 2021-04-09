@@ -114,6 +114,7 @@
     {
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
+      "skip_clean": true,
       "environment_vars": [
         "DEBUG={{user `debug`}}"
       ],
@@ -135,6 +136,7 @@
     {
       "type": "shell",
       "remote_folder": "{{user `packer_dir`}}",
+      "skip_clean": true,
       "environment_vars": [
         "ADMIN_CREATE={{user `admin_create`}}",
         "ADMIN_GECOS={{user `admin_gecos`}}",
