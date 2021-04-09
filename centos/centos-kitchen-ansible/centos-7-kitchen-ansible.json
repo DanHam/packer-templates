@@ -107,7 +107,7 @@
     },
     {
       "type": "file",
-      "source": "../common/scripts/packer-virt-sysprep/",
+      "source": "../../common/scripts/packer-virt-sysprep/",
       "destination": "{{user `packer_virt_sysprep_dir`}}"
     },
     {
