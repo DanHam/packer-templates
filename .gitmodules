@@ -1,6 +1,0 @@
-[submodule "centos/common/scripts/packer-virt-sysprep"]
-	path = centos/common/scripts/packer-virt-sysprep
-	url = https://github.com/DanHam/packer-virt-sysprep
-[submodule "debian/common/scripts/packer-virt-sysprep"]
-	path = debian/common/scripts/packer-virt-sysprep
-	url = https://github.com/DanHam/packer-virt-sysprep
