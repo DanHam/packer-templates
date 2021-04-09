@@ -164,9 +164,9 @@
         "../common/scripts/08-create-admin-user.sh",
         "../common/scripts/09-selinux.sh",
         "../common/scripts/20-install-vbox-guest-additions.sh",
-        "../common/scripts/80-create-packer-virt-sysprep-unit-file.sh",
-        "../common/scripts/81-create-packer-virt-sysprep-run-control-script.sh",
-        "../common/scripts/82-create-remove-packer-user-unit-file.sh"
+        "../../common/scripts/main/80-create-packer-virt-sysprep-unit-file.sh",
+        "../../common/scripts/main/81-create-packer-virt-sysprep-run-control-script.sh",
+        "../../common/scripts/main/82-create-remove-packer-user-unit-file.sh"
       ]
     },
     {
@@ -181,7 +181,7 @@
     },
     {
       "type": "file",
-      "source": "../common/scripts/zero-free-space.sh",
+      "source": "../../common/scripts/main/zero-free-space.sh",
       "destination": "{{user `zero_script_upload_path`}}"
     },
     {
@@ -190,9 +190,7 @@
         "ZERO_SCRIPT_UPLOAD_PATH={{user `zero_script_upload_path`}}"
       ],
       "execute_command": "sudo {{ .Vars }} $(command -v bash) '{{.Path }}'",
-      "scripts": [
-        "../common/scripts/90-create-zero-free-space-unit-file.sh"
-      ]
+      "script": "../../common/scripts/main/90-create-zero-free-space-unit-file.sh"
     }
   ],
 
