@@ -14,7 +14,7 @@
 
     "memory_size": "1024",
     "cpu_count": "1",
-    "disk_size": "10240",
+    "disk_size": "25600",
     "guest_additions_path": "/tmp/VBoxGuestAdditions.iso",
 
     "communicator": "ssh",
