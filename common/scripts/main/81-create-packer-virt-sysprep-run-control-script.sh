@@ -46,7 +46,7 @@ fi
 : ${SYSPREP_OP_MACHINE_ID:=true}
 : ${SYSPREP_OP_MAIL_SPOOL:=true}
 : ${SYSPREP_OP_PACKAGE_MANAGER_CACHE:=true}
-: ${SYSPREP_OP_RPM_DB:=true}
+: ${SYSPREP_OP_PACKAGE_MANAGER_DB:=true}
 : ${SYSPREP_OP_SSH_HOSTKEYS:=true}
 : ${SYSPREP_OP_TMP_FILES:=true}
 : ${SYSPREP_OP_YUM_UUID:=true}
@@ -176,10 +176,12 @@ if [ "${SYSPREP_OP_PACKAGE_MANAGER_CACHE}" = true ]; then
     echo "${bsh} ${script_path}" >> ${ctrlf}
 fi
 
-# rpm-db: Remove host-specific RPM database files by removing:
-#     # /var/lib/rpm/__db.*
-if [ "${SYSPREP_OP_RPM_DB}" = true ]; then
-    script_path="${prefix}/sysprep-op-rpm-db.sh"
+# package-manager-db: Remove dynamically create package manager files by
+# removing:
+#     * /var/lib/rpm/__db.*
+#     * /var/lib/apt/lists/**/*
+if [ "${SYSPREP_OP_PACKAGE_MANAGER_DB}" = true ]; then
+    script_path="${prefix}/sysprep-op-package-manager-db.sh"
     if [ ! -e "${script_path}" ]; then
         echo "Error: Script not found: ${script_path}. Exiting"
         exit 1
