@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#
-# Clean packer build artifacts
-rm -f boxes/*box
-rm -rf output-centos-*-kitchen-ansible-*-iso
-rm -rf packer_cache
