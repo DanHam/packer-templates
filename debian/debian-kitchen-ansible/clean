@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-#
-# Clean packer build artifacts
-rm -f boxes/*box
-rm -rf output-debian-*-kitchen-ansible-*
-rm -rf packer_cache
