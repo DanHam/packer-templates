@@ -7,7 +7,7 @@ set -o errexit
 [ "${DEBUG:-false}" = true ] && redirect="/dev/stdout" || redirect="/dev/null"
 
 # Exit if chrony is not installed
-if ! dpkg -l | grep ^ii | grep chrony &>/dev/null; then
+if ! dpkg -l | grep ^ii | awk '{print $2}' | grep chrony &>/dev/null; then
     echo "Skipping configuration of chrony as it is not installed..."
     exit 0
 fi
