@@ -9,55 +9,64 @@ set -o errexit
 # Logging for packer
 echo "Removing extraneous packages..."
 
-# Packages common to Debian 9 and 10
-common="avahi-autoipd
-        binutils
-        console-setup
-        console-setup-linux
-        cpp
-        dictionaries-common
-        discover
-        discover-data
-        dmidecode
-        emacsen-common
-        firmware-linux-free
-        gcc
-        iamerican
-        ibritish
-        ienglish-common
-        installation-report
-        ispell
-        laptop-detect
-        libdiscover2
-        libusb-0.1-4
-        make
-        os-prober
-        perl
-        task-english
-        task-laptop
-        tasksel
-        tasksel-data
-        util-linux-locales
-        wamerican
-        xkb-data"
+# Extraneous packages list
+list="avahi-autoipd
+      binutils
+      binutils-common
+      binutils-x86-64-linux-gnu
+      console-setup
+      console-setup-linux
+      cpp
+      cpp-6
+      cpp-7
+      cpp-10
+      dictionaries-common
+      discover
+      discover-data
+      dmidecode
+      emacsen-common
+      firmware-linux-free
+      gcc
+      gdbm-l10n
+      iamerican
+      ibritish
+      ienglish-common
+      installation-report
+      ispell
+      laptop-detect
+      libdiscover2
+      libusb-0.1-4
+      make
+      os-prober
+      perl
+      task-english
+      task-laptop
+      tasksel
+      tasksel-data
+      util-linux-locales
+      wamerican
+      xkb-data"
 
-# Packages found on Debian 9 only
-debian9="cpp-6"
+# Build a list of unwanted packages that are installed and remove
+packages=()
+for package in ${list}
+do
+    if dpkg -l | grep ^ii | awk '{print $2}' | grep "${package}" \
+        &>/dev/null; then
+        echo "Found unwanted package: ${package}" > ${redirect}
+        packages+=("${package}")
+    fi
+done
 
-# Packages found on Debian 10 only
-debian10="binutils-common
-          binutils-x86-64-linux-gnu
-          cpp-7
-          gdbm-l10n"
+if [ ${#packages[@]} -gt 0 ]; then
+    echo ""
+    echo "Removing the following packages:" > ${redirect}
+    echo "${packages[@]}" > ${redirect}
 
-# Concatenate lists to get the full package list for the given version
-if [ $(cat /etc/debian_version | sed -r 's/([0-9]{1,}).*/\1/g') -lt 10 ]; then
-    packages=${common}' '${debian9}
+    export DEBIAN_FRONTEND="noninteractive"
+    apt-get --purge autoremove -y "${packages[@]}" > ${redirect}
 else
-    packages=${common}' '${debian10}
+    echo "No unwanted packages found" > ${redirect}
 fi
-
-export DEBIAN_FRONTEND="noninteractive"
-apt-get --ignore-missing --purge autoremove -y ${packages} > ${redirect}
 
 exit 0
