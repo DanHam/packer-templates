@@ -23,7 +23,7 @@ export DEBIAN_FRONTEND="noninteractive"
 build_deps=(
     gcc
     make
-    linux-headers-$(uname -r)
+    linux-headers-"$(uname -r)"
     bzip2
 )
 # Initialise the array used to store the list of packages needed just for
@@ -32,7 +32,7 @@ build_pkgs=()
 
 # Check through the list of required packages adding any that are not
 # installed to the list. These packages will be removed once complete
-for pkg in ${build_deps[@]}
+for pkg in "${build_deps[@]}"
 do
     if ! dpkg -l | grep ^ii | awk '{print $2}' | grep "${pkg}" &>/dev/null; then
         build_pkgs+=("${pkg}")
@@ -42,19 +42,19 @@ done
 # Install required packages for build
 if [ ${#build_pkgs[@]} -gt 0 ]; then
     echo "Ensuring packages required to build Guest Additions are installed..."
-    apt-get -y install ${build_pkgs[@]} > ${redirect}
+    apt-get -y install "${build_pkgs[@]}" > ${redirect}
 fi
 
 # Set the path to the Virtualbox tools iso using the environment variable
 # defined in the Packer template and created on this system by Packer
 guest_additions_iso="${GUEST_ADDITIONS_PATH}"
-# Exit if the environment variable is not set
-if [ "x${guest_additions_iso}" == "x" ]; then
+# Exit if the environment variable is not set/empty
+if [ -z "${guest_additions_iso}" ]; then
     echo "ERROR: Failed to set path to Virtualbox Additions ISO. Exiting"
     exit 1
 fi
 # Exit if the iso has not been uploaded
-if [ ! -e ${guest_additions_iso} ]; then
+if [ ! -e "${guest_additions_iso}" ]; then
     echo "ERROR: Could not find ISO at ${guest_additions_iso}. Exiting"
     exit 1
 fi
@@ -66,7 +66,7 @@ guest_additions_mnt="$(mktemp -t -d --tmpdir=/tmp vbox-mnt-XXXXXX)"
 guest_additions_installer="${guest_additions_mnt}/VBoxLinuxAdditions.run"
 
 # Mount the ISO
-mount -o loop ${guest_additions_iso} ${guest_additions_mnt} -o ro
+mount -o loop "${guest_additions_iso}" "${guest_additions_mnt}" -o ro
 
 # Run the Virtualbox installer
 #
@@ -82,7 +82,7 @@ mount -o loop ${guest_additions_iso} ${guest_additions_mnt} -o ro
 # exit on error
 echo "Installing Virtualbox Guest Additions..."
 set +o errexit
-sh ${guest_additions_installer} > ${redirect}
+sh "${guest_additions_installer}" > ${redirect}
 # Only an exit code of 1 should be considered an error
 if [ $? -eq 1 ]; then
     echo 'An error occurred installing the Virtualbox Guest additions'
@@ -93,14 +93,14 @@ set -o errexit
 
 # Clean up
 # Unmount the Guest Additions ISO
-umount ${guest_additions_mnt}
+umount "${guest_additions_mnt}"
 # Remove the temp directories and uploaded ISO
-rm -rf ${guest_additions_mnt} ${guest_additions_iso}
+rm -rf "${guest_additions_mnt}" "${guest_additions_iso}"
 
 # Remove packages (and any deps) required for compiling the Guest Additions
 if [ ${#build_pkgs[@]} -gt 0 ]; then
     echo "Removing packages installed only to build the Guest Additions..."
-    apt-get -y autoremove ${build_pkgs[@]} > ${redirect}
+    apt-get -y autoremove "${build_pkgs[@]}" > ${redirect}
 fi
 
 exit 0

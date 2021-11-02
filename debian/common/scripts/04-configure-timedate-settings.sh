@@ -14,7 +14,7 @@ echo "Configuring system time and date settings..."
 # Note that Debians init scripts for ntp and chrony haven't yet been
 # ported over to systemd style unit files so we need to check for startup
 # scripts for each run level
-if [ "x$(find /etc/rc?.d -name S??ntp -o -name S??chrony)" != "x" ]; then
+if [ "x$(find /etc/rc?.d -name 'S??ntp' -o -name 'S??chrony')" != "x" ]; then
     echo "System time configured to use NTP based source" > ${redirect}
     timedatectl set-ntp true
 else
