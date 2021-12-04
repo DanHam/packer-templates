@@ -34,7 +34,7 @@ build_pkgs=()
 # installed to the list. These packages will be removed once complete
 for pkg in "${build_deps[@]}"
 do
-    if ! dpkg -l | grep ^ii | awk '{print $2}' | grep "${pkg}" &>/dev/null; then
+    if ! dpkg -s "${pkg}" &>/dev/null; then
         build_pkgs+=("${pkg}")
     fi
 done

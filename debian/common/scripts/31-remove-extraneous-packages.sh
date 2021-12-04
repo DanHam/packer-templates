@@ -51,8 +51,7 @@ list="avahi-autoipd
 packages=()
 for package in ${list}
 do
-    if dpkg -l | grep ^ii | awk '{print $2}' | grep "${package}" \
-        &>/dev/null; then
+    if dpkg -s "${package}" &>/dev/null; then
         echo "Found unwanted package: ${package}" > ${redirect}
         packages+=("${package}")
     fi
