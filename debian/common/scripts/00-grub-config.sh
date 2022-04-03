@@ -26,6 +26,9 @@ sed -i \
 # A timeout of zero seconds means the menu will not be displayed
 sed -i "/^GRUB_TIMEOUT/ s/=.*/=0/" /etc/default/grub
 
+# Remove the default 'quiet' kernel parameter to display boot messages
+sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT/ s/=.*/=""/' /etc/default/grub
+
 # Update grub
 update-grub &> ${redirect}
 
