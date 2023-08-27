@@ -12,4 +12,4 @@ Debian GNU/Linux 11 Base | foosite/debian-11
 ## Current build tools
 
 * Packer
-* Virtualbox Version 6.1.30r148432
+* Virtualbox Version 7.0.11r158813
