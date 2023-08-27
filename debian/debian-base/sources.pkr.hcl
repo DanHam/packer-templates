@@ -35,6 +35,7 @@ source "virtualbox-iso" "debian-11" {
   ssh_username         = "${var.ssh_username}"
   usb                  = false
   vboxmanage           = [
+    ["modifyvm", "{{ .Name }}", "--nat-localhostreachable1", "on"],
     ["setextradata", "global", "GUI/SuppressMessages", "all"]
   ]
   vm_name              = "${var.template}-${source.type}"
