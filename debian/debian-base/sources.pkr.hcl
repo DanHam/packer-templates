@@ -16,6 +16,8 @@ source "virtualbox-iso" "debian-11" {
   cpus                 = "${var.cpu_count}"
   disk_size            = "${var.disk_size}"
   export_opts          = ["--ovf20"]
+  gfx_controller       = "${var.gfx_controller}"
+  gfx_vram_size        = "${var.gfx_vram_size}"
   guest_additions_mode = "upload"
   guest_additions_path = "${var.guest_additions_path}"
   guest_os_type        = "${var.guest_os_type}"
@@ -33,7 +35,6 @@ source "virtualbox-iso" "debian-11" {
   ssh_username         = "${var.ssh_username}"
   usb                  = false
   vboxmanage           = [
-    ["modifyvm", "{{ .Name }}", "--vram", "16"],
     ["setextradata", "global", "GUI/SuppressMessages", "all"]
   ]
   vm_name              = "${var.template}-${source.type}"

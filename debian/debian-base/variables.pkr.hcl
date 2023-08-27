@@ -71,9 +71,9 @@ variable "communicator" {
 }
 
 variable "cpu_count" {
-  type        = string
+  type        = number
   description = "The number of vCPU's to use in the build VM"
-  default     = "1"
+  default     = 1
 }
 
 variable "debug" {
@@ -83,9 +83,21 @@ variable "debug" {
 }
 
 variable "disk_size" {
+  type        = number
+  description = "The size, in MB to allocate to the VM disk"
+  default     = 25600
+}
+
+variable "gfx_controller" {
   type        = string
-  description = "The disk size to use for the resultant VM"
-  default     = "25600"
+  description = "The VM graphics controller - can be one of none, vboxvga, vboxsvga, or vmsvga"
+  default     = "vmsvga"
+}
+
+variable "gfx_vram_size" {
+  type        = number
+  description = "The memory to assign to the VM graphics controller"
+  default     = 22
 }
 
 variable "guest_additions_path" {
@@ -115,13 +127,11 @@ variable "installer_boot_time" {
 variable "iso_checksum" {
   type        = string
   description = "The checksum for the installer ISO image"
-  default     = "c685b85cf9f248633ba3cd2b9f9e781fa03225587e0c332aef2063f6877a1f0622f56d44cf0690087b0ca36883147ecb5593e3da6f965968402cdbdf12f6dd74"
 }
 
 variable "iso_url" {
   type        = string
   description = "The URL to the installer ISO image"
-  default     = "file://${env("HOME")}/stuff/iso/os/debian/debian-11.2.0-amd64-netinst.iso"
 }
 
 variable "local_shell_binary" {
@@ -131,9 +141,9 @@ variable "local_shell_binary" {
 }
 
 variable "memory_size" {
-  type        = string
-  description = "The amount of memory to use for the build VM"
-  default     = "1024"
+  type        = number
+  description = "The amount of memory to allocate to the build VM"
+  default     = 2048
 }
 
 variable "packer_dir" {
@@ -175,7 +185,6 @@ variable "ssh_username" {
 variable "template" {
   type        = string
   description = "The base name for the Packer build"
-  default     = "debian-11"
 }
 
 variable "vagrant_cloud_access_token" {
