@@ -1,5 +1,5 @@
 build {
-  sources = ["source.virtualbox-iso.debian-11"]
+  sources = ["source.virtualbox-iso.debian"]
 
   provisioner "shell" {
     environment_vars = [

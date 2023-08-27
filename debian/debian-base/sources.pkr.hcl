@@ -1,4 +1,4 @@
-source "virtualbox-iso" "debian-11" {
+source "virtualbox-iso" "debian" {
   boot_command = [
     "<esc><wait>",
     "install <wait>",
