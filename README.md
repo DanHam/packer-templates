@@ -6,8 +6,8 @@ Templates and scripts for use in building boxes with Packer
 
 | OS | Vagrant Cloud Short URL |
 |---|---|
-Debian GNU/Linux 10 Base | foosite/debian-10
 Debian GNU/Linux 11 Base | foosite/debian-11
+Debian GNU/Linux 12 Base | foosite/debian-12
 
 ## Current build tools
 
