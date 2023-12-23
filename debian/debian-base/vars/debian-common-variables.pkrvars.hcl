@@ -33,7 +33,7 @@ guest_additions_path = "/tmp/VBoxGuestAdditions.iso"
 # The VirtualBox guest OS type
 guest_os_type = "Debian_64"
 # Controls whether VirtualBox should run headless or not
-headless = false
+headless = true
 # The amount of time Packer should wait before attempting to 'type' the boot command
 installer_boot_time = "5s"
 # The path to the bash shell binary on the system running the build
